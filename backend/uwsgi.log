@@ -1,0 +1,817 @@
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 15:35:36 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat/backend
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xe5e370
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xe5e370 pid: 5099 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 5099)
+spawned uWSGI worker 1 (pid: 5100, cores: 1)
+spawned uWSGI worker 2 (pid: 5101, cores: 1)
+spawned uWSGI worker 3 (pid: 5102, cores: 1)
+spawned uWSGI worker 4 (pid: 5103, cores: 1)
+spawned uWSGI worker 5 (pid: 5104, cores: 1)
+spawned uWSGI worker 6 (pid: 5105, cores: 1)
+spawned uWSGI worker 7 (pid: 5106, cores: 1)
+spawned uWSGI worker 8 (pid: 5107, cores: 1)
+spawned uWSGI worker 9 (pid: 5108, cores: 1)
+spawned uWSGI worker 10 (pid: 5109, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 10 buried after 1 seconds
+worker 1 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /home/pi/code/kandidat/backend/measure.sock removed.
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 15:40:29 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x189b370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x189b370 pid: 5433 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 5433)
+spawned uWSGI worker 1 (pid: 5434, cores: 1)
+spawned uWSGI worker 2 (pid: 5435, cores: 1)
+spawned uWSGI worker 3 (pid: 5436, cores: 1)
+spawned uWSGI worker 4 (pid: 5437, cores: 1)
+spawned uWSGI worker 5 (pid: 5438, cores: 1)
+spawned uWSGI worker 6 (pid: 5439, cores: 1)
+spawned uWSGI worker 7 (pid: 5440, cores: 1)
+spawned uWSGI worker 8 (pid: 5441, cores: 1)
+spawned uWSGI worker 9 (pid: 5442, cores: 1)
+spawned uWSGI worker 10 (pid: 5443, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /home/pi/code/kandidat/backend/measure.sock removed.
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 15:40:50 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x112b370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x112b370 pid: 5539 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 5539)
+spawned uWSGI worker 1 (pid: 5579, cores: 1)
+spawned uWSGI worker 2 (pid: 5580, cores: 1)
+spawned uWSGI worker 3 (pid: 5581, cores: 1)
+spawned uWSGI worker 4 (pid: 5582, cores: 1)
+spawned uWSGI worker 5 (pid: 5583, cores: 1)
+spawned uWSGI worker 6 (pid: 5584, cores: 1)
+spawned uWSGI worker 7 (pid: 5585, cores: 1)
+spawned uWSGI worker 8 (pid: 5586, cores: 1)
+spawned uWSGI worker 9 (pid: 5587, cores: 1)
+spawned uWSGI worker 10 (pid: 5588, cores: 1)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 15:40:57 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x14ef370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x14ef370 pid: 5596 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 5596)
+spawned uWSGI worker 1 (pid: 5636, cores: 1)
+spawned uWSGI worker 2 (pid: 5637, cores: 1)
+spawned uWSGI worker 3 (pid: 5638, cores: 1)
+spawned uWSGI worker 4 (pid: 5639, cores: 1)
+spawned uWSGI worker 5 (pid: 5640, cores: 1)
+spawned uWSGI worker 6 (pid: 5641, cores: 1)
+spawned uWSGI worker 7 (pid: 5642, cores: 1)
+spawned uWSGI worker 8 (pid: 5643, cores: 1)
+spawned uWSGI worker 9 (pid: 5644, cores: 1)
+spawned uWSGI worker 10 (pid: 5645, cores: 1)
+[pid: 5645|app: 0|req: 1/1] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 15:41:21 2020] GET /api/ => generated 10 bytes in 56 msecs (HTTP/1.1 200) 4 headers in 135 bytes (1 switches on core 0)
+[pid: 5645|app: 0|req: 2/2] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:52 2020] GET /api/ => generated 10 bytes in 4 msecs (HTTP/1.1 200) 4 headers in 135 bytes (2 switches on core 0)
+[pid: 5645|app: 0|req: 3/3] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:53 2020] GET /api/ => generated 10 bytes in 3 msecs (HTTP/1.1 200) 4 headers in 135 bytes (1 switches on core 0)
+[pid: 5645|app: 0|req: 4/4] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:55 2020] GET /api/ => generated 10 bytes in 3 msecs (HTTP/1.1 200) 4 headers in 135 bytes (1 switches on core 0)
+[pid: 5645|app: 0|req: 5/5] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:56 2020] GET /api/ => generated 10 bytes in 3 msecs (HTTP/1.1 200) 4 headers in 135 bytes (1 switches on core 0)
+[pid: 5645|app: 0|req: 6/6] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:57 2020] GET /api/ => generated 10 bytes in 3 msecs (HTTP/1.1 200) 4 headers in 135 bytes (2 switches on core 0)
+[pid: 5645|app: 0|req: 7/7] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:57 2020] GET /api/ => generated 10 bytes in 3 msecs (HTTP/1.1 200) 4 headers in 135 bytes (2 switches on core 0)
+[pid: 5645|app: 0|req: 8/8] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:58 2020] GET /api/ => generated 10 bytes in 3 msecs (HTTP/1.1 200) 4 headers in 135 bytes (2 switches on core 0)
+[pid: 5645|app: 0|req: 9/9] 192.168.0.34 () {44 vars in 853 bytes} [Sat Feb 22 17:07:59 2020] GET /api/ => generated 10 bytes in 3 msecs (HTTP/1.1 200) 4 headers in 135 bytes (1 switches on core 0)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:33:55 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+open("/home/pi/code/kandidat/backend/uwsgi.pid"): Permission denied [core/utils.c line 3616]
+VACUUM: pidfile removed.
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:34:02 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xa08370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xa08370 pid: 6737 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 6737)
+spawned uWSGI worker 1 (pid: 6746, cores: 1)
+spawned uWSGI worker 2 (pid: 6747, cores: 1)
+spawned uWSGI worker 3 (pid: 6748, cores: 1)
+spawned uWSGI worker 4 (pid: 6749, cores: 1)
+spawned uWSGI worker 5 (pid: 6750, cores: 1)
+spawned uWSGI worker 6 (pid: 6751, cores: 1)
+spawned uWSGI worker 7 (pid: 6752, cores: 1)
+spawned uWSGI worker 8 (pid: 6753, cores: 1)
+spawned uWSGI worker 9 (pid: 6754, cores: 1)
+spawned uWSGI worker 10 (pid: 6755, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /home/pi/code/kandidat/backend/measure.sock removed.
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:34:33 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x13b8370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x13b8370 pid: 6767 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 6767)
+spawned uWSGI worker 1 (pid: 6776, cores: 1)
+spawned uWSGI worker 2 (pid: 6777, cores: 1)
+spawned uWSGI worker 3 (pid: 6778, cores: 1)
+spawned uWSGI worker 4 (pid: 6779, cores: 1)
+spawned uWSGI worker 5 (pid: 6780, cores: 1)
+spawned uWSGI worker 6 (pid: 6781, cores: 1)
+spawned uWSGI worker 7 (pid: 6782, cores: 1)
+spawned uWSGI worker 8 (pid: 6783, cores: 1)
+spawned uWSGI worker 9 (pid: 6784, cores: 1)
+spawned uWSGI worker 10 (pid: 6785, cores: 1)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:35:48 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1aa8370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1aa8370 pid: 6865 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 6865)
+spawned uWSGI worker 1 (pid: 6874, cores: 1)
+spawned uWSGI worker 2 (pid: 6875, cores: 1)
+spawned uWSGI worker 3 (pid: 6876, cores: 1)
+spawned uWSGI worker 4 (pid: 6877, cores: 1)
+spawned uWSGI worker 5 (pid: 6878, cores: 1)
+spawned uWSGI worker 6 (pid: 6879, cores: 1)
+spawned uWSGI worker 7 (pid: 6880, cores: 1)
+spawned uWSGI worker 8 (pid: 6881, cores: 1)
+spawned uWSGI worker 9 (pid: 6882, cores: 1)
+spawned uWSGI worker 10 (pid: 6883, cores: 1)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:37:27 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xc45370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xc45370 pid: 6964 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 6964)
+spawned uWSGI worker 1 (pid: 6973, cores: 1)
+spawned uWSGI worker 2 (pid: 6974, cores: 1)
+spawned uWSGI worker 3 (pid: 6975, cores: 1)
+spawned uWSGI worker 4 (pid: 6976, cores: 1)
+spawned uWSGI worker 5 (pid: 6977, cores: 1)
+spawned uWSGI worker 6 (pid: 6978, cores: 1)
+spawned uWSGI worker 7 (pid: 6979, cores: 1)
+spawned uWSGI worker 8 (pid: 6980, cores: 1)
+spawned uWSGI worker 9 (pid: 6981, cores: 1)
+spawned uWSGI worker 10 (pid: 6982, cores: 1)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:39:24 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1520370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1520370 pid: 7093 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7093)
+spawned uWSGI worker 1 (pid: 7102, cores: 1)
+spawned uWSGI worker 2 (pid: 7103, cores: 1)
+spawned uWSGI worker 3 (pid: 7104, cores: 1)
+spawned uWSGI worker 4 (pid: 7105, cores: 1)
+spawned uWSGI worker 5 (pid: 7106, cores: 1)
+spawned uWSGI worker 6 (pid: 7107, cores: 1)
+spawned uWSGI worker 7 (pid: 7108, cores: 1)
+spawned uWSGI worker 8 (pid: 7109, cores: 1)
+spawned uWSGI worker 9 (pid: 7110, cores: 1)
+spawned uWSGI worker 10 (pid: 7111, cores: 1)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:42:38 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1682370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1682370 pid: 7214 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7214)
+spawned uWSGI worker 1 (pid: 7223, cores: 1)
+spawned uWSGI worker 2 (pid: 7224, cores: 1)
+spawned uWSGI worker 3 (pid: 7225, cores: 1)
+spawned uWSGI worker 4 (pid: 7226, cores: 1)
+spawned uWSGI worker 5 (pid: 7227, cores: 1)
+spawned uWSGI worker 6 (pid: 7228, cores: 1)
+spawned uWSGI worker 7 (pid: 7229, cores: 1)
+spawned uWSGI worker 8 (pid: 7230, cores: 1)
+spawned uWSGI worker 9 (pid: 7231, cores: 1)
+spawned uWSGI worker 10 (pid: 7232, cores: 1)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:46:45 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x19e2370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x19e2370 pid: 7334 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7334)
+spawned uWSGI worker 1 (pid: 7343, cores: 1)
+spawned uWSGI worker 2 (pid: 7344, cores: 1)
+spawned uWSGI worker 3 (pid: 7345, cores: 1)
+spawned uWSGI worker 4 (pid: 7346, cores: 1)
+spawned uWSGI worker 5 (pid: 7347, cores: 1)
+spawned uWSGI worker 6 (pid: 7348, cores: 1)
+spawned uWSGI worker 7 (pid: 7349, cores: 1)
+spawned uWSGI worker 8 (pid: 7350, cores: 1)
+spawned uWSGI worker 9 (pid: 7351, cores: 1)
+spawned uWSGI worker 10 (pid: 7352, cores: 1)
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:53:06 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0xf89370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0xf89370 pid: 7430 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7430)
+spawned uWSGI worker 1 (pid: 7439, cores: 1)
+spawned uWSGI worker 2 (pid: 7440, cores: 1)
+spawned uWSGI worker 3 (pid: 7441, cores: 1)
+spawned uWSGI worker 4 (pid: 7442, cores: 1)
+spawned uWSGI worker 5 (pid: 7443, cores: 1)
+spawned uWSGI worker 6 (pid: 7444, cores: 1)
+spawned uWSGI worker 7 (pid: 7445, cores: 1)
+spawned uWSGI worker 8 (pid: 7446, cores: 1)
+spawned uWSGI worker 9 (pid: 7447, cores: 1)
+spawned uWSGI worker 10 (pid: 7448, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /home/pi/code/kandidat/backend/measure.sock removed.
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:53:17 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1a37370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x1a37370 pid: 7463 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7463)
+spawned uWSGI worker 1 (pid: 7472, cores: 1)
+spawned uWSGI worker 2 (pid: 7473, cores: 1)
+spawned uWSGI worker 3 (pid: 7474, cores: 1)
+spawned uWSGI worker 4 (pid: 7475, cores: 1)
+spawned uWSGI worker 5 (pid: 7476, cores: 1)
+spawned uWSGI worker 6 (pid: 7477, cores: 1)
+spawned uWSGI worker 7 (pid: 7478, cores: 1)
+spawned uWSGI worker 8 (pid: 7479, cores: 1)
+spawned uWSGI worker 9 (pid: 7480, cores: 1)
+spawned uWSGI worker 10 (pid: 7481, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /home/pi/code/kandidat/backend/measure.sock removed.
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:54:00 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x1ea4370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x1ea4370 pid: 7500 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7500)
+spawned uWSGI worker 1 (pid: 7509, cores: 1)
+spawned uWSGI worker 2 (pid: 7510, cores: 1)
+spawned uWSGI worker 3 (pid: 7511, cores: 1)
+spawned uWSGI worker 4 (pid: 7512, cores: 1)
+spawned uWSGI worker 5 (pid: 7513, cores: 1)
+spawned uWSGI worker 6 (pid: 7514, cores: 1)
+spawned uWSGI worker 7 (pid: 7515, cores: 1)
+spawned uWSGI worker 8 (pid: 7516, cores: 1)
+spawned uWSGI worker 9 (pid: 7517, cores: 1)
+spawned uWSGI worker 10 (pid: 7518, cores: 1)
+SIGINT/SIGQUIT received...killing workers...
+worker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+worker 3 buried after 1 seconds
+worker 4 buried after 1 seconds
+worker 5 buried after 1 seconds
+worker 6 buried after 1 seconds
+worker 7 buried after 1 seconds
+worker 8 buried after 1 seconds
+worker 9 buried after 1 seconds
+worker 10 buried after 1 seconds
+goodbye to uWSGI.
+VACUUM: pidfile removed.
+VACUUM: unix socket /home/pi/code/kandidat/backend/measure.sock removed.
+*** Starting uWSGI 2.0.18 (32bit) on [Sat Feb 22 18:54:13 2020] ***
+compiled with version: 8.3.0 on 16 July 2019 12:06:45
+os: Linux-4.19.97-v7l+ #1294 SMP Thu Jan 30 13:21:14 GMT 2020
+nodename: raspberrypi
+machine: armv7l
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 4
+current working directory: /home/pi/code/kandidat
+writing pidfile to /home/pi/code/kandidat/backend/uwsgi.pid
+detected binary path: /home/pi/code/kandidat/backend/measure/venv/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+chdir() to /home/pi/code/kandidat/backend/measure
+your processes number limit is 29184
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uwsgi socket 0 bound to UNIX address /home/pi/code/kandidat/backend/measure.sock fd 6
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 (default, Dec 20 2019, 18:57:59)  [GCC 8.3.0]
+PEP 405 virtualenv detected: /home/pi/code/kandidat/backend/measure/venv
+Set PythonHome to /home/pi/code/kandidat/backend/measure/venv
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x175c370
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 708400 bytes (691 KB) for 10 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x175c370 pid: 7532 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 7532)
+spawned uWSGI worker 1 (pid: 7541, cores: 1)
+spawned uWSGI worker 2 (pid: 7542, cores: 1)
+spawned uWSGI worker 3 (pid: 7543, cores: 1)
+spawned uWSGI worker 4 (pid: 7544, cores: 1)
+spawned uWSGI worker 5 (pid: 7545, cores: 1)
+spawned uWSGI worker 6 (pid: 7546, cores: 1)
+spawned uWSGI worker 7 (pid: 7547, cores: 1)
+spawned uWSGI worker 8 (pid: 7548, cores: 1)
+spawned uWSGI worker 9 (pid: 7549, cores: 1)
+spawned uWSGI worker 10 (pid: 7550, cores: 1)
