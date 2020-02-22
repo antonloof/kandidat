@@ -1,1 +1,1 @@
-"Detta „r ett repo f”r ett kandidatarbete" 
+Detta Ã¤r ett repo fÃ¶r ett kandidatarbete
