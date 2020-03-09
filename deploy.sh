@@ -1,4 +1,5 @@
 #! /bin/bash
+pigpiod
 cp kandidat_nginx.conf /etc/nginx/sites-enabled/kandidat_nginx.conf
 source backend/venv/bin/activate
 sh -c 'cd backend/measure && ./manage.py collectstatic --no-input'
