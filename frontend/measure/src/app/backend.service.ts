@@ -7,8 +7,8 @@ import { HttpClient } from '@angular/common/http';
 export class BackendService {
 
   constructor(private http: HttpClient) { }
-
-  spinMotor() {
-    return this.http.post("/api/spin", {});
-  }
+	
+	measure() {
+		return this.http.post("/api/measure", {});
+	}
 }

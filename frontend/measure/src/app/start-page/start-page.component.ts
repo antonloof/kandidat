@@ -11,9 +11,11 @@ export class StartPageComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  spin() {
-    this.backend.spinMotor().subscribe(console.log);
-  }
+	
+	measure() {
+		this.backend.measure().subscribe(res => {
+			console.log(res);
+		});
+	}
 
 }
