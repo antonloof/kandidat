@@ -1,2 +1,4 @@
 frontend/measure/node_modules
 backend/venv
+backend/*.log
+backend/*.pid
