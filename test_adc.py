@@ -74,7 +74,6 @@ def read_value():
 	
 		if checksum != data[5]:
 			print(f"checksum does not match. Got {data[5]} calculated {checksum}", data)
-<<<<<<< HEAD
 		sleep(0.0001)
 
 	number = data[1] * 256**3 + data[2] * 256**2 + data[3] * 256**1 + data[4]
@@ -113,29 +112,8 @@ write_reg(3, 0b00010000) # enable chop mode, cant be on when measureing temp
 write_reg(6, 0b00000001)
 start()
 
-for i in range(100):
+for i in range(2):
 	print(read_value() * 1000)
-=======
-		sleep(0.010)
-
-	number = data[1] * 256**3 + data[2] * 256**2 + data[3] * 256**1 + data[4]
-	return 5*number/2**32
-
-init_adc()
-write_reg(1, 0b00000001)
-write_reg(2, 0b00000101)
-write_reg(3, 0b00000000)
-write_reg(4, 0b10000000)
-write_reg(5, 0b10010010)
-write_reg(6, 0b10111011) # measure temp
-print(25 + (read_value() - 0.1224)/0.00042, "celsius")
-
-stop()
-write_reg(6, 0b00000001)
-start()
-for i in range(100):
-	print(read_value())
->>>>>>> f323700f1c09f87f1e8adbdd741a8b899ca98467
 
 pi.spi_close(spi)
 pi.stop()
