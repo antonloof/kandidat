@@ -1,3 +1,4 @@
+
 import pigpio
 from time import sleep
 
@@ -37,15 +38,13 @@ steps = [
 ]
 test = list(range(200, 230, 3)) + list(range(230, 255, 2))
 step_count = 0
-delay = 1.0
-while step_count < 10:
+delay = 0.5
+while step_count < 1000:
         for step in steps:
                 for i, value in enumerate(step):
                         pi.write(pins[i], value)
                 
-                for i in test:
-                        #pi.set_PWM_dutycycle(powah, i)
-                        sleep(delay/len(test))
+                sleep(delay)
                 step_count += 1
 
 for p in pins:
