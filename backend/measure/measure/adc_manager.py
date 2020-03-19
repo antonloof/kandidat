@@ -56,8 +56,8 @@ class StatusBit(IntEnum):
 class Mode0Bbit(IntEnum):
 	REFREV =        0b10000000
 	RUNMODE =       0b01000000
-	INPUT_CHOP =    0b00100000
-	IDAC_ROTATION = 0b00010000
+	IDAC_ROTATION = 0b00100000
+	INPUT_CHOP =    0b00010000
 	DELAY3 =        0b00001000
 	DELAY2 =        0b00000100
 	DELAY1 =        0b00000010
@@ -117,9 +117,9 @@ class AdcTimeoutException(AdcRuntimeException):
 
 	
 class AdcManager:
-	def __init__(self, pi, spi):
+	def __init__(self, pi):
 		self.pi = pi
-		self.spi = spi
+		self.spi = pi.spi_open(0, 50000, 1)
 		
 		self.pi.set_mode(START_PIN, pigpio.OUTPUT)
 		self.pi.set_mode(RESET_PIN, pigpio.OUTPUT)
@@ -132,7 +132,6 @@ class AdcManager:
 
 	def close(self):
 		self.pi.spi_close(self.spi)
-		self.pi.stop()
 
 	def reset(self):
 		self.pi.write(RESET_PIN, 1)
@@ -229,6 +228,9 @@ class AdcManager:
 		bypass_bit = 0b10000000 if bypass else 0
 		self.write_reg(Address.MODE2, bypass_bit | (gain << 4) | data_rate)
 
+	def enable_chop(self):
+		mode0 = self.read_reg(Address.MODE0)
+		self.write_reg(Address.MODE0, mode0 | Mode0Bbit.INPUT_CHOP)
 
 def validate_checksum(values, checksum):
 	checksum_base = 0x9B

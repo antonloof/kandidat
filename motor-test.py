@@ -10,10 +10,10 @@ from time import sleep
 
 pi = pigpio.pi()
 
-a1 = 17
-a2 = 27
-b1 = 22
-b2 = 26
+a1 = 12
+a2 = 16
+b1 = 20
+b2 = 21
 powah = 10
 
 pi.set_mode(a1, pigpio.OUTPUT)
