@@ -7,9 +7,40 @@ from django.views.decorators.http import require_POST
 from time import sleep, time
 
 from measure.models import Measurment
-from measure.adc_manager import AdcManager, InpmuxOptions
+from measure.adc_manager import AdcManager, InpmuxOptions, Gain
 from measure.motor_manager import MotorManager
+from measure.serializers import MeasurmentSerializer
+from rest_framework import viewsets
+from rest_framework.response import Response
+from threading import Thread
 
+
+def measure_operation(measurment_manager):
+	with measurment_manager:
+		measurment_manager.setup_temperature_measurment()
+		ret = measurment_manager.measure_temperature()
+		#measurment_manager.test_motor()
+		measurment_manager.setup_offset_measurment()
+		offsets = [measurment_manager.measure_offset() for _ in range(5)]
+		measurment_manager.measurment.mobility = sum(offsets)/len(offsets)
+		measurment_manager.measurment.save()
+		
+
+
+
+class MeasurmentView(viewsets.ModelViewSet):
+	queryset = Measurment.objects.all()
+	serializer_class = MeasurmentSerializer
+
+	def measure(self, request):
+		measurment_manager = MeasurmentManager()
+		if not measurment_manager.can_measure:
+			return Response('{"error": "Another measurment is in progress. Please wait a bit"}', status=400)
+		thread = Thread(target=measure_operation, args=(measurment_manager, ))
+		thread.start()
+		serializer = self.serializer_class(measurment_manager.measurment)
+		return Response(serializer.data)
+					
 
 class MeasurmentManager:
 	def __init__(self):
@@ -54,17 +85,17 @@ class MeasurmentManager:
 		self.adc_manager.reset()
 		# offset calibration gives approx one order of magnitude lower offset voltage
 		# compared to input_chop
-		self.adc_manager.offset_calibration()
-		# self.adc_manager.enable_chop()
+		# self.adc_manager.offset_calibration()
+		self.adc_manager.enable_chop()
+		self.adc_manager.set_gain_data_rate(bypass=True)
 		self.adc_manager.set_input_mode(InpmuxOptions.AIN0, InpmuxOptions.AIN1)
 		
 	def measure_offset(self):
 		return self.adc_manager.read_value()
 		
 	def test_motor(self):
-		self.motor_manager.turn(100, micro_step=False, steps_per_second=60)
+		self.motor_manager.turn(100, micro_step=False, steps_per_second=1)
 
-@require_POST
 def start_measurement(request):
 	measurment_manager = MeasurmentManager()
 	if not measurment_manager.can_measure:
@@ -73,9 +104,8 @@ def start_measurement(request):
 	with measurment_manager:
 		measurment_manager.setup_temperature_measurment()
 		ret = measurment_manager.measure_temperature()
-		measurment_manager.test_motor()
-		#measurment_manager.setup_offset_measurment()
-		#offset = sum([measurment_manager.measure_offset() for _ in range(100)])/100
-		offset = 0
+		#measurment_manager.test_motor()
+		measurment_manager.setup_offset_measurment()
+		offset = sum([measurment_manager.measure_offset() for _ in range(1000)])/1000
 		return HttpResponse("{" + '"ost":' + str(ret) + ',"offset": ' + str(offset) + '}')
 	

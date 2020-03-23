@@ -16,3 +16,4 @@ class DataPoint(models.Model):
 	measurment = models.ForeignKey(Measurment, on_delete=models.CASCADE)
 	unit = models.CharField(max_length=10, choices=Unit.choices)
 	purpose = models.CharField(max_length=10)
+

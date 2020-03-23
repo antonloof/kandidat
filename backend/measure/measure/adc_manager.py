@@ -62,6 +62,7 @@ class Mode0Bbit(IntEnum):
 	DELAY2 =        0b00000100
 	DELAY1 =        0b00000010
 	DELAY0 =        0b00000001
+
 	
 class InpmuxOptions(IntEnum):
 	AIN0 = 0
@@ -224,13 +225,14 @@ class AdcManager:
 		self.write_reg(Address.MODE0, current_mode0)
 		self.write_reg(Address.INPMUX, current_inpmux)
 		
-	def set_gain_data_rate(gain=Gain.G1, data_rate=DataRate.SPS20, bypass=False):
+	def set_gain_data_rate(self, gain=Gain.G1, data_rate=DataRate.SPS20, bypass=False):
 		bypass_bit = 0b10000000 if bypass else 0
 		self.write_reg(Address.MODE2, bypass_bit | (gain << 4) | data_rate)
 
 	def enable_chop(self):
 		mode0 = self.read_reg(Address.MODE0)
 		self.write_reg(Address.MODE0, mode0 | Mode0Bbit.INPUT_CHOP)
+		
 
 def validate_checksum(values, checksum):
 	checksum_base = 0x9B
