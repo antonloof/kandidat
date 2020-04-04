@@ -17,7 +17,7 @@ from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from measure.models import Measurment
+from measure.models import Measurment, RhValue
 from measure.adc_manager import AdcManager, InpmuxOptions, Gain, ReferenceMode
 from measure.motor_manager import MotorManager
 from measure.serializers import MeasurmentSerializer
@@ -31,25 +31,22 @@ def measure_operation(measurment_manager):
 		measurment_manager.set_up_mobility_measurment()
 		measurment = measurment_manager.measurment
 		
-
-		v_s = []
-		i_s = []
 		r_mu_s = []
-		steps_per_measurment = 1
+		steps_per_measurment = 10
 		measurment_count = STEPS_PER_TURN / steps_per_measurment
 		assert measurment_count == int(measurment_count), "Can only do a multiple of 200"
 		
 		for _ in range(5):
 			measurment_manager.measure_current_and_voltage() # dummy measurment 
-		for _ in range(3 * int(measurment_count)):
+		
+		for _ in range(int(measurment_count)):
 			measurment_manager.advance_motor(steps_per_measurment)
 			v, i = measurment_manager.measure_current_and_voltage()
-			v_s.append(v)
-			i_s.append(i)
 			r_mu_s.append(v / i)
 			print(v)
-			sleep(1)
-
+			#sleep(1)
+		
+		RhValue.objects.bulk_create([RhValue(value=v, measurment=measurment) for v in r_mu_s])
 		t = np.linspace(0, STEPS_PER_TURN, len(r_mu_s))
 		r_mu_s = np.array(r_mu_s)
 		print("y = ", list(r_mu_s), ";")
@@ -66,22 +63,25 @@ def measure_operation(measurment_manager):
 		print("b=", guess_angle_freq, ";")
 		print("c=", phase, ";")
 		print("d=", offset, ";")
-		print(amp, guess_angle_freq, phase, offset)
 		print("how good it is:", sum(optimize_func([amp,  phase, offset])**2))
-		measurment.a = amp
-		measurment.b = guess_angle_freq
-		measurment.c = phase
-		measurment.d = offset
+		measurment.amplitude = amp
+		measurment.angle_freq = guess_angle_freq
+		measurment.phase = phase
+		measurment.offset = offset
 		dr_db = amp/B_MAX
 		phase = phase % (2 * pi)
 		phase_in_steps = phase * STEPS_PER_TURN / (2 * pi)
+		
+		# make it take the short way
+		if phase_in_steps > STEPS_PER_TURN / 2:
+			phase_in_steps = -(STEPS_PER_TURN - phase_in_steps)
+			
 		print("dr_db:", dr_db)
 		print("phase in steps:", phase_in_steps)
-		# now the motor is at a minimum of the magnetic field
+		# now the motor is at a minimum of the magnetic flux density
 		measurment_manager.advance_motor(-int(round(phase_in_steps)))
 
 		r_mnop = measure_r_for_rs(measurment_manager)
-		sleep(60)
 		# Byt kontakter. 
 		# Kontakten som varit kopplad till in+ kopplas till jord.
 		# Kontakten som varit kopplad till in- kopplas till in+.
@@ -99,9 +99,10 @@ def measure_operation(measurment_manager):
 		
 		reasonable_rs_guess = (r_nopm + r_mnop) / 2
 		
-		rs = fsolve(f, reasonable_rs_guess, fprime=df_drs)
+		rs = fsolve(f, reasonable_rs_guess, fprime=df_drs)[0]
 		print("rs:", rs)
 		mu = dr_db/rs
+		print("mu:", mu)
 		
 		measurment.mobility = mu
 		measurment.sheet_resistance = rs
@@ -177,7 +178,7 @@ class MeasurmentManager:
 		self.adc_manager.reset()
 		self.adc_manager.enable_chop()
 		self.adc_manager.set_reference_mode(ReferenceMode.SUPPLY, ReferenceMode.SUPPLY)
-		# self.adc_manager.set_gain_data_rate(bypass=True)
+		self.adc_manager.start()
 	
 	def setup_current_measurment(self):
 		self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
@@ -189,20 +190,20 @@ class MeasurmentManager:
 		#self.x += 2 # used for test
 		#return sin(self.x/200 * 2 * pi) * B_MAX * (1 + (random() - 0.5) * 2 / 100) # used for test
 		return (self.adc_manager.read_value() * 10 - 2.5) / 100
-		# return self.adc_manager.read_value() * 10		
 
 	def measure_current(self):
 		shunt_resistance = 9920
-		#return 100e-6  * (1 + (random() - 0.5) * 2 / 100)# used for test
 		return self.adc_manager.read_value() / shunt_resistance * 10
 		
 	def measure_current_and_voltage(self):
 		self.setup_voltage_measurment()
 		v = self.measure_voltage()
 		self.setup_current_measurment()
-		i = 10e-6 # self.measure_current()
+		i = 10e-6 # used until we get this from the outside
+		#i = self.measure_current()
 		return v, i
 		
 	def advance_motor(self, steps):
+		return #tmp for test
 		speed = min(10, abs(steps))
 		self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)		

@@ -2,9 +2,9 @@ from enum import IntEnum
 import pigpio
 from time import sleep, time
 
-RESET_PIN = 26
-START_PIN = 6
-DATA_READY_PIN = 5
+# connect RESET_PIN to +5
+# connect START_PIN to gnd
+# let DATA_READY_PIN float (or connect somewhere the software does not care)
 CS_PIN = 8
 
 
@@ -39,6 +39,7 @@ class Address(IntEnum):
 	GPIODIR = 19
 	GPIODAT = 20
 	
+	
 class OpCode(IntEnum):
 	NOP = 0
 	RESET = 0x06
@@ -51,6 +52,7 @@ class OpCode(IntEnum):
 	READ = 0x20
 	WRITE = 0x40
 
+
 class StatusBit(IntEnum):
 	ADC2 =     0b10000000
 	ADC1 =     0b01000000
@@ -61,6 +63,7 @@ class StatusBit(IntEnum):
 	PGAD_ALM = 0b00000010
 	RESET    = 0b00000001
 	
+
 class Mode0Bbit(IntEnum):
 	REFREV =        0b10000000
 	RUNMODE =       0b01000000
@@ -117,7 +120,6 @@ class DataRate(IntEnum):
 	SPS38400 = 15
 
 	
-	
 class AdcRuntimeException(Exception):
 	pass
 	
@@ -129,32 +131,20 @@ class AdcManager:
 	def __init__(self, pi):
 		self.pi = pi
 		self.spi = pi.spi_open(0, 50000, 1)
+		self.test=False
 		
-		self.pi.set_mode(START_PIN, pigpio.OUTPUT)
-		self.pi.set_mode(RESET_PIN, pigpio.OUTPUT)
-		self.pi.set_mode(DATA_READY_PIN, pigpio.INPUT)
-		
-		self.reset()
-		self.stop()
 		self.reset_serial()
-		self.start()
+		self.reset()
 
 	def close(self):
 		self.pi.spi_close(self.spi)
 
 	def reset(self):
-		self.pi.write(RESET_PIN, 1)
-		sleep(0.1)
-		self.pi.write(RESET_PIN, 0)
-		sleep(0.1)
-		self.pi.write(RESET_PIN, 1)
-		sleep(0.1)
-	
+		self.write(OpCode.RESET)
+		
 	def reset_serial(self):
 		self.pi.write(CS_PIN, 1)
-		sleep(0.1)
 		self.pi.write(CS_PIN, 0)
-		sleep(0.1)
 
 	def write(self, bytes):
 		if not isinstance(bytes, list):
@@ -178,39 +168,36 @@ class AdcManager:
 		return read[0]
 		
 	def stop(self):
-		self.pi.write(START_PIN, 0)
-		sleep(0.1)
+		self.write(OpCode.STOP1)
 		
 	def start(self):
-		self.pi.write(START_PIN, 1)
-		sleep(0.1)
-				
-	def wait_for_data_ready(self, timeout_s=1):
-		start = time()
-		while self.pi.read(DATA_READY_PIN):
-			sleep(0.001)
-			if time() - start > timeout_s:
-				raise AdcTimeoutException(f"wait_for_data_ready timed out after {timeout_s} seconds")
+		self.write(OpCode.START1)
 			
 	def read_value(self, timeout_s=1):
+		# software chop mode :D 
+		# this gives approx one order of magnitude lower offset voltage
+		v1 = self._read_value(timeout_s)
+		self.toggle_input_mode()
+		v2 = self._read_value(timeout_s)
+		return (v2 + v1) / 2
+		
+	def _read_value(self, timeout_s=1):
 		status = 0
 		value_bytes = None
 		start_time = time()
-		
+
 		while not status & StatusBit.ADC1:
-			self.wait_for_data_ready(timeout_s)
 			self.write(OpCode.RDATA1)
 			data = self.read(6)	
 			status = data[0]
-			
-			value_bytes = data[1:5]
-			if not validate_checksum(value_bytes, data[5]):
-				raise AdcRuntimeException(f"checksum does not match.", list(map(int, data)))
-				
 			sleep(0.0001)
 			if time() - start_time > timeout_s:
 				raise AdcTimeoutException(f"read_value timed out after {timeout_s} seconds")
-					
+		
+		value_bytes = data[1:5]
+		if not validate_checksum(value_bytes, data[5]):
+			raise AdcRuntimeException(f"checksum does not match.", list(map(int, data)))
+		
 		return two_complement_to_float(value_bytes)
 				
 	def set_input_mode(self, positive, negative):
@@ -242,7 +229,11 @@ class AdcManager:
 		self.write_reg(Address.MODE0, mode0 | Mode0Bbit.INPUT_CHOP)
 	
 	def set_reference_mode(self, positive, negative):
-		self.write_reg(Address.REFMUX, (positive << 3) | negative)	
+		self.write_reg(Address.REFMUX, (positive << 3) | negative)
+		
+	def toggle_input_mode(self):
+		mode = self.read_reg(Address.INPMUX)
+		self.set_input_mode(mode & 0x0F, (mode & 0xF0) >> 4)
 
 
 def validate_checksum(values, checksum):
