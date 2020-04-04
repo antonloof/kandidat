@@ -9,6 +9,6 @@ export class BackendService {
   constructor(private http: HttpClient) { }
 	
 	measure() {
-		return this.http.post("/api/measure", {});
+		return this.http.post("/api/measurment", {});
 	}
 }

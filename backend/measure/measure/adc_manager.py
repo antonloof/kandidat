@@ -8,6 +8,14 @@ DATA_READY_PIN = 5
 CS_PIN = 8
 
 
+class ReferenceMode(IntEnum):
+	INTERNAL = 0b000
+	EXT0 = 0b001
+	EXT1 = 0b010
+	EXT2 = 0b011
+	SUPPLY = 0b100
+
+
 class Address(IntEnum):
 	ID = 0
 	POWER = 1
@@ -25,7 +33,7 @@ class Address(IntEnum):
 	IDACMUX = 13
 	IDACMAG = 14
 	REFMUX = 15
-	TDACP =  16
+	TDACP = 16
 	TDACN = 17
 	GPIOCON = 18
 	GPIODIR = 19
@@ -203,7 +211,7 @@ class AdcManager:
 			if time() - start_time > timeout_s:
 				raise AdcTimeoutException(f"read_value timed out after {timeout_s} seconds")
 					
-		return 5*two_complement_to_float(value_bytes)
+		return two_complement_to_float(value_bytes)
 				
 	def set_input_mode(self, positive, negative):
 		self.write_reg(Address.INPMUX, (positive << 4) | negative)
@@ -232,7 +240,10 @@ class AdcManager:
 	def enable_chop(self):
 		mode0 = self.read_reg(Address.MODE0)
 		self.write_reg(Address.MODE0, mode0 | Mode0Bbit.INPUT_CHOP)
-		
+	
+	def set_reference_mode(self, positive, negative):
+		self.write_reg(Address.REFMUX, (positive << 3) | negative)	
+
 
 def validate_checksum(values, checksum):
 	checksum_base = 0x9B
