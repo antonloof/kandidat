@@ -3,13 +3,9 @@ import pigpio
 from django.db import transaction
 
 from measure.models import Measurment
-from measure.adc_manager import AdcManager, InpmuxOptions, Gain, ReferenceMode
-from measure.motor_manager import MotorManager
+from measure.managers import *
 from measure.serializers import MeasurmentSerializer, RhValueSerializer
 from measure.filters import RhValueFilter
-from measure.current_source_manager import CurrentSourceManager
-from measure.shift_register_manager import ShiftRegisterManager
-from measure.mux_manager import MuxManager
 
 
 class MeasurmentManager:
@@ -36,7 +32,7 @@ class MeasurmentManager:
 		self.motor_manager = MotorManager(self.pi)
 		self.shift_register_manager = ShiftRegisterManager(self.pi, [0])
 		self.current_source_manager = CurrentSourceManager(self.pi, self.shift_register_manager)
-		self.current_source_manager = MuxManager(self.shift_register_manager)
+		self.mux_manager = MuxManager(self.shift_register_manager)
 		return self
 		
 	def __exit__(self, exc_type, exc_val, exc_tb):

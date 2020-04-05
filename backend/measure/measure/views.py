@@ -12,12 +12,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from measure.models import Measurment, RhValue
-from measure.adc_manager import AdcManager, InpmuxOptions, Gain, ReferenceMode
-from measure.motor_manager import MotorManager
 from measure.serializers import MeasurmentSerializer, RhValueSerializer
 from measure.filters import RhValueFilter, MeasurmentFilter
-from measure.current_source_manager import CurrentSourceManager
-from measure.shift_register_manager import ShiftRegisterManager
 from measure.measurment_manager import MeasurmentManager
 
 
