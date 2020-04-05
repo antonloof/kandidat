@@ -131,7 +131,6 @@ class AdcManager:
 	def __init__(self, pi):
 		self.pi = pi
 		self.spi = pi.spi_open(0, 50000, 1)
-		self.test=False
 		
 		self.reset_serial()
 		self.reset()

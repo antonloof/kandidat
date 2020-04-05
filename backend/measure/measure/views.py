@@ -1,26 +1,24 @@
 import pigpio
 
 import numpy as np
-from scipy.optimize import leastsq, fsolve
 
 from time import sleep, time
 from math import sin, pi, asin
-
-from random import random
-
+from scipy.optimize import leastsq, fsolve
 from threading import Thread
 
-from django.http import HttpResponse
 from django.db import transaction
-from django.views.decorators.http import require_POST
-
 from rest_framework import viewsets
 from rest_framework.response import Response
 
 from measure.models import Measurment, RhValue
 from measure.adc_manager import AdcManager, InpmuxOptions, Gain, ReferenceMode
 from measure.motor_manager import MotorManager
-from measure.serializers import MeasurmentSerializer
+from measure.serializers import MeasurmentSerializer, RhValueSerializer
+from measure.filters import RhValueFilter, MeasurmentFilter
+from measure.current_source_manager import CurrentSourceManager
+from measure.shift_register_manager import ShiftRegisterManager
+from measure.measurment_manager import MeasurmentManager
 
 
 B_MAX = 0.3318
@@ -124,6 +122,7 @@ def measure_r_for_rs(measurment_manager):
 class MeasurmentView(viewsets.ModelViewSet):
 	queryset = Measurment.objects.all()
 	serializer_class = MeasurmentSerializer
+	filter_class = MeasurmentFilter
 
 	def measure(self, request):
 		measurment_manager = MeasurmentManager()
@@ -133,77 +132,9 @@ class MeasurmentView(viewsets.ModelViewSet):
 		thread.start()
 		serializer = self.serializer_class(measurment_manager.measurment)
 		return Response(serializer.data)
-					
 
-class MeasurmentManager:
-	def __init__(self):
-		self.pi = None
-		self.can_measure = False
-		self.adc_manager = None
-		self.motor_manager = None
-		self.measurment = Measurment()
-		self.x = 42 # a random number for testing
-		open_measurments = Measurment.objects.select_for_update().filter(open=True)
-		with transaction.atomic():
-			self.can_measure = not open_measurments.exists()
-			if self.can_measure:
-				self.measurment.save()
-				
-	def __enter__(self):
-		self.pi = pigpio.pi()
-		self.adc_manager = AdcManager(self.pi)
-		self.motor_manager = MotorManager(self.pi)
-		return self
-		
-	def __exit__(self, exc_type, exc_val, exc_tb):
-		self.adc_manager.close()
-		self.motor_manager.close()
-		self.pi.stop()
-		self.measurment.open = False
-		self.measurment.save()
-		
-	def setup_temperature_measurment(self):
-		self.adc_manager.reset()
-		self.adc_manager.offset_calibration()
-		self.adc_manager.set_input_mode(InpmuxOptions.TEMP_SENS, InpmuxOptions.TEMP_SENS)
-		
-	def measure_temperature(self):
-		value = self.adc_manager.read_value()
-		TEMPERATURE_OFFSET = 25
-		TEMPERATURE_OFFSET_VALUE = 0.1224
-		TEMPERATURE_VOLT_PER_CELCIUS = 0.00042
-		return TEMPERATURE_OFFSET + (value - TEMPERATURE_OFFSET_VALUE) / TEMPERATURE_VOLT_PER_CELCIUS
 
-	def set_up_mobility_measurment(self):
-		self.adc_manager.reset()
-		self.adc_manager.enable_chop()
-		self.adc_manager.set_reference_mode(ReferenceMode.SUPPLY, ReferenceMode.SUPPLY)
-		self.adc_manager.start()
-	
-	def setup_current_measurment(self):
-		self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
-		
-	def setup_voltage_measurment(self):
-		self.adc_manager.set_input_mode(InpmuxOptions.AIN0, InpmuxOptions.AIN1)
-		
-	def measure_voltage(self):
-		#self.x += 2 # used for test
-		#return sin(self.x/200 * 2 * pi) * B_MAX * (1 + (random() - 0.5) * 2 / 100) # used for test
-		return (self.adc_manager.read_value() * 10 - 2.5) / 100
-
-	def measure_current(self):
-		shunt_resistance = 9920
-		return self.adc_manager.read_value() / shunt_resistance * 10
-		
-	def measure_current_and_voltage(self):
-		self.setup_voltage_measurment()
-		v = self.measure_voltage()
-		self.setup_current_measurment()
-		i = 10e-6 # used until we get this from the outside
-		#i = self.measure_current()
-		return v, i
-		
-	def advance_motor(self, steps):
-		return #tmp for test
-		speed = min(10, abs(steps))
-		self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)		
+class RhValueView(viewsets.ModelViewSet):
+	queryset = RhValue.objects.all()
+	serializer_class = RhValueSerializer
+	filter_class = RhValueFilter
