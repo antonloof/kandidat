@@ -11,37 +11,37 @@ from django.db import transaction
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from measure.models import Measurment, RhValue
-from measure.serializers import MeasurmentSerializer, RhValueSerializer
-from measure.filters import RhValueFilter, MeasurmentFilter
-from measure.measurment_manager import MeasurmentManager
+from measure.models import Measurement, RhValue
+from measure.serializers import MeasurementSerializer, RhValueSerializer
+from measure.filters import RhValueFilter, MeasurementFilter
+from measure.measurement_manager import MeasurementManager
 
 
 B_MAX = 0.3318
 STEPS_PER_TURN = 200
 
 
-def measure_operation(measurment_manager):
-    with measurment_manager:
-        measurment_manager.set_up_mobility_measurment()
-        measurment = measurment_manager.measurment
+def measure_operation(measurement_manager):
+    with measurement_manager:
+        measurement_manager.set_up_mobility_measurement()
+        measurement = measurement_manager.measurement
 
         r_mu_s = []
-        steps_per_measurment = 10
-        measurment_count = STEPS_PER_TURN / steps_per_measurment
-        assert measurment_count == int(measurment_count), "Can only do a multiple of 200"
+        steps_per_measurement = 10
+        measurement_count = STEPS_PER_TURN / steps_per_measurement
+        assert measurement_count == int(measurement_count), "Can only do a multiple of 200"
 
         for _ in range(5):
-            measurment_manager.measure_current_and_voltage()  # dummy measurment
+            measurement_manager.measure_current_and_voltage()  # dummy measurement
 
-        for _ in range(int(measurment_count)):
-            measurment_manager.advance_motor(steps_per_measurment)
-            v, i = measurment_manager.measure_current_and_voltage()
+        for _ in range(int(measurement_count)):
+            measurement_manager.advance_motor(steps_per_measurement)
+            v, i = measurement_manager.measure_current_and_voltage()
             r_mu_s.append(v / i)
             print(v)
             # sleep(1)
 
-        RhValue.objects.bulk_create([RhValue(value=v, measurment=measurment) for v in r_mu_s])
+        RhValue.objects.bulk_create([RhValue(value=v, measurement=measurement) for v in r_mu_s])
         t = np.linspace(0, STEPS_PER_TURN, len(r_mu_s))
         r_mu_s = np.array(r_mu_s)
         print("y = ", list(r_mu_s), ";")
@@ -59,10 +59,10 @@ def measure_operation(measurment_manager):
         print("c=", phase, ";")
         print("d=", offset, ";")
         print("how good it is:", sum(optimize_func([amp, phase, offset]) ** 2))
-        measurment.amplitude = amp
-        measurment.angle_freq = guess_angle_freq
-        measurment.phase = phase
-        measurment.offset = offset
+        measurement.amplitude = amp
+        measurement.angle_freq = guess_angle_freq
+        measurement.phase = phase
+        measurement.offset = offset
         dr_db = amp / B_MAX
         phase = phase % (2 * pi)
         phase_in_steps = phase * STEPS_PER_TURN / (2 * pi)
@@ -74,9 +74,9 @@ def measure_operation(measurment_manager):
         print("dr_db:", dr_db)
         print("phase in steps:", phase_in_steps)
         # now the motor is at a minimum of the magnetic flux density
-        measurment_manager.advance_motor(-int(round(phase_in_steps)))
+        measurement_manager.advance_motor(-int(round(phase_in_steps)))
 
-        r_mnop = measure_r_for_rs(measurment_manager)
+        r_mnop = measure_r_for_rs(measurement_manager)
         # Byt kontakter.
         # Kontakten som varit kopplad till in+ kopplas till jord.
         # Kontakten som varit kopplad till in- kopplas till in+.
@@ -86,7 +86,7 @@ def measure_operation(measurment_manager):
         # in+ och in- beteckanar de två ingångarna till förstärkarsteget
         # Strömkällan och jord betecknar de kontakter som strömen skickas genom
 
-        r_nopm = measure_r_for_rs(measurment_manager)
+        r_nopm = measure_r_for_rs(measurement_manager)
         print("the r's needed for rs:", r_mnop, r_nopm)
 
         f = lambda rs: np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs) - 1
@@ -101,38 +101,40 @@ def measure_operation(measurment_manager):
         mu = dr_db / rs
         print("mu:", mu)
 
-        measurment.mobility = mu
-        measurment.sheet_resistance = rs
-        measurment.save()
+        measurement.mobility = mu
+        measurement.sheet_resistance = rs
+        measurement.save()
 
 
-def measure_r_for_rs(measurment_manager):
+def measure_r_for_rs(measurement_manager):
     sleep(1)
-    v1, i1 = measurment_manager.measure_current_and_voltage()
+    v1, i1 = measurement_manager.measure_current_and_voltage()
     r1 = v1 / i1
 
-    measurment_manager.advance_motor(STEPS_PER_TURN // 2)
+    measurement_manager.advance_motor(STEPS_PER_TURN // 2)
     sleep(1)
-    v2, i2 = measurment_manager.measure_current_and_voltage()
+    v2, i2 = measurement_manager.measure_current_and_voltage()
     r2 = v2 / i2
 
     return (r1 + r2) / 2
 
 
-class MeasurmentView(viewsets.ModelViewSet):
-    queryset = Measurment.objects.all()
-    serializer_class = MeasurmentSerializer
-    filter_class = MeasurmentFilter
+class MeasurementView(viewsets.ModelViewSet):
+    queryset = Measurement.objects.all()
+    serializer_class = MeasurementSerializer
+    filter_class = MeasurementFilter
 
     def measure(self, request):
-        measurment_manager = MeasurmentManager()
-        if not measurment_manager.can_measure:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        measurement_manager = MeasurementManager(serializer)
+        if not measurement_manager.can_measure:
             return Response(
-                '{"error": "Another measurment is in progress. Please wait a bit"}', status=400,
+                '{"error": "Another measurement is in progress. Please wait a bit"}', status=400,
             )
-        thread = Thread(target=measure_operation, args=(measurment_manager,))
+        thread = Thread(target=measure_operation, args=(measurement_manager,))
         thread.start()
-        serializer = self.serializer_class(measurment_manager.measurment)
+        serializer = self.serializer_class(measurement_manager.measurement)
         return Response(serializer.data)
 
 

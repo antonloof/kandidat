@@ -2,14 +2,13 @@ import pigpio
 
 from django.db import transaction
 
-from measure.models import Measurment
+from measure.models import Measurement
 from measure.managers import *
-from measure.serializers import MeasurmentSerializer, RhValueSerializer
 from measure.filters import RhValueFilter
 
 
-class MeasurmentManager:
-    def __init__(self):
+class MeasurementManager:
+    def __init__(self, measurement_serializer):
         self.pi = None
         self.can_measure = False
         self.adc_manager = None
@@ -17,14 +16,13 @@ class MeasurmentManager:
         self.shift_register_manager = None
         self.current_source_manager = None
         self.mux_manager = None
-
-        self.measurment = Measurment()
-
-        open_measurments = Measurment.objects.select_for_update().filter(open=True)
+        
+        open_measurements = Measurement.objects.select_for_update().filter(open=True)
         with transaction.atomic():
-            self.can_measure = not open_measurments.exists()
+            self.can_measure = not open_measurements.exists()
             if self.can_measure:
-                self.measurment.save()
+                measurement_serializer.save()
+        self.measurement = measurement_serializer.instance
 
     def __enter__(self):
         self.pi = pigpio.pi()
@@ -42,10 +40,10 @@ class MeasurmentManager:
         self.current_source_manager.close()
         self.mux_manager.close()
         self.pi.stop()
-        self.measurment.open = False
-        self.measurment.save()
+        self.measurement.open = False
+        self.measurement.save()
 
-    def setup_temperature_measurment(self):
+    def setup_temperature_measurement(self):
         self.adc_manager.reset()
         self.adc_manager.offset_calibration()
         self.adc_manager.set_input_mode(InpmuxOptions.TEMP_SENS, InpmuxOptions.TEMP_SENS)
@@ -59,16 +57,16 @@ class MeasurmentManager:
             TEMPERATURE_OFFSET + (value - TEMPERATURE_OFFSET_VALUE) / TEMPERATURE_VOLT_PER_CELCIUS
         )
 
-    def set_up_mobility_measurment(self):
+    def set_up_mobility_measurement(self):
         self.adc_manager.reset()
         self.adc_manager.enable_chop()
         self.adc_manager.set_reference_mode(ReferenceMode.SUPPLY, ReferenceMode.SUPPLY)
         self.adc_manager.start()
 
-    def setup_current_measurment(self):
+    def setup_current_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
 
-    def setup_voltage_measurment(self):
+    def setup_voltage_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN0, InpmuxOptions.AIN1)
 
     def measure_voltage(self):
@@ -79,9 +77,9 @@ class MeasurmentManager:
         return self.adc_manager.read_value() / shunt_resistance * 10
 
     def measure_current_and_voltage(self):
-        self.setup_voltage_measurment()
+        self.setup_voltage_measurement()
         v = self.measure_voltage()
-        self.setup_current_measurment()
+        self.setup_current_measurement()
         i = 10e-6  # used until we get this from the outside
         # i = self.measure_current()
         return v, i

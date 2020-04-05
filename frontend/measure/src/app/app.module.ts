@@ -7,15 +7,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StartPageComponent } from './start-page/start-page.component';
 
-const routes: Routes = [
-  {path: '', component: StartPageComponent}
-];
+const routes: Routes = [{ path: '', component: StartPageComponent }];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    StartPageComponent
-  ],
+  declarations: [AppComponent, StartPageComponent],
   imports: [
     RouterModule.forRoot(routes),
     BrowserModule,
@@ -23,6 +18,6 @@ const routes: Routes = [
     HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

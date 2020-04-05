@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 
-class Measurment(models.Model):
+class Measurement(models.Model):
     open = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     mobility = models.FloatField(null=True)
@@ -12,7 +12,13 @@ class Measurment(models.Model):
     phase = models.FloatField(null=True)
     offset = models.FloatField(null=True)
 
+    current_limit = models.FloatField()
+    connection_1 = models.IntegerField()
+    connection_2 = models.IntegerField()
+    connection_3 = models.IntegerField()
+    connection_4 = models.IntegerField()
+
 
 class RhValue(models.Model):
     value = models.FloatField()
-    measurment = models.ForeignKey(Measurment, on_delete=models.CASCADE)
+    measurement = models.ForeignKey(Measurement, on_delete=models.CASCADE)

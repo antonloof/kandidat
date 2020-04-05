@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { Measurement } from './classes/measurement';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BackendService {
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-	
-	measure() {
-		return this.http.post("/api/measurment", {});
-	}
+  measure(measurement: Measurement) {
+    return this.http.post('/api/measurement', measurement);
+  }
 }
