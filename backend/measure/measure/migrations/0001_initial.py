@@ -9,28 +9,45 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Measurment',
+            name="Measurment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('open', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('mobility', models.FloatField(null=True)),
-                ('sheet_resistance', models.FloatField(null=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
+                    ),
+                ),
+                ("open", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("mobility", models.FloatField(null=True)),
+                ("sheet_resistance", models.FloatField(null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='DataPoint',
+            name="DataPoint",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.FloatField()),
-                ('unit', models.CharField(choices=[('V', 'Volt'), ('A', 'Ampere')], max_length=10)),
-                ('purpose', models.CharField(max_length=10)),
-                ('measurment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='measure.Measurment')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
+                    ),
+                ),
+                ("value", models.FloatField()),
+                (
+                    "unit",
+                    models.CharField(choices=[("V", "Volt"), ("A", "Ampere")], max_length=10),
+                ),
+                ("purpose", models.CharField(max_length=10)),
+                (
+                    "measurment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="measure.Measurment",
+                    ),
+                ),
             ],
         ),
     ]

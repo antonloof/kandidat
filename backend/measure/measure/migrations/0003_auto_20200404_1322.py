@@ -7,19 +7,27 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('measure', '0002_auto_20200329_1701'),
+        ("measure", "0002_auto_20200329_1701"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='RhValue',
+            name="RhValue",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('value', models.FloatField()),
-                ('measurment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='measure.Measurment')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
+                    ),
+                ),
+                ("value", models.FloatField()),
+                (
+                    "measurment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="measure.Measurment",
+                    ),
+                ),
             ],
         ),
-        migrations.DeleteModel(
-            name='DataPoint',
-        ),
+        migrations.DeleteModel(name="DataPoint",),
     ]

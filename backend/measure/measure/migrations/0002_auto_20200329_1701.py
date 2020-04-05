@@ -6,33 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('measure', '0001_initial'),
+        ("measure", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='measurment',
-            name='a',
-            field=models.FloatField(help_text='y=a*sin(b*t+c)+d', null=True),
+            model_name="measurment",
+            name="a",
+            field=models.FloatField(help_text="y=a*sin(b*t+c)+d", null=True),
         ),
-        migrations.AddField(
-            model_name='measurment',
-            name='b',
-            field=models.FloatField(null=True),
-        ),
-        migrations.AddField(
-            model_name='measurment',
-            name='c',
-            field=models.FloatField(null=True),
-        ),
-        migrations.AddField(
-            model_name='measurment',
-            name='d',
-            field=models.FloatField(null=True),
-        ),
+        migrations.AddField(model_name="measurment", name="b", field=models.FloatField(null=True),),
+        migrations.AddField(model_name="measurment", name="c", field=models.FloatField(null=True),),
+        migrations.AddField(model_name="measurment", name="d", field=models.FloatField(null=True),),
         migrations.AlterField(
-            model_name='measurment',
-            name='open',
-            field=models.BooleanField(default=True),
+            model_name="measurment", name="open", field=models.BooleanField(default=True),
         ),
     ]
