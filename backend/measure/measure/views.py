@@ -25,12 +25,11 @@ def measure_operation(measurement_manager):
     with measurement_manager:
         measurement_manager.set_up_mobility_measurement()
         measurement = measurement_manager.measurement
-
         r_mu_s = []
         steps_per_measurement = 10
         measurement_count = STEPS_PER_TURN / steps_per_measurement
         assert measurement_count == int(measurement_count), "Can only do a multiple of 200"
-
+        sleep(30)
         for _ in range(5):
             measurement_manager.measure_current_and_voltage()  # dummy measurement
 
@@ -123,6 +122,7 @@ class MeasurementView(viewsets.ModelViewSet):
     queryset = Measurement.objects.all()
     serializer_class = MeasurementSerializer
     filter_class = MeasurementFilter
+    ordering = ["-open", "-created_at"]
 
     def measure(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -142,3 +142,4 @@ class RhValueView(viewsets.ModelViewSet):
     queryset = RhValue.objects.all()
     serializer_class = RhValueSerializer
     filter_class = RhValueFilter
+    ordering = "-measurement_id"

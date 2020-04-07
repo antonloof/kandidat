@@ -21,14 +21,21 @@ class MeasurementSerializer(serializers.ModelSerializer):
             "connection_3",
             "connection_4",
             "current_limit",
+            "name",
+            "description",
         )
-    
+
     def validate(self, data):
-        connections = [data[f"connection_{i}"] for i in range(1, 5)]
+        connections = []
+        for i in range(1, 5):
+            default = None
+            key = f"connection_{i}"
+            if self.instance is not None:
+                default = getattr(self.instance, key)
+            connections.append(data.get(key, default))
+
         if len(set(connections)) != len(connections):
-            raise serializers.ValidationError(
-                f"All connections must be unique. Got: {connections}"
-            )
+            raise serializers.ValidationError(f"All connections must be unique. Got: {connections}")
         return data
 
 

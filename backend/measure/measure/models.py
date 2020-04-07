@@ -3,6 +3,9 @@ from django.utils import timezone
 
 
 class Measurement(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(default="")
+
     open = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
     mobility = models.FloatField(null=True)

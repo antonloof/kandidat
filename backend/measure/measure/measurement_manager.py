@@ -15,7 +15,7 @@ class MeasurementManager:
         self.motor_manager = None
         self.current_source_manager = None
         self.mux_manager = None
-        
+
         open_measurements = Measurement.objects.select_for_update().filter(open=True)
         with transaction.atomic():
             self.can_measure = not open_measurements.exists()

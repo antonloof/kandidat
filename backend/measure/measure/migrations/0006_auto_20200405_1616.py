@@ -6,17 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('measure', '0005_auto_20200405_1518'),
+        ("measure", "0005_auto_20200405_1518"),
     ]
 
     operations = [
-        migrations.RenameModel(
-            old_name='Measurment',
-            new_name='Measurement',
-        ),
+        migrations.RenameModel(old_name="Measurment", new_name="Measurement",),
         migrations.RenameField(
-            model_name='rhvalue',
-            old_name='measurment',
-            new_name='measurement',
+            model_name="rhvalue", old_name="measurment", new_name="measurement",
         ),
     ]
