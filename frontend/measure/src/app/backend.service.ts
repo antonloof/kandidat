@@ -5,6 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { CreateMeasurement, Measurement } from './classes/measurement';
+import { RhValue } from './classes/rh-value';
 import { PaginatedList } from './classes/paginated-list';
 
 @Injectable({
@@ -26,6 +27,18 @@ export class BackendService {
 
   update_measurement(id: number, payload: any): Observable<Measurement> {
     return this.patch_request<Measurement>('/api/measurement/' + id, payload);
+  }
+
+  get_measurement(id: number): Observable<Measurement> {
+    return this.get_request<Measurement>('/api/measurement/' + id);
+  }
+
+  get_rh_values_for_measurement(
+    measurement_id: number
+  ): Observable<PaginatedList<RhValue>> {
+    return this.get_request<PaginatedList<RhValue>>('/api/rh_value/' + id, {
+      limit: 1000,
+    });
   }
 
   private handle_error<T>(observable: Observable<T>): Observable<T> {
