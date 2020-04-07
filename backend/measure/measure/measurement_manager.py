@@ -13,7 +13,6 @@ class MeasurementManager:
         self.can_measure = False
         self.adc_manager = None
         self.motor_manager = None
-        self.shift_register_manager = None
         self.current_source_manager = None
         self.mux_manager = None
         
@@ -28,15 +27,13 @@ class MeasurementManager:
         self.pi = pigpio.pi()
         self.adc_manager = AdcManager(self.pi)
         self.motor_manager = MotorManager(self.pi)
-        self.shift_register_manager = ShiftRegisterManager(self.pi, [0])
-        self.current_source_manager = CurrentSourceManager(self.pi, self.shift_register_manager)
-        self.mux_manager = MuxManager(self.shift_register_manager)
+        self.current_source_manager = CurrentSourceManager(self.pi)
+        self.mux_manager = MuxManager(self.pi)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.adc_manager.close()
         self.motor_manager.close()
-        self.shift_register_manager.close()
         self.current_source_manager.close()
         self.mux_manager.close()
         self.pi.stop()

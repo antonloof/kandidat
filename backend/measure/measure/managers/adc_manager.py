@@ -6,6 +6,7 @@ from time import sleep, time
 # connect START_PIN to gnd
 # let DATA_READY_PIN float (or connect somewhere the software does not care)
 CS_PIN = 8
+ZERO_ADC_INPUT_PIN = 6
 
 
 class ReferenceMode(IntEnum):
@@ -134,11 +135,21 @@ class AdcManager:
     def __init__(self, pi):
         self.pi = pi
         self.spi = pi.spi_open(0, 50000, 1)
-
+        
+        self.pi.set_mode(ZERO_ADC_INPUT_PIN, pigpio.OUTPUT)
+        self.zero_adc_input() # disable adc input at startup
+        
         self.reset_serial()
         self.reset()
 
+    def zero_adc_input(self):
+        self.pi.write(ZERO_ADC_INPUT_PIN, 0)
+        
+    def enable_adc_input(self):
+        self.pi.write(ZERO_ADC_INPUT_PIN, 1)
+        
     def close(self):
+        self.zero_adc_input()
         self.pi.spi_close(self.spi)
 
     def reset(self):
