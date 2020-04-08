@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../backend.service';
-import { mesure } from '../classes/mesure';
+import { measure } from '../classes/mesure';
 import { MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 
@@ -14,7 +14,7 @@ export class MeasureDialogComponent implements OnInit {
   
   speed = ['High Speed:Low Resulution', 'Medium speed: Medium Resulution', 'Low speed: High Resolution'];
 
-  model = new mesure(1, 'name', 0 , this.speed[1]);
+  model = new measure(1, 'name', 0 , this.speed[1]);
 
   submitted = false;
   onSubmit() { this.submitted = true; }
