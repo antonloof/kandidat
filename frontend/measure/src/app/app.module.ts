@@ -12,6 +12,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MeasureDialogComponent } from './measure-dialog/measure-dialog.component';
+
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +21,8 @@ import { StartPageComponent } from './start-page/start-page.component';
 import { MobilityPipe } from './pipe/mobility.pipe';
 import { SheetResistancePipe } from './pipe/sheet-resistance.pipe';
 import { AboutComponent } from './about/about.component';
+import { MeasureDialogComponent } from './measure-dialog/measure-dialog.component';
+
 
 const routes: Routes = [
   { path: '', component: StartPageComponent },
@@ -32,6 +36,7 @@ const routes: Routes = [
     MobilityPipe,
     SheetResistancePipe,
     AboutComponent,
+    MeasureDialogComponent,
   ],
   imports: [
     FormsModule,
@@ -47,8 +52,10 @@ const routes: Routes = [
     MatGridListModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
+  entryComponents: [MeasureDialogComponent]
 })
 export class AppModule {}
