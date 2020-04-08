@@ -1,1 +1,30 @@
-<p>measure-dialog works!</p>
+<mat-card>
+    <mat-card-content>
+        <mat-card-header>
+            <mat-card-title>
+              <h2>New Measurement</h2>
+            </mat-card-title>
+        </mat-card-header>
+        <br>
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="model.name" />
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+            <mat-label>Current</mat-label>
+            <input matInput [(ngModel)] = "model.current" />
+        </mat-form-field>
+        <br>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="cancel()">
+                Cancel
+            </button>
+            <button mat-raised-button color="primary" (click)="run()" href= "/" >
+              Run
+            </button> 
+        </mat-card-actions>
+    </mat-card-content>
+    
+</mat-card>
+
