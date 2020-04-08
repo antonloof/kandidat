@@ -4,6 +4,10 @@ import { PaginatedList } from '../classes/paginated-list';
 import { Measurement } from '../classes/measurement';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+
+import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.component';
+
 
 @Component({
   selector: 'app-start-page',
@@ -11,7 +15,18 @@ import { MatTable } from '@angular/material/table';
   styleUrls: ['./start-page.component.css'],
 })
 export class StartPageComponent implements OnInit {
-  constructor(private backend: BackendService) {}
+  constructor(private backend: BackendService,
+              private dialog: MatDialog,) {}
+  
+  openDialog() {
+
+     const dialogConfig = new MatDialogConfig();
+  
+     dialogConfig.disableClose = true;
+     dialogConfig.autoFocus = true;
+  
+     this.dialog.open(MeasureDialogComponent, dialogConfig);
+   }
 
   @ViewChild(MatTable) table: MatTable<Measurement>;
 
