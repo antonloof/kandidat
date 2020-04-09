@@ -1,4 +1,4 @@
-export class mesure {
+export class measure {
 
     constructor(
       public id: number,
