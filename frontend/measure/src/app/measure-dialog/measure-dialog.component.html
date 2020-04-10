@@ -8,46 +8,52 @@
     <br>
     <mat-form-field>
       <mat-label>Name</mat-label>
-      <input matInput [(ngModel)]="model.name" />
+      <input matInput [(ngModel)]="measure.name" type="string" placeholder = "Name" [formControl]="nameControl" required/>
+      <mat-error *ngIf="nameControl.invalid">{{getNameErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Target Current (&mu;A)</mat-label>
-      <input matInput [(ngModel)] = "model.current" />
+      <mat-label>Target Current (A)</mat-label>
+      <input matInput [(ngModel)] = "measure.current_limit" type="number" placeholder = 1e-6 [formControl]="currentControl" required />
+      <mat-error *ngIf="currentControl.invalid">{{getCurrentErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Speed/Resolution</mat-label>
-      <select matNativeControl [(ngModel)]="this.selectedValue" name="speed">
-        <option *ngFor="let speed of speed" [value]="speed.value">{{speed.viewValue}}</option>
-      </select>
+      <mat-select matInput [(ngModel)] = "this.selectedValue">
+        <mat-option *ngFor="let speed of speeds" [value]="speed.value">
+          {{speed.viewValue}}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
-    <form class="comment-form">
-      <mat-form-field class="example-full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput [(ngModel)]="model.description" placeholder="Description"></textarea>
-      </mat-form-field>
-    </form>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="measure.description" placeholder="Description"></textarea>
+    </mat-form-field>
     <br>
     <p>Connections</p>
     <mat-form-field>
       <mat-label>Connection 1</mat-label>
-      <input matInput [(ngModel)] = "model.connection_1"/>
+      <input matInput [(ngModel)] = "measure.connection_1" type="number"/>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Connection 2</mat-label>
-      <input matInput [(ngModel)] = "model.connection_2"/>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Connection 3</mat-label>
-      <input matInput [(ngModel)] = "model.connection_3"/>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Connection 4</mat-label>
-      <input matInput [(ngModel)] = "model.connection_4"/>
-    </mat-form-field>
-    <img class="img-responsive" src="assets/connections.png">
+      <input matInput [(ngModel)] = "measure.connection_2" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Connection 3</mat-label>
+        <input matInput [(ngModel)] = "measure.connection_3" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Connection 4</mat-label>
+        <input matInput [(ngModel)] = "measure.connection_4" type="number"/>
+      </mat-form-field>
+      <img class="img-responsive" src="assets/connections.png">
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="run()">Run</button> 
+    <button mat-raised-button color="warn" (click)="cancel()">
+      Cancel
+    </button>
+    <button mat-raised-button color="primary" (click)="run()" >
+      Run
+    </button> 
   </mat-card-actions>
 </mat-card>
