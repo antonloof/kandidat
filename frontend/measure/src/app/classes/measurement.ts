@@ -4,6 +4,7 @@ export interface CreateMeasurement {
   connection_3: number;
   connection_4: number;
   current_limit: number;
+  steps_per_measurement: number;
   name: string;
   description?: string;
 }

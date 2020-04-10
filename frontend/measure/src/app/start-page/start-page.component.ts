@@ -43,6 +43,7 @@ export class StartPageComponent implements OnInit {
         connection_4: 2,
         current_limit: 10e-6,
         name: this.name,
+        steps_per_measurement: 19,
       })
       .subscribe(res => {
         this.measurements.results.unshift(res);
