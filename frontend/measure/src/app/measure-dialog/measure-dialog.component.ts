@@ -48,6 +48,9 @@ export class MeasureDialogComponent implements OnInit {
     else if( this.model.name == ''){
       window.alert("You must name the measurement!")
     }
+    else if (isNaN(this.model.current)) {
+      window.alert("The target current must be a number!")
+    }
     else {
       this.onSubmit()
       this.dialogRef.close()
