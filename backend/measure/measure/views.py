@@ -119,7 +119,7 @@ class MeasurementView(viewsets.ModelViewSet):
             print("the r's needed for rs:", r_mnop, r_nopm)
 
             f = lambda rs: np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs) - 1
-            df_drs = lambda rs: -(pi / rs**2) * (
+            df_drs = lambda rs: -(pi / rs ** 2) * (
                 r_mnop * np.exp(-pi * r_mnop / rs) + r_nopm * np.exp(-pi * r_nopm / rs)
             )
 
