@@ -18,6 +18,10 @@ export class BackendService {
     return this.post_request<Measurement>('/api/measurement', measurement);
   }
 
+  test_mux(measurement: CreateMeasurement): Observable<Measurement> {
+    return this.post_request<Measurement>('/api/test_mux', measurement);
+  }
+
   get_measurements(filters: any): Observable<PaginatedList<Measurement>> {
     return this.get_request<PaginatedList<Measurement>>(
       '/api/measurement',

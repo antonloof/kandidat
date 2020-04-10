@@ -21,88 +21,6 @@ B_MAX = 0.3318
 STEPS_PER_TURN = 200
 
 
-def measure_operation(measurement_manager):
-    with measurement_manager:
-        measurement_manager.set_up_mobility_measurement()
-        measurement = measurement_manager.measurement
-        r_mu_s = []
-
-        for _ in range(5):
-            measurement_manager.measure_current_and_voltage()  # dummy measurement
-
-        measurement_count = STEPS_PER_TURN // measurement.steps_per_measurement
-        for _ in range(measurement_count):
-            measurement_manager.advance_motor(measurement.steps_per_measurement)
-            v, i = measurement_manager.measure_current_and_voltage()
-            r_mu_s.append(v / i)
-            print(v)
-            # sleep(1)
-
-        RhValue.objects.bulk_create([RhValue(value=v, measurement=measurement) for v in r_mu_s])
-        t = np.linspace(0, STEPS_PER_TURN, len(r_mu_s))
-        r_mu_s = np.array(r_mu_s)
-        print("y = ", list(r_mu_s), ";")
-        # make some educated guesses before letting the math loose :)
-        guess_amp = (max(r_mu_s) - min(r_mu_s)) / 2
-        guess_phase = asin(r_mu_s[0] / max(abs(r_mu_s)))
-        guess_angle_freq = 2 * pi / STEPS_PER_TURN
-        guess_offset = np.mean(r_mu_s)
-
-        # let the math loose
-        optimize_func = lambda x: x[0] * np.sin(guess_angle_freq * t + x[1]) + x[2] - r_mu_s
-        amp, phase, offset = leastsq(optimize_func, [guess_amp, guess_phase, guess_offset])[0]
-        print("a=", amp, ";")
-        print("b=", guess_angle_freq, ";")
-        print("c=", phase, ";")
-        print("d=", offset, ";")
-        print("how good it is:", sum(optimize_func([amp, phase, offset]) ** 2))
-        measurement.amplitude = amp
-        measurement.angle_freq = guess_angle_freq
-        measurement.phase = phase
-        measurement.offset = offset
-        dr_db = amp / B_MAX
-        phase = phase % (2 * pi)
-        phase_in_steps = phase * STEPS_PER_TURN / (2 * pi)
-
-        # make it take the short way
-        if phase_in_steps > STEPS_PER_TURN / 2:
-            phase_in_steps = -(STEPS_PER_TURN - phase_in_steps)
-
-        print("dr_db:", dr_db)
-        print("phase in steps:", phase_in_steps)
-        # now the motor is at a minimum of the magnetic flux density
-        measurement_manager.advance_motor(-int(round(phase_in_steps)))
-
-        r_mnop = measure_r_for_rs(measurement_manager)
-        # Byt kontakter.
-        # Kontakten som varit kopplad till in+ kopplas till jord.
-        # Kontakten som varit kopplad till in- kopplas till in+.
-        # Kontakten som varit kopplad till strömkällan kopplas till in-
-        # Kontakten som varit kopplad till jord kopplas till strömkällan.
-
-        # in+ och in- beteckanar de två ingångarna till förstärkarsteget
-        # Strömkällan och jord betecknar de kontakter som strömen skickas genom
-
-        r_nopm = measure_r_for_rs(measurement_manager)
-        print("the r's needed for rs:", r_mnop, r_nopm)
-
-        f = lambda rs: np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs) - 1
-        df_drs = (
-            lambda rs: -pi / rs * (r_mnop * np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs))
-        )
-
-        reasonable_rs_guess = (r_nopm + r_mnop) / 2
-
-        rs = fsolve(f, reasonable_rs_guess, fprime=df_drs)[0]
-        print("rs:", rs)
-        mu = dr_db / rs
-        print("mu:", mu)
-
-        measurement.mobility = mu
-        measurement.sheet_resistance = rs
-        measurement.save()
-
-
 def measure_r_for_rs(measurement_manager):
     sleep(1)
     v1, i1 = measurement_manager.measure_current_and_voltage()
@@ -125,15 +43,127 @@ class MeasurementView(viewsets.ModelViewSet):
     def measure(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        measurement_manager = MeasurementManager(serializer)
-        if not measurement_manager.can_measure:
+        self.measurement_manager = MeasurementManager(serializer)
+        if not self.measurement_manager.can_measure:
             return Response(
                 '{"error": "Another measurement is in progress. Please wait a bit"}', status=400,
             )
-        thread = Thread(target=measure_operation, args=(measurement_manager,))
+        thread = Thread(target=self.measure_operation)
         thread.start()
-        serializer = self.serializer_class(measurement_manager.measurement)
+        serializer = self.serializer_class(self.measurement_manager.measurement)
         return Response(serializer.data)
+
+    def measure_operation(self):
+        with self.measurement_manager:
+            self.measurement_manager.set_up_mobility_measurement()
+            measurement = self.measurement_manager.measurement
+            r_mu_s = []
+
+            for _ in range(5):
+                self.measurement_manager.measure_current_and_voltage()  # dummy measurement
+
+            measurement_count = STEPS_PER_TURN // measurement.steps_per_measurement
+            for _ in range(measurement_count):
+                self.measurement_manager.advance_motor(steps_per_measurement)
+                v, i = self.measurement_manager.measure_current_and_voltage()
+                r_mu_s.append(v / i)
+                print(v)
+                # sleep(1)
+
+            RhValue.objects.bulk_create([RhValue(value=v, measurement=measurement) for v in r_mu_s])
+            t = np.linspace(0, STEPS_PER_TURN, len(r_mu_s))
+            r_mu_s = np.array(r_mu_s)
+            print("y = ", list(r_mu_s), ";")
+            # make some educated guesses before letting the math loose :)
+            guess_amp = (max(r_mu_s) - min(r_mu_s)) / 2
+            guess_phase = asin(r_mu_s[0] / max(abs(r_mu_s)))
+            guess_angle_freq = 2 * pi / STEPS_PER_TURN
+            guess_offset = np.mean(r_mu_s)
+
+            # let the math loose
+            optimize_func = lambda x: x[0] * np.sin(guess_angle_freq * t + x[1]) + x[2] - r_mu_s
+            amp, phase, offset = leastsq(optimize_func, [guess_amp, guess_phase, guess_offset])[0]
+            print("a=", amp, ";")
+            print("b=", guess_angle_freq, ";")
+            print("c=", phase, ";")
+            print("d=", offset, ";")
+            print("how good it is:", sum(optimize_func([amp, phase, offset]) ** 2))
+            measurement.amplitude = amp
+            measurement.angle_freq = guess_angle_freq
+            measurement.phase = phase
+            measurement.offset = offset
+            dr_db = amp / B_MAX
+            phase = phase % (2 * pi)
+            phase_in_steps = phase * STEPS_PER_TURN / (2 * pi)
+
+            # make it take the short way
+            if phase_in_steps > STEPS_PER_TURN / 2:
+                phase_in_steps = -(STEPS_PER_TURN - phase_in_steps)
+
+            print("dr_db:", dr_db)
+            print("phase in steps:", phase_in_steps)
+            # now the motor is at a minimum of the magnetic flux density
+            self.measurement_manager.advance_motor(-int(round(phase_in_steps)))
+
+            r_mnop = measure_r_for_rs(self.measurement_manager)
+            # Byt kontakter.
+            # Kontakten som varit kopplad till in+ kopplas till jord.
+            # Kontakten som varit kopplad till in- kopplas till in+.
+            # Kontakten som varit kopplad till strömkällan kopplas till in-
+            # Kontakten som varit kopplad till jord kopplas till strömkällan.
+
+            # in+ och in- beteckanar de två ingångarna till förstärkarsteget
+            # Strömkällan och jord betecknar de kontakter som strömen skickas genom
+
+            r_nopm = measure_r_for_rs(self.measurement_manager)
+            print("the r's needed for rs:", r_mnop, r_nopm)
+
+            f = lambda rs: np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs) - 1
+            df_drs = (
+                lambda rs: -pi
+                / rs
+                * (r_mnop * np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs))
+            )
+
+            reasonable_rs_guess = (r_nopm + r_mnop) / 2
+
+            rs = fsolve(f, reasonable_rs_guess, fprime=df_drs)[0]
+            print("rs:", rs)
+            mu = dr_db / rs
+            print("mu:", mu)
+
+            measurement.mobility = mu
+            measurement.sheet_resistance = rs
+            measurement.save()
+
+
+class TestMuxView(MeasurementView):
+    def measure_operation(self):
+        with self.measurement_manager:
+            log = ""
+            self.measurement_manager.set_up_mobility_measurement()
+            c1 = self.measurement_manager.measurement.connection_1
+            c2 = self.measurement_manager.measurement.connection_2
+            for index in range(c1, c2 + 1):
+                self.measurement_manager.mux_manager.command().set_vp(index).set_vn(index).set_cp(
+                    index
+                ).set_cn(index).send()
+                sleep(0.1)
+                v, i = self.measurement_manager.measure_current_and_voltage()
+                r = v / i
+                log += f"v = {v}, i = {i} r = {r}\n"
+                failed = False
+                if abs(r - 1e3) > 100:
+                    log += f"Test failed for i = {index} (resistance)\n"
+                    failed = True
+                if self.measurement_manager.current_source_manager.is_saturated():
+                    log += f"Test failed for i = {index} (saturation)\n"
+                    failed = True
+                if not failed:
+                    log += f"Test SUCCESS for i = {index}\n"
+
+            self.measurement_manager.measurement.description = log
+            self.measurement_manager.measurement.save()
 
 
 class RhValueView(viewsets.ModelViewSet):

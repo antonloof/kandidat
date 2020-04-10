@@ -70,7 +70,7 @@ class MeasurementManager:
         return (self.adc_manager.read_value() * 10 - 2.5) / 100
 
     def measure_current(self):
-        shunt_resistance = 9920
+        shunt_resistance = self.current_source_manager.selected_re.re
         return self.adc_manager.read_value() / shunt_resistance * 10
 
     def measure_current_and_voltage(self):

@@ -1,35 +1,100 @@
+import pigpio
+
+ENABLE_PIN = 12
+
+
 class MuxManager:
     def __init__(self, pi):
         self.pi = pi
         self.spi = pi.spi_open(1, 50000, 0)
-        self.transfer([0, 0, 0])
+        self.last_command = MuxCommand(self)
+        self.last_command.send()
+        self.pi.set_mode(ENABLE_PIN, pigpio.OUTPUT)
+        self.pi.write(ENABLE_PIN, 1)
 
     def close(self):
         self.pi.spi_close(self.spi)
+        self.pi.write(ENABLE_PIN, 0)
 
-    def transfer(self, data):
-        self.pi.spi_write(self.spi, data)
+    def transfer(self, command):
+        self.last_command = command
+        data = command.data
+        bytes = [(data & 0xFF0000) >> 16, (data & 0xFF00) >> 8, data & 0xFF]
+        self.pi.spi_write(self.spi, bytes)
 
     def command(self):
-        return MuxCommand(self)
+        return MuxCommand(self, self.last_command)
 
 
 class MuxCommand:
-    def __init__(self, mux_manager):
+    def __init__(self, mux_manager, command=None):
         self.mux_manager = mux_manager
-        self.data = [0, 0, 0]
+        self.vp = 0
+        self.vn = 0
+        self.cp = 0
+        self.cn = 0
+        if command is not None:
+            self.vp = command.vp
+            self.vn = command.vn
+            self.cp = command.cp
+            self.cn = command.cn
+
+    @property
+    def data(self):
+        sel_cs = self.convert(self.cp)
+        sel_mn = self.convert(self.vn)
+        sel_gs = self.convert(self.cn)
+        sel_mp = self.convert(self.vp)
+
+        cs_pos = (0, 1, 2, 3, 4)
+        mn_pos = (5, 6, 18, 19, 17)
+        gs_pos = (20, 21, 9, 23, 22)
+        mp_pos = (10, 11, 12, 14, 13)
+
+        data = self.position_bit(sel_cs, cs_pos)
+        data |= self.position_bit(sel_mn, mn_pos)
+        data |= self.position_bit(sel_gs, gs_pos)
+        data |= self.position_bit(sel_mp, mp_pos)
+
+        return data
+
+    def convert(self, value):
+        return ((value % 8) << 3) + (~(value // 8))
+
+    def position_bit(self, value, poss):
+        res = 0
+        for i, pos in enumerate(poss):
+            res |= (value & (1 << i)) << pos
+        return res
 
     def send(self):
-        self.mux_manager.transfer(self.data)
+        self.mux_manager.transfer(self)
 
     def set_vp(self, i):
+        self.vp = i
         return self
 
     def set_vn(self, i):
+        self.vn = i
         return self
 
-    def set_ip(self, i):
+    def set_cp(self, i):
+        self.cp = i
         return self
 
-    def set_in(self, i):
+    def set_cn(self, i):
+        self.cn = i
         return self
+
+
+def update_data(data, mask, bits):
+    bits_i = 0
+    for mask_i in range(3 * 8):
+        mask_bit = 1 << mask_i
+        if not (mask & mask_bit):
+            continue
+        if bits & (1 << bits_i):
+            data |= mask_bit
+        else:
+            data &= ~mask_bit
+        bits_i += 1

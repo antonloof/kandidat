@@ -26,6 +26,7 @@ class CurrentSourceManager:
     def __init__(self, pi):
         self.pi = pi
         self.i2c = self.pi.i2c_open(1, TEMP_SENSOR_I2C_ADDRESS, 0)
+        self.selected_re = None
         for re in RES:
             self.pi.set_mode(re.pin, pigpio.OUTPUT)
         self.write_re(RES[-1])
@@ -35,13 +36,14 @@ class CurrentSourceManager:
         self.pi.i2c_close(self.i2c)
 
     def is_saturated(self):
-        return bool(self.pi.read(SATURATION_DETECT_PIN))
+        return not bool(self.pi.read(SATURATION_DETECT_PIN))
 
     def write_dac(self, value):
         pass
 
     def write_re(self, re):
         assert re in RES, f"{re} is not a valid emitter resistance"
+        self.selected_re = re
         for re_a in RES:
             self.pi.write(re_a.pin, 0)
         self.pi.write(re.pin, 1)
