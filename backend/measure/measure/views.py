@@ -26,15 +26,13 @@ def measure_operation(measurement_manager):
         measurement_manager.set_up_mobility_measurement()
         measurement = measurement_manager.measurement
         r_mu_s = []
-        steps_per_measurement = 10
-        measurement_count = STEPS_PER_TURN / steps_per_measurement
-        assert measurement_count == int(measurement_count), "Can only do a multiple of 200"
-        sleep(30)
+
         for _ in range(5):
             measurement_manager.measure_current_and_voltage()  # dummy measurement
 
-        for _ in range(int(measurement_count)):
-            measurement_manager.advance_motor(steps_per_measurement)
+        measurement_count = STEPS_PER_TURN // measurement.steps_per_measurement
+        for _ in range(measurement_count):
+            measurement_manager.advance_motor(measurement.steps_per_measurement)
             v, i = measurement_manager.measure_current_and_voltage()
             r_mu_s.append(v / i)
             print(v)
