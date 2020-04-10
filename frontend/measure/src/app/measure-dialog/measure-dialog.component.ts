@@ -5,7 +5,7 @@ import { BackendService } from '../backend.service';
 import { measure } from '../classes/measure';
 
 interface Speed {
-  value: string;
+  value: number;
   viewValue: string;
 }
 
@@ -15,18 +15,17 @@ interface Speed {
   styleUrls: ['./measure-dialog.component.css']
 })
 export class MeasureDialogComponent implements OnInit {
-    selectedValue: string;
+  selectedValue: string;
   error:string;
   
   speed: Speed[] = [
-    {value: 'fast-0', viewValue: 'High Speed : Low Resolution'},
-    {value: 'medium-1', viewValue: 'Medium Speed : Medium Resolution'},
-    {value: 'slow-2', viewValue: 'Low Speed : High Resolution'}
+    {value: '2', viewValue: 'High Speed : Low Resolution'},
+    {value: '10', viewValue: 'Medium Speed : Medium Resolution'},
+    {value: '20', viewValue: 'Low Speed : High Resolution'}
   ];
 
   submitted = false;
   onSubmit() { this.submitted = true; }
-
 
   constructor(
     private backend: BackendService,
@@ -64,10 +63,8 @@ export class MeasureDialogComponent implements OnInit {
         name: this.model.name,
         description: this.model.description,
       })
-
     }
   }
-  
   
   cancel(){
      this.submitted = false;
