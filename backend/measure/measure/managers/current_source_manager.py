@@ -14,12 +14,12 @@ DAC_I2C_ADDRESS = 0b1100001
 # pi.i2c_write_device(i2c, data) blir bra for att skriva till dacen
 
 RES = [
-    EmitterResistance(pin=4, re=1e3),
-    EmitterResistance(pin=17, re=1e4),
-    EmitterResistance(pin=27, re=1e5),
-    EmitterResistance(pin=22, re=1e6),
+    EmitterResistance(pin=15, re=1e3),
+    EmitterResistance(pin=14, re=1e4),
+    EmitterResistance(pin=23, re=1e5),
+    EmitterResistance(pin=18, re=1e6),
 ]
-SATURATION_DETECT_PIN = 5
+SATURATION_DETECT_PIN = 4
 
 
 class CurrentSourceManager:

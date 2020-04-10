@@ -64,7 +64,7 @@ class MeasurementView(viewsets.ModelViewSet):
 
             measurement_count = STEPS_PER_TURN // measurement.steps_per_measurement
             for _ in range(measurement_count):
-                self.measurement_manager.advance_motor(steps_per_measurement)
+                self.measurement_manager.advance_motor(measurement.steps_per_measurement)
                 v, i = self.measurement_manager.measure_current_and_voltage()
                 r_mu_s.append(v / i)
                 print(v)
@@ -119,10 +119,8 @@ class MeasurementView(viewsets.ModelViewSet):
             print("the r's needed for rs:", r_mnop, r_nopm)
 
             f = lambda rs: np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs) - 1
-            df_drs = (
-                lambda rs: -pi
-                / rs
-                * (r_mnop * np.exp(-pi * r_mnop / rs) + np.exp(-pi * r_nopm / rs))
+            df_drs = lambda rs: -(pi / rs**2) * (
+                r_mnop * np.exp(-pi * r_mnop / rs) + r_nopm * np.exp(-pi * r_nopm / rs)
             )
 
             reasonable_rs_guess = (r_nopm + r_mnop) / 2

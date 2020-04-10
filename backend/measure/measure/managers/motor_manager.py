@@ -1,10 +1,11 @@
 import pigpio
 from time import sleep
 
-A1_PIN = 12
-A2_PIN = 16
-B1_PIN = 20
-B2_PIN = 21
+A1_PIN = 19
+A2_PIN = 13
+B1_PIN = 5
+B2_PIN = 26
+ENABLE_PIN = 6
 
 STEP_SEQUENCE = (
     (1, 0, 0, 1),
@@ -32,11 +33,14 @@ class MotorManager:
         self.pins = (A1_PIN, B1_PIN, A2_PIN, B2_PIN)
         for pin in self.pins:
             pi.set_mode(pin, pigpio.OUTPUT)
+        pi.set_mode(ENABLE_PIN, pigpio.OUTPUT)
+        pi.write(ENABLE_PIN, 1)
         self.current_step = 0
 
     def close(self):
         for pin in self.pins:
             self.pi.write(pin, 0)
+        self.pi.write(ENABLE_PIN, 0)
 
     def step(self, micro_step=False, direction=1):
         for i, value in enumerate(STEP_SEQUENCE[self.current_step]):
