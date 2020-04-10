@@ -30,13 +30,13 @@ export class BackendService {
   }
 
   get_measurement(id: number): Observable<Measurement> {
-    return this.get_request<Measurement>('/api/measurement/' + id);
+    return this.get_request<Measurement>('/api/measurement/' + id, {});
   }
 
   get_rh_values_for_measurement(
     measurement_id: number
   ): Observable<PaginatedList<RhValue>> {
-    return this.get_request<PaginatedList<RhValue>>('/api/rh_value/' + id, {
+    return this.get_request<PaginatedList<RhValue>>('/api/rh_value/' + measurement_id, {
       limit: 1000,
     });
   }
