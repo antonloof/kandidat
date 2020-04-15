@@ -44,6 +44,7 @@ export class MeasureDialogComponent implements OnInit {
   selectedValue: number;
   error: string;
   form: FormGroup;
+  connectionForm: FormGroup;
   nameControl = new FormControl('', [Validators.required]);
   currentControl = new FormControl(1e-6, [
     Validators.required,
@@ -69,16 +70,12 @@ export class MeasureDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
     fb: FormBuilder
   ) {
-    this.form = fb.group(
+    this.connectionForm = fb.group(
       {
         Con1: this.connection1Control,
         Con2: this.connection2Control,
         Con3: this.connection3Control,
         Con4: this.connection4Control,
-        Speed: this.speedControl,
-        Current: this.currentControl,
-        Name: this.nameControl,
-        Description: this.descriptionControl,
       },
       {
         validators: [
@@ -89,6 +86,12 @@ export class MeasureDialogComponent implements OnInit {
         ],
       }
     );
+    this.form = fb.group({
+      Speed: this.speedControl,
+      Current: this.currentControl,
+      Name: this.nameControl,
+      Description: this.descriptionControl,
+    });
   }
   conMatchValidator1(form: FormGroup) {
     if (
