@@ -48,7 +48,24 @@ export class StartPageComponent implements OnInit {
   ngOnInit(): void {
     this.fetch_page();
   }
-
+  
+  measure(): void {
+    this.backend
+      .create_measurement({
+        connection_1: 1,
+        connection_2: 3,
+        connection_3: 5,
+        connection_4: 2,
+        current_limit: 10e-6,
+        name: this.name,
+        steps_per_measurement: 19,
+      })
+      .subscribe(res => {
+        this.measurements.results.unshift(res);
+        this.table.renderRows();
+      });
+  }
+  
   reset_filters(): void {
     this.filters = {};
     this.fetch_page();

@@ -23,6 +23,7 @@ class MeasurementSerializer(serializers.ModelSerializer):
             "current_limit",
             "name",
             "description",
+            "steps_per_measurement",
         )
 
     def validate(self, data):
