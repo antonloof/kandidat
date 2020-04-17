@@ -6,7 +6,7 @@ from time import sleep, time
 # connect START_PIN to gnd
 # let DATA_READY_PIN float (or connect somewhere the software does not care)
 CS_PIN = 8
-ZERO_ADC_INPUT_PIN = 6
+ZERO_ADC_INPUT_PIN = 17
 
 
 class ReferenceMode(IntEnum):

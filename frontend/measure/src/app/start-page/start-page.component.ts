@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BackendService } from '../backend.service';
 import { PaginatedList } from '../classes/paginated-list';
-import { Measurement } from '../classes/measurement';
+import { Measurement, CreateMeasurement } from '../classes/measurement';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
@@ -31,6 +31,8 @@ export class StartPageComponent implements OnInit {
   @ViewChild(MatTable) table: MatTable<Measurement>;
 
   name: string = 'testing 123';
+  c1: number = 1;
+  c2: number = 2;
   measurements: PaginatedList<Measurement>;
   columns_to_display: string[] = [
     'id',
@@ -49,21 +51,23 @@ export class StartPageComponent implements OnInit {
     this.fetch_page();
   }
   
-  measure(): void {
-    this.backend
-      .create_measurement({
-        connection_1: 1,
-        connection_2: 3,
-        connection_3: 5,
-        connection_4: 2,
-        current_limit: 10e-6,
-        name: this.name,
-        steps_per_measurement: 19,
-      })
-      .subscribe(res => {
-        this.measurements.results.unshift(res);
-        this.table.renderRows();
-      });
+  get_measurement(): CreateMeasurement {
+    return {
+      connection_1: this.c1,
+      connection_2: this.c2,
+      connection_3: 5,
+      connection_4: 6,
+      current_limit: 10e-6,
+      name: this.name,
+      steps_per_measurement: 20,
+    };
+  }
+
+  test_mux(): void {
+    this.backend.test_mux(this.get_measurement()).subscribe(res => {
+      this.measurements.results.unshift(res);
+      this.table.renderRows();
+    });
   }
   
   reset_filters(): void {
