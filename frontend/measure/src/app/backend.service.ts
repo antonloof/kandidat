@@ -41,7 +41,7 @@ export class BackendService {
     measurement_id: number
   ): Observable<PaginatedList<RhValue>> {
     return this.get_request<PaginatedList<RhValue>>(
-      '/api/rh_value/' + measurement_id, 
+      '/api/rh_value/' + measurement_id,
       {
         limit: 1000,
       }
