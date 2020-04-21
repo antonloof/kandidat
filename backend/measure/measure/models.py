@@ -39,3 +39,4 @@ class Measurement(models.Model):
 class RhValue(models.Model):
     value = models.FloatField()
     measurement = models.ForeignKey(Measurement, on_delete=models.CASCADE)
+    angle = models.FloatField()

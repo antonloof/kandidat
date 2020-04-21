@@ -43,4 +43,4 @@ class MeasurementSerializer(serializers.ModelSerializer):
 class RhValueSerializer(serializers.ModelSerializer):
     class Meta:
         model = RhValue
-        fields = ("id", "measurement_id", "value")
+        fields = ("id", "measurement_id", "value", "angle")
