@@ -4,10 +4,9 @@ import { PaginatedList } from '../classes/paginated-list';
 import { Measurement, CreateMeasurement } from '../classes/measurement';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.component';
-
 
 @Component({
   selector: 'app-start-page',
@@ -15,24 +14,10 @@ import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.compone
   styleUrls: ['./start-page.component.css'],
 })
 export class StartPageComponent implements OnInit {
-  constructor(private backend: BackendService,
-              private dialog: MatDialog,) {}
-  
-  openDialog() {
-
-     const dialogConfig = new MatDialogConfig();
-  
-     dialogConfig.disableClose = false;
-     dialogConfig.autoFocus = true;
-  
-     this.dialog.open(MeasureDialogComponent, dialogConfig);
-   }
+  constructor(private backend: BackendService, private dialog: MatDialog) {}
 
   @ViewChild(MatTable) table: MatTable<Measurement>;
 
-  name: string = 'testing 123';
-  c1: number = 1;
-  c2: number = 2;
   measurements: PaginatedList<Measurement>;
   columns_to_display: string[] = [
     'id',
@@ -50,26 +35,14 @@ export class StartPageComponent implements OnInit {
   ngOnInit(): void {
     this.fetch_page();
   }
-  
-  get_measurement(): CreateMeasurement {
-    return {
-      connection_1: this.c1,
-      connection_2: this.c2,
-      connection_3: 5,
-      connection_4: 6,
-      current_limit: 10e-6,
-      name: this.name,
-      steps_per_measurement: 20,
-    };
+
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    this.dialog.open(MeasureDialogComponent, dialogConfig);
   }
 
-  test_mux(): void {
-    this.backend.test_mux(this.get_measurement()).subscribe(res => {
-      this.measurements.results.unshift(res);
-      this.table.renderRows();
-    });
-  }
-  
   reset_filters(): void {
     this.filters = {};
     this.fetch_page();

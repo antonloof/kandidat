@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -14,7 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-
+import { ErrorStateMatcher } from '@angular/material/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +23,6 @@ import { MobilityPipe } from './pipe/mobility.pipe';
 import { SheetResistancePipe } from './pipe/sheet-resistance.pipe';
 import { AboutComponent } from './about/about.component';
 import { MeasureDialogComponent } from './measure-dialog/measure-dialog.component';
-
 
 const routes: Routes = [
   { path: '', component: StartPageComponent },
@@ -55,9 +54,10 @@ const routes: Routes = [
     MatNativeDateModule,
     MatDialogModule,
     MatSelectModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [MeasureDialogComponent]
+  entryComponents: [MeasureDialogComponent],
 })
 export class AppModule {}
