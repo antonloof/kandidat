@@ -15,6 +15,7 @@ import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.compone
 })
 export class StartPageComponent implements OnInit {
   constructor(private backend: BackendService, private dialog: MatDialog) {}
+<<<<<<< HEAD
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -24,12 +25,11 @@ export class StartPageComponent implements OnInit {
 
     this.dialog.open(MeasureDialogComponent, dialogConfig);
   }
+=======
+>>>>>>> master
 
   @ViewChild(MatTable) table: MatTable<Measurement>;
 
-  name: string = 'testing 123';
-  c1: number = 1;
-  c2: number = 2;
   measurements: PaginatedList<Measurement>;
   columns_to_display: string[] = [
     'id',
@@ -47,6 +47,7 @@ export class StartPageComponent implements OnInit {
   ngOnInit(): void {
     this.fetch_page();
   }
+<<<<<<< HEAD
 
   get_measurement(): CreateMeasurement {
     return {
@@ -59,12 +60,14 @@ export class StartPageComponent implements OnInit {
       steps_per_measurement: 20,
     };
   }
+=======
+>>>>>>> master
 
-  test_mux(): void {
-    this.backend.test_mux(this.get_measurement()).subscribe(res => {
-      this.measurements.results.unshift(res);
-      this.table.renderRows();
-    });
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    this.dialog.open(MeasureDialogComponent, dialogConfig);
   }
 
   reset_filters(): void {
