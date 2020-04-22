@@ -70,22 +70,6 @@ class MuxCommand:
     def send(self):
         self.mux_manager.transfer(self)
 
-    def set_vp(self, i):
-        self.vp = i
-        return self
-
-    def set_vn(self, i):
-        self.vn = i
-        return self
-
-    def set_cp(self, i):
-        self.cp = i
-        return self
-
-    def set_cn(self, i):
-        self.cn = i
-        return self
-
 
 def update_data(data, mask, bits):
     bits_i = 0

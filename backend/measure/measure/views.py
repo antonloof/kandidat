@@ -111,9 +111,16 @@ class MeasurementView(viewsets.ModelViewSet):
             # Kontakten som varit kopplad till in- kopplas till in+.
             # Kontakten som varit kopplad till strömkällan kopplas till in-
             # Kontakten som varit kopplad till jord kopplas till strömkällan.
-
             # in+ och in- beteckanar de två ingångarna till förstärkarsteget
             # Strömkällan och jord betecknar de kontakter som strömen skickas genom
+
+            command = self.measurement_manager.mux_manager.command()
+            tmp = command.cn
+            command.cn = command.vp
+            command.vp = command.vn
+            command.vn = command.cp
+            command.cp = tmp
+            command.send()
 
             r_nopm = measure_r_for_rs(self.measurement_manager)
             print("the r's needed for rs:", r_mnop, r_nopm)
@@ -143,9 +150,13 @@ class TestMuxView(MeasurementView):
             c1 = self.measurement_manager.measurement.connection_1
             c2 = self.measurement_manager.measurement.connection_2
             for index in range(c1, c2 + 1):
-                self.measurement_manager.mux_manager.command().set_vp(index).set_vn(index).set_cp(
-                    index
-                ).set_cn(index).send()
+                command = self.measurement_manager.mux_manager.command()
+                command.vp = index
+                command.vn = index
+                command.cn = index
+                command.cp = index
+                command.send()
+                
                 sleep(0.1)
                 v, i = self.measurement_manager.measure_current_and_voltage()
                 r = v / i

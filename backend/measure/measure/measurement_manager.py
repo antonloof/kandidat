@@ -40,25 +40,17 @@ class MeasurementManager:
         self.measurement.open = False
         self.measurement.save()
 
-    def setup_temperature_measurement(self):
-        self.adc_manager.reset()
-        self.adc_manager.offset_calibration()
-        self.adc_manager.set_input_mode(InpmuxOptions.TEMP_SENS, InpmuxOptions.TEMP_SENS)
-
-    def measure_temperature(self):
-        value = self.adc_manager.read_value()
-        TEMPERATURE_OFFSET = 25
-        TEMPERATURE_OFFSET_VALUE = 0.1224
-        TEMPERATURE_VOLT_PER_CELCIUS = 0.00042
-        return (
-            TEMPERATURE_OFFSET + (value - TEMPERATURE_OFFSET_VALUE) / TEMPERATURE_VOLT_PER_CELCIUS
-        )
-
     def set_up_mobility_measurement(self):
         self.adc_manager.reset()
         self.adc_manager.enable_chop()
         self.adc_manager.set_reference_mode(ReferenceMode.SUPPLY, ReferenceMode.SUPPLY)
         self.adc_manager.start()
+        command = self.mux_manager.command()
+        command.cp = self.measurement.connection_1
+        command.cn = self.measurement.connection_3
+        command.vp = self.measurement.connection_2
+        command.vn = self.measurement.connection_4
+        command.send()
 
     def setup_current_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
