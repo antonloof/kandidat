@@ -14,20 +14,6 @@ import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.compone
   styleUrls: ['./start-page.component.css'],
 })
 export class StartPageComponent implements OnInit {
-  constructor(private backend: BackendService, private dialog: MatDialog) {}
-<<<<<<< HEAD
-
-  openDialog() {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-
-    this.dialog.open(MeasureDialogComponent, dialogConfig);
-  }
-=======
->>>>>>> master
-
   @ViewChild(MatTable) table: MatTable<Measurement>;
 
   measurements: PaginatedList<Measurement>;
@@ -43,25 +29,12 @@ export class StartPageComponent implements OnInit {
   ];
   filters: any = {};
   page_size_options = [10, 25, 50];
+  
+  constructor(private backend: BackendService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetch_page();
   }
-<<<<<<< HEAD
-
-  get_measurement(): CreateMeasurement {
-    return {
-      connection_1: this.c1,
-      connection_2: this.c2,
-      connection_3: 5,
-      connection_4: 6,
-      current_limit: 10e-6,
-      name: this.name,
-      steps_per_measurement: 20,
-    };
-  }
-=======
->>>>>>> master
 
   openDialog() {
     const dialogConfig = new MatDialogConfig();
