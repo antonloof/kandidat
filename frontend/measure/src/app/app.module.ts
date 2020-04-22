@@ -15,7 +15,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 
-
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StartPageComponent } from './start-page/start-page.component';
@@ -23,7 +22,6 @@ import { MobilityPipe } from './pipe/mobility.pipe';
 import { SheetResistancePipe } from './pipe/sheet-resistance.pipe';
 import { AboutComponent } from './about/about.component';
 import { MeasureDialogComponent } from './measure-dialog/measure-dialog.component';
-
 
 const routes: Routes = [
   { path: '', component: StartPageComponent },
@@ -59,6 +57,6 @@ const routes: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [MeasureDialogComponent]
+  entryComponents: [MeasureDialogComponent],
 })
 export class AppModule {}
