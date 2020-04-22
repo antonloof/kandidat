@@ -29,7 +29,7 @@ export class StartPageComponent implements OnInit {
   ];
   filters: any = {};
   page_size_options = [10, 25, 50];
-  
+
   constructor(private backend: BackendService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
