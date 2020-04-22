@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { filter, map, mergeAll } from 'rxjs/operators';
+
 import { BackendService } from '../backend.service';
 import { PaginatedList } from '../classes/paginated-list';
 import { Measurement, CreateMeasurement } from '../classes/measurement';
@@ -40,7 +43,18 @@ export class StartPageComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
-    this.dialog.open(MeasureDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(MeasureDialogComponent, dialogConfig);
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(x => !!x),
+        map(x => this.backend.create_measurement(x), this.backend),
+        mergeAll()
+      )
+      .subscribe(measurement => {
+        this.measurements.results.unshift(measurement);
+        this.table.renderRows();
+      });
   }
 
   reset_filters(): void {
