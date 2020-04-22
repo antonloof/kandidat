@@ -30,7 +30,7 @@ class MeasurementManager:
         self.current_source_manager = CurrentSourceManager(self.pi)
         self.mux_manager = MuxManager(self.pi)
         return self
-        
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.adc_manager.close()
         self.motor_manager.close()
