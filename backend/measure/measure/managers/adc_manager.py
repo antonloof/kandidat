@@ -197,6 +197,7 @@ class AdcManager:
         return (v2 + v1) / 2
 
     def _read_value(self, timeout_s=1):
+        return 0.5
         status = 0
         value_bytes = None
         start_time = time()
