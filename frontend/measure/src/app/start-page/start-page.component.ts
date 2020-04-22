@@ -14,8 +14,6 @@ import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.compone
   styleUrls: ['./start-page.component.css'],
 })
 export class StartPageComponent implements OnInit {
-  constructor(private backend: BackendService, private dialog: MatDialog) {}
-
   @ViewChild(MatTable) table: MatTable<Measurement>;
 
   measurements: PaginatedList<Measurement>;
@@ -31,6 +29,8 @@ export class StartPageComponent implements OnInit {
   ];
   filters: any = {};
   page_size_options = [10, 25, 50];
+
+  constructor(private backend: BackendService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetch_page();
