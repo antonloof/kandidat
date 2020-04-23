@@ -5,7 +5,7 @@
     </mat-card-title>
   </mat-card-header>
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="openDialog()">
+    <button mat-raised-button color="primary" (click)="start_measurement()">
       Measure
     </button>
   </mat-card-actions>
@@ -95,16 +95,13 @@
         <td mat-cell *matCellDef="let measurement">
           <button
             mat-raised-button
-            *ngIf="measurement.open; else details"
+            color="warn"
+            *ngIf="measurement.open"
             (click)="close_measurement(measurement.id)"
           >
             Close
           </button>
-          <ng-template #details>
-            <a href="/measurement/{{ measurement.id }}" mat-raised-button
-              >View</a
-            >
-          </ng-template>
+          <a href="/measurement/{{ measurement.id }}" mat-raised-button>View</a>
         </td>
       </ng-container>
       <ng-container matColumnDef="state">

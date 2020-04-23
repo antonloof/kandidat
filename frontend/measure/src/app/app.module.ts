@@ -22,6 +22,7 @@ import { MobilityPipe } from './pipe/mobility.pipe';
 import { SheetResistancePipe } from './pipe/sheet-resistance.pipe';
 import { AboutComponent } from './about/about.component';
 import { MeasureDialogComponent } from './measure-dialog/measure-dialog.component';
+import { CloseDialogComponent } from './close-dialog/close-dialog.component';
 
 const routes: Routes = [
   { path: '', component: StartPageComponent },
@@ -36,6 +37,7 @@ const routes: Routes = [
     SheetResistancePipe,
     AboutComponent,
     MeasureDialogComponent,
+    CloseDialogComponent,
   ],
   imports: [
     FormsModule,
@@ -57,6 +59,6 @@ const routes: Routes = [
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [MeasureDialogComponent],
+  entryComponents: [MeasureDialogComponent, CloseDialogComponent],
 })
 export class AppModule {}

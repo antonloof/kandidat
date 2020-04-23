@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Close {{ data.id }}</h1>
+<div mat-dialog-content>
+  <p>Are you sure that you want to close measurement {{ data.id }}.</p>
+  <p>
+    Please make sure that the system is not measuring anything before closing a
+    measurement.
+  </p>
+  <p>If succeeding measurements act strangly try to restart the system.</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close cdkFocusInitial>Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="data.id" color="warn">
+    Close
+  </button>
+</div>
