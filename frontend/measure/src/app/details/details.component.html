@@ -1,0 +1,71 @@
+<mat-card>
+    <mat-card-content>
+      <mat-card-title>
+        {{ measurement.name }}
+      </mat-card-title>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn btn-success"
+        (click)="results()"
+      >
+        Export data to csv
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        class="btn btn-success"
+        (click)="download_image()"
+      >
+        Export graph as PNG
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card>
+    <mat-card-content>
+      <div
+        class="container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="center"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0"
+      >
+        <div class="item item-1" fxFlex="50%">
+          <h3>Measurement name: {{ measurement.name }}</h3>
+          <h3>Description: {{ measurement.description }}</h3>
+          <h3>Created at: {{ measurement.created_at }}</h3>
+          <h3>Speed: {{ speed }}</h3>
+          <h3>Carrier mobility: {{ measurement.mobility }}</h3>
+          <h3>Sheet Resistans: {{ measurement.sheet_resistance }}</h3>
+          <h3>Amplitude: {{ measurement.amplitude }}</h3>
+          <h3>Phase: {{ measurement.phase }}</h3>
+          <h3>Offset: {{ measurement.offset }}</h3>
+          <h3>
+            Connections: {{ measurement.connection_1 }},
+            {{ measurement.connection_2 }}, {{ measurement.connection_3 }},
+            {{ measurement.connection_4 }}
+          </h3>
+        </div>
+  
+        <div class="item item-2" fxFlex="50%">
+          <canvas
+            baseChart
+            width="450"
+            height="300"
+            [chartType]="'line'"
+            [datasets]="chartData"
+            [labels]="chartLabels"
+            [options]="chartOptions"
+            [colors]="lineChartColors"
+            [legend]="true"
+            (chartClick)="onChartClick($event)"
+          >
+          </canvas>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
