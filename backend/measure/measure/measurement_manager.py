@@ -43,7 +43,7 @@ class MeasurementManager:
     def set_up_mobility_measurement(self):
         self.adc_manager.reset()
         self.adc_manager.enable_chop()
-        self.adc_manager.set_reference_mode(ReferenceMode.SUPPLY, ReferenceMode.SUPPLY)
+        self.adc_manager.set_reference_mode(ReferenceMode.EXT0, ReferenceMode.SUPPLY)
         self.adc_manager.start()
         command = self.mux_manager.command()
         command.cp = self.measurement.connection_1
