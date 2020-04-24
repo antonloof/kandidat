@@ -70,7 +70,12 @@ class MeasurementView(viewsets.ModelViewSet):
                 print(v)
                 # sleep(1)
 
-            RhValue.objects.bulk_create([RhValue(value=v, measurement=measurement) for v in r_mu_s])
+            RhValue.objects.bulk_create(
+                [
+                    RhValue(value=v, measurement=measurement, angle=i * 360 / measurement_count)
+                    for i, v in enumerate(r_mu_s)
+                ]
+            )
             t = np.linspace(0, STEPS_PER_TURN, len(r_mu_s))
             r_mu_s = np.array(r_mu_s)
             print("y = ", list(r_mu_s), ";")

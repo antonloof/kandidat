@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SheetResistancePipe implements PipeTransform {
   transform(value: number): string {
-    if (value === null) {
+    if (!value && value !== 0) {
       return '';
     }
     const resolution = 1e4;
