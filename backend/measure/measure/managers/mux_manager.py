@@ -25,6 +25,12 @@ class MuxManager:
     def command(self):
         return MuxCommand(self, self.last_command)
 
+    def swap_voltage(self):
+        command = self.command()
+        command.vp = self.last_command.vn
+        command.vn = self.last_command.vp
+        command.send()
+
 
 class MuxCommand:
     def __init__(self, mux_manager, command=None):
