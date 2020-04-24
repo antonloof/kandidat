@@ -43,7 +43,7 @@ class MeasurementManager:
     def set_up_mobility_measurement(self):
         self.adc_manager.reset()
         self.adc_manager.enable_chop()
-        self.adc_manager.set_reference_mode(ReferenceMode.SUPPLY, ReferenceMode.SUPPLY)
+        self.adc_manager.set_reference_mode(ReferenceMode.EXT0, ReferenceMode.SUPPLY)
         self.adc_manager.start()
         command = self.mux_manager.command()
         command.cp = self.measurement.connection_1
@@ -58,6 +58,21 @@ class MeasurementManager:
 
     def setup_voltage_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN0, InpmuxOptions.AIN1)
+
+    def test_motor_current(self):
+        shunt = 0.5  # WSR2R5000FEA
+        max_current = 3  # A
+        self.adc_manager.set_input_mode(InpmuxOptions.AIN4, InpmuxOptions.AIN1)
+        current_a = abs(self.adc_manager.read_value() * 10 / shunt)
+        self.adc_manager.set_input_mode(InpmuxOptions.AIN5, InpmuxOptions.AIN1)
+        current_b = abs(self.adc_manager.read_value() * 10 / shunt)
+        print(current_a, current_b)
+        assert (
+            current_a < max_current
+        ), f"Too high current in the motor, something is broken. {current_a}A"
+        assert (
+            current_b < max_current
+        ), f"Too high current in the motor, something is broken. {current_b}A"
 
     def measure_voltage(self):
         return (self.adc_manager.read_value() * 10 - 2.5) / 100
@@ -75,6 +90,6 @@ class MeasurementManager:
         return v, i
 
     def advance_motor(self, steps):
-        return  # tmp for test
         speed = min(10, abs(steps))
-        self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
+        # self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
+        self.test_motor_current()
