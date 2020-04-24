@@ -161,7 +161,7 @@ class TestMuxView(MeasurementView):
                 command.cn = index
                 command.cp = index
                 command.send()
-                
+
                 sleep(0.1)
                 v, i = self.measurement_manager.measure_current_and_voltage()
                 r = v / i

@@ -37,4 +37,4 @@ jobs:
         cd $GITHUB_WORKSPACE/backend
         python3 -m pip install -U pip setuptools 
         python3 -m pip install -r requirements.txt
-        python3 -m black . --exclude=venv -l 100
+        python3 -m black . --exclude=venv -l 100 --check --diff
