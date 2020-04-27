@@ -80,16 +80,3 @@ class MuxCommand:
 
     def send(self):
         self.mux_manager.transfer(self)
-
-
-def update_data(data, mask, bits):
-    bits_i = 0
-    for mask_i in range(3 * 8):
-        mask_bit = 1 << mask_i
-        if not (mask & mask_bit):
-            continue
-        if bits & (1 << bits_i):
-            data |= mask_bit
-        else:
-            data &= ~mask_bit
-        bits_i += 1
