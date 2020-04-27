@@ -22,14 +22,21 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
     form: FormGroupDirective | NgForm | null
   ): boolean {
     return (
-      control.dirty &&
+      control.touched &&
       (form.hasError('duplicate1') ||
         form.hasError('duplicate2') ||
         form.hasError('duplicate3') ||
-        form.hasError('duplicate4'))
+        form.hasError('duplicate4') ||
+        control.invalid)
     );
   }
 }
+
+const connectionValidators = [
+  Validators.required,
+  Validators.min(1),
+  Validators.max(32),
+];
 
 @Component({
   selector: 'app-measure-dialog',
@@ -44,10 +51,16 @@ export class MeasureDialogComponent implements OnInit {
     Validators.min(1e-9),
     Validators.max(3.3e3),
   ]);
-  connection1Control = new FormControl(null, [Validators.required]);
-  connection2Control = new FormControl(null, [Validators.required]);
-  connection3Control = new FormControl(null, [Validators.required]);
-  connection4Control = new FormControl(null, [Validators.required]);
+  connection1Control = new FormControl(null, connectionValidators);
+  connection2Control = new FormControl(null, connectionValidators);
+  connection3Control = new FormControl(null, connectionValidators);
+  connection4Control = new FormControl(null, connectionValidators);
+  connections = [
+    { no: 1, control: this.connection1Control },
+    { no: 2, control: this.connection2Control },
+    { no: 3, control: this.connection3Control },
+    { no: 4, control: this.connection4Control },
+  ];
   speedControl = new FormControl(10);
   descriptionControl = new FormControl(null, [Validators.required]);
   errorStateMatcher = new CrossFieldErrorMatcher();
@@ -60,9 +73,11 @@ export class MeasureDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
-    fb: FormBuilder
-  ) {
-    this.form = fb.group(
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
+    this.form = this.fb.group(
       {
         Speed: this.speedControl,
         Current: this.currentControl,
@@ -77,15 +92,11 @@ export class MeasureDialogComponent implements OnInit {
         validators: [this.connectionDuplicateValidator],
       }
     );
+    this.form.controls['Speed'].setValue(10, { onlySelf: true });
   }
 
   connectionDuplicateValidator(form: FormGroup) {
-    const values = [
-      form.get('Con1').value,
-      form.get('Con2').value,
-      form.get('Con3').value,
-      form.get('Con4').value,
-    ];
+    const values = this.connections.map(c => c.control.value);
     const duplicatesIndexes = values
       .map((v, i) => [i, values.indexOf(v), values.lastIndexOf(v), v])
       .filter(t => t[0] != t[1] || t[0] != t[2])
@@ -100,8 +111,6 @@ export class MeasureDialogComponent implements OnInit {
     }
     return null;
   }
-
-  ngOnInit(): void {}
 
   getMeasurement() {
     return {
