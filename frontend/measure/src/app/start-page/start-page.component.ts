@@ -79,7 +79,7 @@ export class StartPageComponent implements OnInit {
       this.measurements = res;
     });
   }
-  //
+
   close_measurement(id: number): void {
     const dialog_ref = this.dialog.open(CloseDialogComponent, {
       data: { id: id },
@@ -99,6 +99,25 @@ export class StartPageComponent implements OnInit {
           measurement => measurement.id === id
         );
         this.measurements.results[i] = res;
+        this.table.renderRows();
+      });
+  }
+
+  // remove after mux test :D
+  test_mux() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    const dialogRef = this.dialog.open(MeasureDialogComponent, dialogConfig);
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(x => !!x),
+        map(x => this.backend.test_mux(x), this.backend),
+        mergeAll()
+      )
+      .subscribe(measurement => {
+        this.measurements.results.unshift(measurement);
         this.table.renderRows();
       });
   }
