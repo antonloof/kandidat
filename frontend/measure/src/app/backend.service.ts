@@ -40,12 +40,10 @@ export class BackendService {
   get_rh_values_for_measurement(
     measurement_id: number
   ): Observable<PaginatedList<RhValue>> {
-    return this.get_request<PaginatedList<RhValue>>(
-      '/api/rh_value/' + measurement_id,
-      {
-        limit: 1000,
-      }
-    );
+    return this.get_request<PaginatedList<RhValue>>('/api/rh_value', {
+      limit: 1000,
+      measurement_id: measurement_id,
+    });
   }
 
   private handle_error<T>(observable: Observable<T>): Observable<T> {

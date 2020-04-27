@@ -9,6 +9,6 @@ export class MobilityPipe implements PipeTransform {
       return '';
     }
     const m2_to_cm2 = 1e4;
-    return `${parseFloat((value * m2_to_cm2).toPrecision(4))} cm^2/Vs`;
+    return `${parseFloat((value * m2_to_cm2).toPrecision(4))}`;
   }
 }
