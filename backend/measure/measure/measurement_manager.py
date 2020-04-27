@@ -91,7 +91,7 @@ class MeasurementManager:
             current_b < max_current
         ), f"Too high current in the motor, something is broken. {current_b}A"
 
-    def measure_voltage(self):
+    def measure_voltage_mux_chop(self):
         v1 = format_voltage(self.adc_manager.read_value())
         self.mux_manager.swap_voltage()
         v2 = format_voltage(self.adc_manager.read_value())
