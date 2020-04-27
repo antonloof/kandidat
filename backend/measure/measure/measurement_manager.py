@@ -57,10 +57,16 @@ class MeasurementManager:
         self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
 
     def setup_voltage_measurement(self):
-        self.adc_manager.set_input_mode(InpmuxOptions.AIN0, InpmuxOptions.AIN1)
+        self.adc_manager.set_input_mode(InpmuxOptions.AIN8, InpmuxOptions.AIN1)
 
-    def measure_voltage(self):
-        return (self.adc_manager.read_value() * 10 - 2.5) / 100
+    def measure_voltage_calibration(self):
+        return format_voltage(self.adc_manager.read_with_calibration())
+
+    def measure_voltage_mux_chop(self):
+        v1 = format_voltage(self.adc_manager.read_value())
+        self.mux_manager.swap_voltage()
+        v2 = format_voltage(self.adc_manager.read_value())
+        return (v1 + v2) / 2
 
     def measure_current(self):
         shunt_resistance = self.current_source_manager.selected_re.re
@@ -68,13 +74,17 @@ class MeasurementManager:
 
     def measure_current_and_voltage(self):
         self.setup_voltage_measurement()
-        v = self.measure_voltage()
+        v = self.measure_voltage_mux_chop()
+        # v = self.measure_voltage_calibration()
         self.setup_current_measurement()
-        i = 10e-6  # used until we get this from the outside
-        # i = self.measure_current()
+        i = self.measure_current()
         return v, i
 
     def advance_motor(self, steps):
         return  # tmp for test
         speed = min(10, abs(steps))
         self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
+
+
+def format_voltage(value):
+    return (value * 10 - 2.5) / 100

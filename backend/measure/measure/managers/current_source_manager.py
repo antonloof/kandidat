@@ -61,6 +61,7 @@ class CurrentSourceManager:
         self.write_dac(OpCode.NORMAL, Power.ON, value)
 
     def write_dac(self, opcode, power, value, timeout_s=1):
+        return  # only for test
         assert power < 4, f"power cant be greater than 3, got {power}"
         assert value < 0x1000, f"Value must fit in 12 bits, got {value}"
         assert opcode in (2, 3), f"opcode must be one of 1,2,3, got {opcode}"
