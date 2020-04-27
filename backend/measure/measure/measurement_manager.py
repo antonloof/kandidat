@@ -109,10 +109,14 @@ class MeasurementManager:
         i = self.measure_current()
         return v, i
 
-    def advance_motor(self, steps):
-        speed = min(10, abs(steps))
-        self.test_motor_current()
-        self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
+    def advance_motor(self, steps, micro_step=True):
+        steps_per_second = min(10, abs(steps))
+        
+        micro_multiplier = 2 if micro_step else 1
+        for _ in range(abs(steps) * micro_multiplier):
+            self.step(micro_step, sgn(steps))
+            self.test_motor_current()
+            sleep(1 / (steps_per_second * micro_multiplier))
 
 
 def format_voltage(value):
