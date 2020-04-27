@@ -58,78 +58,32 @@
       </mat-error>
     </mat-form-field>
     <p>Connections</p>
-    <mat-form-field>
-      <mat-label>Connection 1</mat-label>
+    <mat-form-field *ngFor="let connection of connections">
+      <mat-label>Connection {{ connection.no }}</mat-label>
       <input
         matInput
         type="number"
-        formControlName="Con1"
-        [formControl]="connection1Control"
+        [formControlName]="'Con' + connection.no"
+        [formControl]="connection.control"
         [errorStateMatcher]="errorStateMatcher"
         required
       />
-      <mat-error *ngIf="connection1Control.hasError('required')">
+      <mat-error *ngIf="connection.control.hasError('required')">
         You must fill in the connections!
       </mat-error>
-      <mat-error *ngIf="form.hasError('duplicate1')">
-        No connection can be duplicated
+      <mat-error *ngIf="connection.control.hasError('min')">
+        The connection must be greater than 0!
       </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Connection 2</mat-label>
-      <input
-        matInput
-        type="number"
-        formControlName="Con2"
-        [formControl]="connection2Control"
-        [errorStateMatcher]="errorStateMatcher"
-        required
-      />
-      <mat-error *ngIf="connection2Control.hasError('required')">
-        You must fill in the connections!
+      <mat-error *ngIf="connection.control.hasError('max')">
+        The connection must be less than 33!
       </mat-error>
-      <mat-error *ngIf="form.hasError('duplicate2')">
-        No connection can be duplicated
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Connection 3</mat-label>
-      <input
-        matInput
-        type="number"
-        formControlName="Con3"
-        [formControl]="connection3Control"
-        [errorStateMatcher]="errorStateMatcher"
-        required
-      />
-      <mat-error *ngIf="connection3Control.hasError('required')">
-        You must fill in the connections!
-      </mat-error>
-      <mat-error *ngIf="form.hasError('duplicate3')">
-        No connection can be duplicated
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Connection 4</mat-label>
-      <input
-        matInput
-        type="number"
-        formControlName="Con4"
-        [formControl]="connection4Control"
-        [errorStateMatcher]="errorStateMatcher"
-        required
-      />
-      <mat-error *ngIf="connection4Control.hasError('required')">
-        You must fill in the connections!
-      </mat-error>
-      <mat-error *ngIf="form.hasError('duplicate4')">
+      <mat-error *ngIf="form.hasError('duplicate' + connection.no)">
         No connection can be duplicated
       </mat-error>
     </mat-form-field>
   </form>
   <img class="img-responsive" src="assets/connections.png" />
 </mat-dialog-content>
-
 <mat-dialog-actions>
   <button mat-raised-button color="warn" (click)="cancel()">
     Cancel
