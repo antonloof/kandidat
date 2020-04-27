@@ -56,6 +56,15 @@ export class DetailsComponent implements OnInit {
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: 'rgba(255,0,0,0.8)',
     },
+    {
+      // blue
+      backgroundColor: 'rgba(0,0,0,0)',
+      borderColor: 'blue',
+      pointBackgroundColor: 'blue',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'blue',
+    },
   ];
 
   constructor(
@@ -87,8 +96,19 @@ export class DetailsComponent implements OnInit {
       this.chartLabels = this.rhValue.results.map(i => i.angle);
       this.chartData = [
         { data: this.rhValue.results.map(v => v.value), label: 'Rh' },
+        { data: this.getFittedCurve(), label: 'Fitted Curve'},
       ];
     });
+  }
+
+  getFittedCurve() {
+    const fit = [...Array(100).fill(0)];
+    for(let i=0; i<100; i++) {
+      fit[i] = this.measurement.amplitude * 
+        Math.sin(this.measurement.angle_freq * i + this.measurement.phase) +
+      this.measurement.offset;
+    }
+    return fit;
   }
 
   download_image() {
@@ -109,7 +129,7 @@ export class DetailsComponent implements OnInit {
         name: 'Speed:',
         speed: this.speed.transform(this.measurement.steps_per_measurement),
       },
-      { name: 'Current limit:', current_limit: this.measurement.current_limit },
+      { name: 'Current limit [A]:', current_limit: this.measurement.current_limit },
       {
         name: 'Connections:',
         connection_1: this.measurement.connection_1,
@@ -118,15 +138,17 @@ export class DetailsComponent implements OnInit {
         connection_4: this.measurement.connection_4,
       },
       {
-        name: 'Mobility:',
+        name: 'Mobility [cm^2/(Vs)]:',
         mobility: this.mobility.transform(this.measurement.mobility),
       },
       {
-        name: 'Sheet Resistans:',
+        name: 'Sheet Resistans [Ohm]:',
         sheet_resistanse: this.sheetResistance.transform(
           this.measurement.sheet_resistance
         ),
       },
+      {},
+      { name: 'Parameters of the Fitted Curve'},
       { name: 'Amplitude:', amplitude: this.measurement.amplitude },
       { name: 'Angle frequency:', angle_freq: this.measurement.angle_freq },
       { name: 'Phase:', phase: this.measurement.phase },
