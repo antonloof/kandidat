@@ -103,9 +103,9 @@ export class DetailsComponent implements OnInit {
 
   getFittedCurve() {
     const fit = [...Array(360).fill(0)];
-    for(let i=0; i<360; i++) {
-      fit[i] = 
-        this.measurement.amplitude * 
+    for (let i = 0; i < 360; i++) {
+      fit[i] =
+        this.measurement.amplitude *
           Math.sin(this.measurement.angle_freq * i + this.measurement.phase) +
         this.measurement.offset;
     }
@@ -130,7 +130,10 @@ export class DetailsComponent implements OnInit {
         name: 'Speed:',
         speed: this.speed.transform(this.measurement.steps_per_measurement),
       },
-      { name: 'Current limit [A]:', current_limit: this.measurement.current_limit },
+      {
+        name: 'Current limit [A]:',
+        current_limit: this.measurement.current_limit,
+      },
       {
         name: 'Connections:',
         connection_1: this.measurement.connection_1,
