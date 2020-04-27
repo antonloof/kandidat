@@ -60,9 +60,11 @@ export class MeasureDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
-    fb: FormBuilder
-  ) {
-    this.form = fb.group(
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
+    this.form = this.fb.group(
       {
         Speed: this.speedControl,
         Current: this.currentControl,
@@ -77,6 +79,7 @@ export class MeasureDialogComponent implements OnInit {
         validators: [this.connectionDuplicateValidator],
       }
     );
+    this.form.controls['Speed'].setValue(10, { onlySelf: true });
   }
 
   connectionDuplicateValidator(form: FormGroup) {
@@ -100,8 +103,6 @@ export class MeasureDialogComponent implements OnInit {
     }
     return null;
   }
-
-  ngOnInit(): void {}
 
   getMeasurement() {
     return {

@@ -37,7 +37,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Speed/Resolution</mat-label>
-      <mat-select matInput formCotrolName="Speed">
+      <mat-select matInput formCotrolName="Speed" [formControl]="speedControl">
         <mat-option *ngFor="let speed of speeds" [value]="speed.value">
           {{ speed.viewValue }}
         </mat-option>
