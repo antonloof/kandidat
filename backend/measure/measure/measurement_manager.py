@@ -111,7 +111,7 @@ class MeasurementManager:
 
     def advance_motor(self, steps, micro_step=True):
         steps_per_second = min(10, abs(steps))
-        
+
         micro_multiplier = 2 if micro_step else 1
         for _ in range(abs(steps) * micro_multiplier):
             self.step(micro_step, sgn(steps))
