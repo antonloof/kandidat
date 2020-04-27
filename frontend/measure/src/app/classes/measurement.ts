@@ -19,4 +19,5 @@ export interface Measurement extends CreateMeasurement {
   angle_freq: number;
   phase: number;
   offset: number;
+  error: string;
 }

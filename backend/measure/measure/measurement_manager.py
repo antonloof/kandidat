@@ -23,6 +23,18 @@ class MeasurementManager:
                 measurement_serializer.save()
         self.measurement = measurement_serializer.instance
 
+    def begin(self):
+        self.adc_manager.begin()
+        self.motor_manager.begin()
+        self.current_source_manager.begin()
+        self.mux_manager.begin()
+
+    def end(self):
+        self.adc_manager.end()
+        self.motor_manager.end()
+        self.current_source_manager.end()
+        self.mux_manager.end()
+
     def __enter__(self):
         self.pi = pigpio.pi()
         self.adc_manager = AdcManager(self.pi)
@@ -37,6 +49,8 @@ class MeasurementManager:
         self.current_source_manager.close()
         self.mux_manager.close()
         self.pi.stop()
+        if exc_val:
+            self.measurement.error = exc_val
         self.measurement.open = False
         self.measurement.save()
 
@@ -51,7 +65,7 @@ class MeasurementManager:
         command.vp = self.measurement.connection_2
         command.vn = self.measurement.connection_4
         command.send()
-        self.current_source_manager.set_current(self.measurement.current_limit)
+        self.current_source_manager.set_current(self.measurement.current_limit * 1e10)
 
     def setup_current_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
