@@ -107,7 +107,22 @@
       <ng-container matColumnDef="state">
         <th mat-header-cell *matHeaderCellDef>State</th>
         <td mat-cell *matCellDef="let measurement">
-          {{ measurement.open ? 'In progress' : 'Done' }}
+          <mat-icon
+            color="warn"
+            *ngIf="measurement.error; else noError"
+            [matTooltip]="measurement.error"
+            >warning</mat-icon
+          >
+          <ng-template #noError>
+            <mat-icon
+              *ngIf="measurement.open; else done"
+              matTooltip="In progress..."
+              >sync</mat-icon
+            >
+            <ng-template #done>
+              <mat-icon>done</mat-icon>
+            </ng-template>
+          </ng-template>
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="columns_to_display"></tr>

@@ -135,12 +135,15 @@ class AdcManager:
     def __init__(self, pi):
         self.pi = pi
         self.spi = pi.spi_open(0, 50000, 1)
-
         self.pi.set_mode(ZERO_ADC_INPUT_PIN, pigpio.OUTPUT)
-        self.zero_adc_input()  # disable adc input at startup
 
+    def begin(self):
+        self.zero_adc_input()  # disable adc input at startup
         self.reset_serial()
         self.reset()
+
+    def end(self):
+        self.zero_adc_input()
 
     def zero_adc_input(self):
         self.pi.write(ZERO_ADC_INPUT_PIN, 0)
@@ -149,7 +152,6 @@ class AdcManager:
         self.pi.write(ZERO_ADC_INPUT_PIN, 1)
 
     def close(self):
-        self.zero_adc_input()
         self.pi.spi_close(self.spi)
 
     def reset(self):
@@ -183,10 +185,21 @@ class AdcManager:
         return read[0]
 
     def stop(self):
+        self.zero_adc_input()
         self.write(OpCode.STOP1)
 
     def start(self):
+        self.enable_adc_input()
         self.write(OpCode.START1)
+
+    def read_with_calibration(self, timeout_s=1, avg_count=4):
+        self.zero_adc_input()
+        offset = 0
+        for i in range(avg_count):
+            offset += self._read_value(timeout_s)
+        offset /= avg_count
+        self.enable_adc_input()
+        return self._read_value(timeout_s) - offset
 
     def read_value(self, timeout_s=1):
         # software chop mode :D
@@ -218,26 +231,6 @@ class AdcManager:
 
     def set_input_mode(self, positive, negative):
         self.write_reg(Address.INPMUX, (positive << 4) | negative)
-
-    def offset_calibration(self):
-        # disable chopmode, set to free running
-        # set all inputs floating
-        # run calibration
-        # enable chop mode if it was before
-        # restore previous input config
-        self.stop()
-        current_mode0 = self.read_reg(Address.MODE0)
-        current_inpmux = self.read_reg(Address.INPMUX)
-        self.write_reg(
-            Address.MODE0,
-            current_mode0 & ~(Mode0Bbit.RUNMODE & Mode0Bbit.INPUT_CHOP & Mode0Bbit.IDAC_ROTATION),
-        )
-        self.set_input_mode(InpmuxOptions.FLOAT, InpmuxOptions.FLOAT)
-        self.start()
-        self.write(OpCode.SFOCAL1)
-        self.wait_for_data_ready()
-        self.write_reg(Address.MODE0, current_mode0)
-        self.write_reg(Address.INPMUX, current_inpmux)
 
     def set_gain_data_rate(self, gain=Gain.G1, data_rate=DataRate.SPS20, bypass=False):
         bypass_bit = 0b10000000 if bypass else 0

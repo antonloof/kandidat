@@ -23,6 +23,18 @@ class MeasurementManager:
                 measurement_serializer.save()
         self.measurement = measurement_serializer.instance
 
+    def begin(self):
+        self.adc_manager.begin()
+        self.motor_manager.begin()
+        self.current_source_manager.begin()
+        self.mux_manager.begin()
+
+    def end(self):
+        self.adc_manager.end()
+        self.motor_manager.end()
+        self.current_source_manager.end()
+        self.mux_manager.end()
+
     def __enter__(self):
         self.pi = pigpio.pi()
         self.adc_manager = AdcManager(self.pi)
@@ -37,6 +49,8 @@ class MeasurementManager:
         self.current_source_manager.close()
         self.mux_manager.close()
         self.pi.stop()
+        if exc_val:
+            self.measurement.error = exc_val
         self.measurement.open = False
         self.measurement.save()
 
@@ -51,13 +65,16 @@ class MeasurementManager:
         command.vp = self.measurement.connection_2
         command.vn = self.measurement.connection_4
         command.send()
-        self.current_source_manager.set_current(self.measurement.current_limit)
+        self.current_source_manager.set_current(self.measurement.current_limit * 1e10)
 
     def setup_current_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
 
     def setup_voltage_measurement(self):
-        self.adc_manager.set_input_mode(InpmuxOptions.AIN0, InpmuxOptions.AIN1)
+        self.adc_manager.set_input_mode(InpmuxOptions.AIN8, InpmuxOptions.AIN1)
+
+    def measure_voltage_calibration(self):
+        return format_voltage(self.adc_manager.read_with_calibration())
 
     def test_motor_current(self):
         shunt = 0.5  # WSR2R5000FEA
@@ -77,19 +94,33 @@ class MeasurementManager:
     def measure_voltage(self):
         return (self.adc_manager.read_value() * 10 - 2.5) / 100
 
+        def measure_voltage_mux_chop(self):
+        v1 = format_voltage(self.adc_manager.read_value())
+        self.mux_manager.swap_voltage()
+        v2 = format_voltage(self.adc_manager.read_value())
+        return (v1 + v2) / 2
+
     def measure_current(self):
         shunt_resistance = self.current_source_manager.selected_re.re
         return self.adc_manager.read_value() / shunt_resistance * 10
 
     def measure_current_and_voltage(self):
         self.setup_voltage_measurement()
-        v = self.measure_voltage()
+        v = self.measure_voltage_mux_chop()
+        # v = self.measure_voltage_calibration()
         self.setup_current_measurement()
-        i = 10e-6  # used until we get this from the outside
-        # i = self.measure_current()
+        i = self.measure_current()
         return v, i
 
     def advance_motor(self, steps):
         speed = min(10, abs(steps))
+<<<<<<< HEAD
         # self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
         self.test_motor_current()
+=======
+        self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
+
+
+def format_voltage(value):
+    return (value * 10 - 2.5) / 100
+>>>>>>> master

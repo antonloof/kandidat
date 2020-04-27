@@ -55,12 +55,10 @@ class MeasurementView(viewsets.ModelViewSet):
 
     def measure_operation(self):
         with self.measurement_manager:
+            self.measurement_manager.begin()
             self.measurement_manager.set_up_mobility_measurement()
             measurement = self.measurement_manager.measurement
             r_mu_s = []
-
-            for _ in range(5):
-                self.measurement_manager.measure_current_and_voltage()  # dummy measurement
 
             measurement_count = STEPS_PER_TURN // measurement.steps_per_measurement
             for _ in range(measurement_count):
@@ -144,12 +142,13 @@ class MeasurementView(viewsets.ModelViewSet):
 
             measurement.mobility = mu
             measurement.sheet_resistance = rs
-            measurement.save()
+            self.measurement_manager.end()
 
 
 class TestMuxView(MeasurementView):
     def measure_operation(self):
         with self.measurement_manager:
+            self.measurement_manager.begin()
             log = ""
             self.measurement_manager.set_up_mobility_measurement()
             c1 = self.measurement_manager.measurement.connection_1
@@ -177,7 +176,7 @@ class TestMuxView(MeasurementView):
                     log += f"Test SUCCESS for i = {index}\n"
 
             self.measurement_manager.measurement.description = log
-            self.measurement_manager.measurement.save()
+            self.measurement_manager.end()
 
 
 class RhValueView(viewsets.ModelViewSet):

@@ -34,13 +34,18 @@ class MotorManager:
         for pin in self.pins:
             pi.set_mode(pin, pigpio.OUTPUT)
         pi.set_mode(ENABLE_PIN, pigpio.OUTPUT)
-        pi.write(ENABLE_PIN, 1)
         self.current_step = 0
 
-    def close(self):
+    def begin(self):
+        self.pi.write(ENABLE_PIN, 1)
+
+    def end(self):
         for pin in self.pins:
             self.pi.write(pin, 0)
         self.pi.write(ENABLE_PIN, 0)
+
+    def close(self):
+        pass
 
     def step(self, micro_step=False, direction=1):
         for i, value in enumerate(STEP_SEQUENCE[self.current_step]):

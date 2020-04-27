@@ -14,6 +14,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -55,6 +57,8 @@ const routes: Routes = [
     MatNativeDateModule,
     MatDialogModule,
     MatSelectModule,
+    MatIconModule,
+    MatTooltipModule,
     ReactiveFormsModule,
   ],
   providers: [],

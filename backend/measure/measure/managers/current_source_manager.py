@@ -46,12 +46,16 @@ class CurrentSourceManager:
         self.selected_re = None
         for re in RES:
             self.pi.set_mode(re.pin, pigpio.OUTPUT)
-        self.write_re(RES[-1])
         self.pi.set_mode(SATURATION_DETECT_PIN, pigpio.INPUT)
+
+    def begin(self):
+        self.write_re(RES[-1])
         self.write_dac(OpCode.EEPROM, Power.OFF100K, 0)
 
-    def close(self):
+    def end(self):
         self.write_dac(OpCode.NORMAL, Power.OFF100K, 0)
+
+    def close(self):
         self.pi.i2c_close(self.i2c)
 
     def is_saturated(self):
@@ -61,6 +65,7 @@ class CurrentSourceManager:
         self.write_dac(OpCode.NORMAL, Power.ON, value)
 
     def write_dac(self, opcode, power, value, timeout_s=1):
+        return  # only for test
         assert power < 4, f"power cant be greater than 3, got {power}"
         assert value < 0x1000, f"Value must fit in 12 bits, got {value}"
         assert opcode in (2, 3), f"opcode must be one of 1,2,3, got {opcode}"

@@ -7,14 +7,19 @@ class MuxManager:
     def __init__(self, pi):
         self.pi = pi
         self.spi = pi.spi_open(1, 50000, 0)
+        self.last_command = None
+        self.pi.set_mode(ENABLE_PIN, pigpio.OUTPUT)
+
+    def begin(self):
         self.last_command = MuxCommand(self)
         self.last_command.send()
-        self.pi.set_mode(ENABLE_PIN, pigpio.OUTPUT)
         self.pi.write(ENABLE_PIN, 1)
+
+    def end(self):
+        self.pi.write(ENABLE_PIN, 0)
 
     def close(self):
         self.pi.spi_close(self.spi)
-        self.pi.write(ENABLE_PIN, 0)
 
     def transfer(self, command):
         self.last_command = command
@@ -24,6 +29,12 @@ class MuxManager:
 
     def command(self):
         return MuxCommand(self, self.last_command)
+
+    def swap_voltage(self):
+        command = self.command()
+        command.vp = self.last_command.vn
+        command.vn = self.last_command.vp
+        command.send()
 
 
 class MuxCommand:
