@@ -26,6 +26,7 @@ import { DetailsComponent } from './details/details.component';
 import { SpeedPipe } from './pipe/speed.pipe';
 import { ChartsModule } from 'ng2-charts';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CloseDialogComponent } from './close-dialog/close-dialog.component';
 
 const routes: Routes = [
   { path: '', component: StartPageComponent },
@@ -43,6 +44,7 @@ const routes: Routes = [
     MeasureDialogComponent,
     DetailsComponent,
     SpeedPipe,
+    CloseDialogComponent,
   ],
   imports: [
     FormsModule,
@@ -66,6 +68,6 @@ const routes: Routes = [
   ],
   providers: [SpeedPipe, MobilityPipe, SheetResistancePipe],
   bootstrap: [AppComponent],
-  entryComponents: [MeasureDialogComponent],
+  entryComponents: [MeasureDialogComponent, CloseDialogComponent],
 })
 export class AppModule {}

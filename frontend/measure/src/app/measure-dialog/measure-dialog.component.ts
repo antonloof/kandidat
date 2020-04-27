@@ -9,7 +9,6 @@ import {
   FormGroupDirective,
   NgForm,
 } from '@angular/forms';
-import { BackendService } from '../backend.service';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 interface Speed {
@@ -60,7 +59,6 @@ export class MeasureDialogComponent implements OnInit {
   ];
 
   constructor(
-    private backend: BackendService,
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
     fb: FormBuilder
   ) {
@@ -120,12 +118,7 @@ export class MeasureDialogComponent implements OnInit {
 
   startMeasurement() {
     if (this.form.valid) {
-      this.backend
-        .create_measurement(this.getMeasurement())
-        .subscribe(measurement => {
-          console.log(measurement);
-        });
-      this.dialogRef.close();
+      this.dialogRef.close(this.getMeasurement());
     }
   }
 

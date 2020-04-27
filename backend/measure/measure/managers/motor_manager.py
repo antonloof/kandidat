@@ -53,7 +53,6 @@ class MotorManager:
             self.current_step = len(STEP_SEQUENCE) - 1
 
     def turn(self, steps, micro_step=False, steps_per_second=10):
-        # return # for testing
         micro_multiplier = 2 if micro_step else 1
 
         for _ in range(abs(steps) * micro_multiplier):

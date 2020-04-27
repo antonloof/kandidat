@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { filter, map, mergeAll } from 'rxjs/operators';
+
 import { BackendService } from '../backend.service';
 import { PaginatedList } from '../classes/paginated-list';
 import { Measurement, CreateMeasurement } from '../classes/measurement';
@@ -7,6 +10,7 @@ import { MatTable } from '@angular/material/table';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 
 import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.component';
+import { CloseDialogComponent } from '../close-dialog/close-dialog.component';
 
 @Component({
   selector: 'app-start-page',
@@ -36,11 +40,22 @@ export class StartPageComponent implements OnInit {
     this.fetch_page();
   }
 
-  openDialog() {
+  start_measurement() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
-    this.dialog.open(MeasureDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(MeasureDialogComponent, dialogConfig);
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(x => !!x),
+        map(x => this.backend.create_measurement(x), this.backend),
+        mergeAll()
+      )
+      .subscribe(measurement => {
+        this.measurements.results.unshift(measurement);
+        this.table.renderRows();
+      });
   }
 
   reset_filters(): void {
@@ -64,15 +79,28 @@ export class StartPageComponent implements OnInit {
       this.measurements = res;
     });
   }
-
+  //
   close_measurement(id: number): void {
-    this.backend.update_measurement(id, { open: false }).subscribe(res => {
-      const i = this.measurements.results.findIndex(
-        measurement => measurement.id === id
-      );
-      this.measurements.results[i] = res;
-      this.table.renderRows();
+    const dialog_ref = this.dialog.open(CloseDialogComponent, {
+      data: { id: id },
     });
+    dialog_ref
+      .afterClosed()
+      .pipe(
+        filter(x => !!x),
+        map(
+          x => this.backend.update_measurement(x, { open: false }),
+          this.backend
+        ),
+        mergeAll()
+      )
+      .subscribe(res => {
+        const i = this.measurements.results.findIndex(
+          measurement => measurement.id === id
+        );
+        this.measurements.results[i] = res;
+        this.table.renderRows();
+      });
   }
 
   private format_filters(): any {
