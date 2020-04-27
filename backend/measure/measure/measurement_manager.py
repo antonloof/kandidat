@@ -65,7 +65,7 @@ class MeasurementManager:
         command.vp = self.measurement.connection_2
         command.vn = self.measurement.connection_4
         command.send()
-        self.current_source_manager.set_current(self.measurement.current_limit * 1e10)
+        self.current_source_manager.set_current(self.measurement.current_limit)
 
     def setup_current_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)

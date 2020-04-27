@@ -151,32 +151,45 @@ class TestMuxView(MeasurementView):
             self.measurement_manager.begin()
             log = ""
             self.measurement_manager.set_up_mobility_measurement()
-            c1 = self.measurement_manager.measurement.connection_1
-            c2 = self.measurement_manager.measurement.connection_2
-            for index in range(c1, c2 + 1):
+            self.measurement_manager.current_source_manager.set_current(1e-3)
+            for index in range(1, 17):
                 command = self.measurement_manager.mux_manager.command()
                 command.vp = index
+                command.cp = index
+                command.vn = index + 16
+                command.cn = index + 16
+                command.send()
+                sleep(0.1)
+                log += self.test_one()
+
+                command = self.measurement_manager.mux_manager.command()
                 command.vn = index
                 command.cn = index
-                command.cp = index
+                command.vp = index + 16
+                command.cp = index + 16
                 command.send()
-
                 sleep(0.1)
-                v, i = self.measurement_manager.measure_current_and_voltage()
-                r = v / i
-                log += f"v = {v}, i = {i} r = {r}\n"
-                failed = False
-                if abs(r - 1e3) > 100:
-                    log += f"Test failed for i = {index} (resistance)\n"
-                    failed = True
-                if self.measurement_manager.current_source_manager.is_saturated():
-                    log += f"Test failed for i = {index} (saturation)\n"
-                    failed = True
-                if not failed:
-                    log += f"Test SUCCESS for i = {index}\n"
+                log += self.test_one()
 
             self.measurement_manager.measurement.description = log
             self.measurement_manager.end()
+
+    def test_one(self):
+        log = ""
+        v, i = self.measurement_manager.measure_current_and_voltage()
+        r = v / i
+        log += f"v = {v}, r = {r}\n"
+        failed = False
+        last_command = self.measurement_manager.mux_manager.last_command
+        if abs(r - 1e3) > 100:
+            log += f"Test failed for {last_command} (resistance)\n"
+            failed = True
+        if self.measurement_manager.current_source_manager.is_saturated():
+            log += f"Test failed for {last_command} (saturation)\n"
+            failed = True
+        if not failed:
+            log += f"Test SUCCESS for {last_command}\n"
+        return log
 
 
 class RhValueView(viewsets.ModelViewSet):

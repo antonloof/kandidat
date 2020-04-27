@@ -81,6 +81,9 @@ class MuxCommand:
     def send(self):
         self.mux_manager.transfer(self)
 
+    def __str__(self):
+        return f"v: {self.vp} -> {self.vn}, i: {self.cp} -> {self.cn}"
+
 
 def update_data(data, mask, bits):
     bits_i = 0
