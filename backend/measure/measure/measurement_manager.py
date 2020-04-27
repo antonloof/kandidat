@@ -92,9 +92,6 @@ class MeasurementManager:
         ), f"Too high current in the motor, something is broken. {current_b}A"
 
     def measure_voltage(self):
-        return (self.adc_manager.read_value() * 10 - 2.5) / 100
-
-        def measure_voltage_mux_chop(self):
         v1 = format_voltage(self.adc_manager.read_value())
         self.mux_manager.swap_voltage()
         v2 = format_voltage(self.adc_manager.read_value())
@@ -114,13 +111,9 @@ class MeasurementManager:
 
     def advance_motor(self, steps):
         speed = min(10, abs(steps))
-<<<<<<< HEAD
-        # self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
         self.test_motor_current()
-=======
         self.motor_manager.turn(steps, micro_step=True, steps_per_second=speed)
 
 
 def format_voltage(value):
     return (value * 10 - 2.5) / 100
->>>>>>> master
