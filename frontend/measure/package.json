@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prettier": "prettier --single-quote --arrow-parens avoid --write src"
+    "prettier": "prettier --single-quote --arrow-parens avoid --write src",
+    "prettier-check": "prettier --single-quote --arrow-parens avoid --check src"
   },
   "private": true,
   "dependencies": {

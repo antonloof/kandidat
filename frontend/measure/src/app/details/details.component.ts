@@ -20,103 +20,7 @@ import { SheetResistancePipe } from '../pipe/sheet-resistance.pipe';
 export class DetailsComponent implements OnInit {
   measurement: Measurement;
   rhValue: PaginatedList<RhValue>;
-  measurementData = [];
-  rhvalueData = [];
-  measurementName = '';
-  id = +this.route.snapshot.paramMap.get('id');
-
-  constructor(private route: ActivatedRoute, private backend: BackendService) {}
-
-  getMeasurement(): void {
-    this.backend.get_measurement(this.id).subscribe((measurement: Measurement) => {
-      this.measurementData = [
-        { name1: 'Name:', name: measurement.name },
-        { name1: 'Measurement id:', measurement_id: measurement.id },
-        { name1: 'Created at:', created_at: measurement.created_at },
-        { name1: 'Description:', description: measurement.description },
-        {
-          name1: 'Speed:',
-          speed: new SpeedPipe().transform(measurement.steps_per_measurement),
-        },
-        { name1: 'Current limit:', current_limit: measurement.current_limit },
-        {
-          name1: 'Connections:',
-          connections1: measurement.connection_1,
-          connection_2: measurement.connection_2,
-          connection_3: measurement.connection_3,
-          connection_4: measurement.connection_4,
-        },
-        {
-          name1: 'Mobility:',
-          mobility: new MobilityPipe().transform(measurement.mobility),
-        },
-        {
-          name1: 'Sheet Resistans:',
-          sheet_resistanse: new SheetResistancePipe().transform(
-            measurement.sheet_resistance
-          ),
-        },
-        { name1: 'Amplitude:', amplitude: measurement.amplitude },
-        { name1: 'Angle frequency:', angle_freq: measurement.angle_freq },
-        { name1: 'Phase:', phase: measurement.phase },
-        { name1: 'Offset', offset: measurement.offset },
-      ];
-      this.measurementName = measurement.name;
-      this.measurement = measurement;
-    });
-  }
-
-  values: number[];
-  ids: number[];
-
-  getrhValues(): void {
-    this.backend.get_rh_values_for_measurement(this.id).subscribe((rhValue: PaginatedList<RhValue>) => {
-      this.values = rhValue.results.map(v => v.value);
-      this.ids = rhValue.results.map(i => i.angle);
-      this.chartData = [
-        { data: this.values, label: 'Graph of measured Rh-values' },
-      ];
-      this.chartLabels = this.ids;
-      let datarhValue = rhValue.results.map(obj => {
-        return {
-          id: obj.angle,
-          value: obj.value,
-        };
-      });
-      let dataLabels = [
-        { name: '', name2: '' },
-        { name: 'Angle', name2: 'Rh Value' },
-      ];
-      this.measurementData = this.measurementData
-        .concat(dataLabels)
-        .concat(datarhValue);
-      this.rhValue = rhValue;
-    });
-  }
-
-  ngOnInit(): void {
-    this.getMeasurement(), this.getrhValues();
-  }
-
-  options = {
-    fieldSeparator: ';',
-    quoteStrings: '"',
-    decimalseparator: '.',
-    showLabels: true,
-    showTitle: true,
-    title: '',
-    useBom: false,
-    noDownload: false,
-    headers: [],
-  };
-
-  download_image() {
-    const canvas = document.getElementsByTagName('canvas')[0].toDataURL();
-    const link = document.createElement('a');
-    link.download = this.measurementName;
-    link.href = canvas;
-    link.click();
-  }
+  id: number;
 
   chartOptions = {
     responsive: true,
@@ -139,9 +43,7 @@ export class DetailsComponent implements OnInit {
       ],
     },
   };
-
   chartData = [{ data: [0], label: '' }];
-
   chartLabels = [0];
 
   lineChartColors: Color[] = [
@@ -149,23 +51,109 @@ export class DetailsComponent implements OnInit {
       // red
       backgroundColor: 'rgba(0,0,0,0)',
       borderColor: 'red',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(255,0,0,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)',
-    },
-    {
-      // dark grey
-      backgroundColor: 'rgba(0,0,0,0)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)',
+      pointHoverBorderColor: 'rgba(255,0,0,0.8)',
     },
   ];
 
-  results() {
-    new ngxCsv(this.measurementData, this.measurementName, this.options);
+  constructor(
+    private route: ActivatedRoute,
+    private backend: BackendService,
+    private speed: SpeedPipe,
+    private mobility: MobilityPipe,
+    private sheetResistance: SheetResistancePipe
+  ) {}
+
+  ngOnInit(): void {
+    this.id = +this.route.snapshot.paramMap.get('id');
+    this.getMeasurement();
+    this.getRhValues();
+  }
+
+  getMeasurement(): void {
+    this.backend
+      .get_measurement(this.id)
+      .subscribe((measurement: Measurement) => {
+        this.measurement = measurement;
+      });
+  }
+
+  getRhValues(): void {
+    const request = this.backend.get_rh_values_for_measurement(this.id);
+    request.subscribe((rhValue: PaginatedList<RhValue>) => {
+      this.rhValue = rhValue;
+      this.chartLabels = this.rhValue.results.map(i => i.angle);
+      this.chartData = [
+        { data: this.rhValue.results.map(v => v.value), label: 'Rh' },
+      ];
+    });
+  }
+
+  download_image() {
+    const canvas = document.getElementsByTagName('canvas')[0].toDataURL();
+    const link = document.createElement('a');
+    link.download = this.measurement.name;
+    link.href = canvas;
+    link.click();
+  }
+
+  downloadCsv() {
+    let measurementData: any[] = [
+      { name: 'Name:', measurementName: this.measurement.name },
+      { name: 'Measurement id:', measurement_id: this.measurement.id },
+      { name: 'Created at:', created_at: this.measurement.created_at },
+      { name: 'Description:', description: this.measurement.description },
+      {
+        name: 'Speed:',
+        speed: this.speed.transform(this.measurement.steps_per_measurement),
+      },
+      { name: 'Current limit:', current_limit: this.measurement.current_limit },
+      {
+        name: 'Connections:',
+        connection_1: this.measurement.connection_1,
+        connection_2: this.measurement.connection_2,
+        connection_3: this.measurement.connection_3,
+        connection_4: this.measurement.connection_4,
+      },
+      {
+        name: 'Mobility:',
+        mobility: this.mobility.transform(this.measurement.mobility),
+      },
+      {
+        name: 'Sheet Resistans:',
+        sheet_resistanse: this.sheetResistance.transform(
+          this.measurement.sheet_resistance
+        ),
+      },
+      { name: 'Amplitude:', amplitude: this.measurement.amplitude },
+      { name: 'Angle frequency:', angle_freq: this.measurement.angle_freq },
+      { name: 'Phase:', phase: this.measurement.phase },
+      { name: 'Offset', offset: this.measurement.offset },
+    ];
+    const datarhValue = this.rhValue.results.map(obj => {
+      return {
+        id: obj.angle,
+        value: obj.value,
+      };
+    });
+    const dataLabels = [
+      { name: '', name2: '' },
+      { name: 'Angle', name2: 'Rh Value' },
+    ];
+    measurementData = measurementData.concat(dataLabels).concat(datarhValue);
+    const options = {
+      fieldSeparator: ';',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: true,
+      title: '',
+      useBom: false,
+      noDownload: false,
+      headers: [],
+    };
+    new ngxCsv(measurementData, this.measurement.name, options);
   }
 }

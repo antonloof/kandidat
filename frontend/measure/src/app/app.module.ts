@@ -30,7 +30,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 const routes: Routes = [
   { path: '', component: StartPageComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'details/:id', component: DetailsComponent},
+  { path: 'details/:id', component: DetailsComponent },
 ];
 
 @NgModule({
@@ -42,7 +42,7 @@ const routes: Routes = [
     AboutComponent,
     MeasureDialogComponent,
     DetailsComponent,
-    SpeedPipe
+    SpeedPipe,
   ],
   imports: [
     FormsModule,
@@ -64,7 +64,7 @@ const routes: Routes = [
     ChartsModule,
     FlexLayoutModule,
   ],
-  providers: [],
+  providers: [SpeedPipe, MobilityPipe, SheetResistancePipe],
   bootstrap: [AppComponent],
   entryComponents: [MeasureDialogComponent],
 })

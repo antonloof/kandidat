@@ -1,15 +1,62 @@
-<mat-card>
-  <mat-card-content>
+<mat-card class="mat-elevation-z4">
+  <mat-card-header>
     <mat-card-title>
-      {{ measurement.name }}
+      Details for measurement: {{ measurement?.name | titlecase }}
     </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="grid">
+      <div class="canvas-wrapper">
+        <canvas
+          baseChart
+          chartType="line"
+          [datasets]="chartData"
+          [labels]="chartLabels"
+          [options]="chartOptions"
+          [colors]="lineChartColors"
+          [legend]="true"
+        >
+        </canvas>
+      </div>
+      <h3>Name</h3>
+      <div>{{ measurement?.name }}</div>
+      <h3>Date</h3>
+      <div>{{ measurement?.created_at | date }}</div>
+      <h3>Description</h3>
+      <div>{{ measurement?.description }}</div>
+      <h3>Speed</h3>
+      <div>{{ measurement?.steps_per_measurement | speed }}</div>
+      <h3>Connections</h3>
+      <div>
+        <div class="connections-wrapper">
+          <div>{{ measurement?.connection_1 }}</div>
+          <div class="right">{{ measurement?.connection_4 }}</div>
+          <div class="bottom">
+            <span>{{ measurement?.connection_2 }}</span>
+          </div>
+          <div class="bottom right">
+            <span>{{ measurement?.connection_3 }}</span>
+          </div>
+        </div>
+      </div>
+      <h3>Carrier mobility</h3>
+      <div>{{ measurement?.mobility | mobility }}</div>
+      <h3>Sheet Resistans</h3>
+      <div>{{ measurement?.sheet_resistance | sheetResistance }}</div>
+      <h3>Amplitude</h3>
+      <div>{{ measurement?.amplitude }}</div>
+      <h3>Phase</h3>
+      <div>{{ measurement?.phase }}</div>
+      <h3>Offset</h3>
+      <div>{{ measurement?.offset }}</div>
+    </div>
   </mat-card-content>
   <mat-card-actions>
     <button
       mat-raised-button
       color="primary"
       class="btn btn-success"
-      (click)="results()"
+      (click)="downloadCsv()"
     >
       Export data to csv
     </button>
@@ -22,51 +69,4 @@
       Export graph as PNG
     </button>
   </mat-card-actions>
-</mat-card>
-<mat-card>
-  <mat-card-content>
-    <div
-      class="container"
-      fxLayout
-      fxLayout.xs="column"
-      fxLayoutAlign="center"
-      fxLayoutGap="10px"
-      fxLayoutGap.xs="0"
-    >
-      <div class="item item-1" fxFlex="50%">
-        <h3>Measurement name: {{ measurement.name }}</h3>
-        <h3>Description: {{ measurement.description }}</h3>
-        <h3>Created at: {{ measurement.created_at }}</h3>
-        <h3>Speed: {{ measurement.steps_per_measurement | speed }}</h3>
-        <h3>
-            Connections: {{ measurement.connection_1 }},
-            {{ measurement.connection_2 }}, {{ measurement.connection_3 }},
-            {{ measurement.connection_4 }}
-        </h3>
-        <h3>Carrier mobility: {{ measurement.mobility | mobility }}</h3>
-        <h3>
-          Sheet Resistans: {{ measurement.sheet_resistance | sheetResistance }}
-        </h3>
-        <h3>Amplitude: {{ measurement.amplitude }}</h3>
-        <h3>Phase: {{ measurement.phase }}</h3>
-        <h3>Offset: {{ measurement.offset }}</h3>
-        
-      </div>
-
-      <div class="item item-2" fxFlex="50%">
-        <canvas
-          baseChart
-          width="450"
-          height="300"
-          [chartType]="'line'"
-          [datasets]="chartData"
-          [labels]="chartLabels"
-          [options]="chartOptions"
-          [colors]="lineChartColors"
-          [legend]="true"
-        >
-        </canvas>
-      </div>
-    </div>
-  </mat-card-content>
 </mat-card>
