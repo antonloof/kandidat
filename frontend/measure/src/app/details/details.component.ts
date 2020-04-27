@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
 import { ActivatedRoute } from '@angular/router';
 
@@ -96,17 +96,18 @@ export class DetailsComponent implements OnInit {
       this.chartLabels = this.rhValue.results.map(i => i.angle);
       this.chartData = [
         { data: this.rhValue.results.map(v => v.value), label: 'Rh' },
-        { data: this.getFittedCurve(), label: 'Fitted Curve'},
+        { data: this.getFittedCurve(), label: 'Fitted Curve' },
       ];
     });
   }
 
   getFittedCurve() {
-    const fit = [...Array(100).fill(0)];
-    for(let i=0; i<100; i++) {
-      fit[i] = this.measurement.amplitude * 
-        Math.sin(this.measurement.angle_freq * i + this.measurement.phase) +
-      this.measurement.offset;
+    const fit = [...Array(360).fill(0)];
+    for(let i=0; i<360; i++) {
+      fit[i] = 
+        this.measurement.amplitude * 
+          Math.sin(this.measurement.angle_freq * i + this.measurement.phase) +
+        this.measurement.offset;
     }
     return fit;
   }
@@ -148,7 +149,7 @@ export class DetailsComponent implements OnInit {
         ),
       },
       {},
-      { name: 'Parameters of the Fitted Curve'},
+      { name: 'Parameters of the Fitted Curve' },
       { name: 'Amplitude:', amplitude: this.measurement.amplitude },
       { name: 'Angle frequency:', angle_freq: this.measurement.angle_freq },
       { name: 'Phase:', phase: this.measurement.phase },
