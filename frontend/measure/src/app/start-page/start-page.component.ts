@@ -67,6 +67,7 @@ export class StartPageComponent implements OnInit {
     let query_params = {
       ...this.format_filters(),
       limit: this.page_size_options[0],
+      ordering: '-id',
     };
     if (page) {
       query_params = {

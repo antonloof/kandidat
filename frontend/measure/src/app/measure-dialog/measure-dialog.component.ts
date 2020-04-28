@@ -38,18 +38,18 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 })
 export class MeasureDialogComponent implements OnInit {
   form: FormGroup;
-  nameControl = new FormControl(null, [Validators.required]);
+  nameControl = new FormControl('name', [Validators.required]);
   currentControl = new FormControl(1e-6, [
     Validators.required,
     Validators.min(1e-9),
     Validators.max(3.3e3),
   ]);
-  connection1Control = new FormControl(null, [Validators.required]);
-  connection2Control = new FormControl(null, [Validators.required]);
-  connection3Control = new FormControl(null, [Validators.required]);
-  connection4Control = new FormControl(null, [Validators.required]);
+  connection1Control = new FormControl(0, [Validators.required]);
+  connection2Control = new FormControl(1, [Validators.required]);
+  connection3Control = new FormControl(2, [Validators.required]);
+  connection4Control = new FormControl(3, [Validators.required]);
   speedControl = new FormControl(10);
-  descriptionControl = new FormControl(null, [Validators.required]);
+  descriptionControl = new FormControl('he', [Validators.required]);
   errorStateMatcher = new CrossFieldErrorMatcher();
 
   speeds: Speed[] = [

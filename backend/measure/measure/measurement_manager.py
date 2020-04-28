@@ -56,25 +56,23 @@ class MeasurementManager:
 
     def set_up_mobility_measurement(self):
         self.adc_manager.reset()
-        self.adc_manager.enable_chop()
-        self.adc_manager.set_reference_mode(ReferenceMode.EXT0, ReferenceMode.SUPPLY)
+        # self.adc_manager.enable_chop()
+        self.adc_manager.set_reference_mode(ReferenceMode.EXT0, ReferenceMode.EXT0)
+        self.adc_manager.set_gain_data_rate(bypass=True)
         self.adc_manager.start()
         command = self.mux_manager.command()
         command.cp = self.measurement.connection_1
         command.cn = self.measurement.connection_3
         command.vp = self.measurement.connection_2
         command.vn = self.measurement.connection_4
+        self.current_source_manager.set_current(self.measurement.current_limit)
         command.send()
-        self.current_source_manager.set_current(self.measurement.current_limit * 1e10)
-
-    def setup_current_measurement(self):
-        self.adc_manager.set_input_mode(InpmuxOptions.AIN2, InpmuxOptions.AIN3)
 
     def setup_voltage_measurement(self):
-        self.adc_manager.set_input_mode(InpmuxOptions.AIN8, InpmuxOptions.AIN1)
+        self.adc_manager.set_input_mode(InpmuxOptions.AIN8, InpmuxOptions.AIN9)
 
     def measure_voltage_calibration(self):
-        return format_voltage(self.adc_manager.read_with_calibration())
+        return self.adc_manager.read_with_calibration() * 10 / 100
 
     def test_motor_current(self):
         shunt = 0.5  # WSR2R5000FEA
@@ -83,7 +81,6 @@ class MeasurementManager:
         current_a = abs(self.adc_manager.read_value() * 10 / shunt)
         self.adc_manager.set_input_mode(InpmuxOptions.AIN5, InpmuxOptions.AIN1)
         current_b = abs(self.adc_manager.read_value() * 10 / shunt)
-        print(current_a, current_b)
         assert (
             current_a < max_current
         ), f"Too high current in the motor, something is broken. {current_a}A"
@@ -91,33 +88,19 @@ class MeasurementManager:
             current_b < max_current
         ), f"Too high current in the motor, something is broken. {current_b}A"
 
-    def measure_voltage_mux_chop(self):
-        v1 = format_voltage(self.adc_manager.read_value())
-        self.mux_manager.swap_voltage()
-        v2 = format_voltage(self.adc_manager.read_value())
-        return (v1 + v2) / 2
-
-    def measure_current(self):
-        shunt_resistance = self.current_source_manager.selected_re.re
-        return self.adc_manager.read_value() / shunt_resistance * 10
-
     def measure_current_and_voltage(self):
+        self.mux_manager.enable()
         self.setup_voltage_measurement()
-        v = self.measure_voltage_mux_chop()
-        # v = self.measure_voltage_calibration()
-        self.setup_current_measurement()
-        i = self.measure_current()
+        v = self.measure_voltage_calibration()
+        i = self.current_source_manager.current
+        self.mux_manager.disable()
         return v, i
 
     def advance_motor(self, steps, micro_step=True):
-        steps_per_second = min(10, abs(steps))
+        steps_per_second = 20  # min(20, abs(steps))
 
         micro_multiplier = 2 if micro_step else 1
         for _ in range(abs(steps) * micro_multiplier):
-            self.step(micro_step, sgn(steps))
-            self.test_motor_current()
+            self.motor_manager.step(micro_step, sgn(steps))
+            # self.test_motor_current()
             sleep(1 / (steps_per_second * micro_multiplier))
-
-
-def format_voltage(value):
-    return (value * 10 - 2.5) / 100

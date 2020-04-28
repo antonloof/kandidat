@@ -1,11 +1,11 @@
 import pigpio
 from time import sleep
 
-A1_PIN = 19
-A2_PIN = 13
-B1_PIN = 5
-B2_PIN = 26
-ENABLE_PIN = 6
+A1_PIN = 26
+A2_PIN = 19
+B1_PIN = 6
+B2_PIN = 5
+ENABLE_PIN = 13
 
 STEP_SEQUENCE = (
     (1, 0, 0, 1),
@@ -48,6 +48,7 @@ class MotorManager:
         pass
 
     def step(self, micro_step=False, direction=1):
+        self.pi.write(ENABLE_PIN, 1)
         for i, value in enumerate(STEP_SEQUENCE[self.current_step]):
             self.pi.write(self.pins[i], value)
         self.current_step += direction * (1 if micro_step else 2)

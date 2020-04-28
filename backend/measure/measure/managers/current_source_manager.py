@@ -29,10 +29,10 @@ class OpCode(IntEnum):
 DAC_I2C_ADDRESS = 0b1100001
 
 RES = [
-    EmitterResistance(pin=15, re=1e3),
-    EmitterResistance(pin=14, re=1e4),
-    EmitterResistance(pin=23, re=1e5),
-    EmitterResistance(pin=18, re=1e6),
+    EmitterResistance(pin=18, re=1e3),
+    EmitterResistance(pin=23, re=1e4),
+    EmitterResistance(pin=14, re=1e5),
+    EmitterResistance(pin=15, re=1e6),
 ]
 SATURATION_DETECT_PIN = 4
 VCC = 3.3
@@ -47,13 +47,17 @@ class CurrentSourceManager:
         for re in RES:
             self.pi.set_mode(re.pin, pigpio.OUTPUT)
         self.pi.set_mode(SATURATION_DETECT_PIN, pigpio.INPUT)
+        self.current = 0
 
     def begin(self):
-        self.write_re(RES[-1])
+        for re in RES:
+            self.pi.write(re.pin, 0)
         self.write_dac(OpCode.EEPROM, Power.OFF100K, 0)
 
     def end(self):
         self.write_dac(OpCode.NORMAL, Power.OFF100K, 0)
+        for re in RES:
+            self.pi.write(re.pin, 0)
 
     def close(self):
         self.pi.i2c_close(self.i2c)
@@ -65,7 +69,6 @@ class CurrentSourceManager:
         self.write_dac(OpCode.NORMAL, Power.ON, value)
 
     def write_dac(self, opcode, power, value, timeout_s=1):
-        return  # only for test
         assert power < 4, f"power cant be greater than 3, got {power}"
         assert value < 0x1000, f"Value must fit in 12 bits, got {value}"
         assert opcode in (2, 3), f"opcode must be one of 1,2,3, got {opcode}"
@@ -134,3 +137,4 @@ class CurrentSourceManager:
                 self.write_re(re)
                 break
         self.set_dac_value(value)
+        self.current = value / 2 ** DAC_BITS * VCC / self.selected_re.re
