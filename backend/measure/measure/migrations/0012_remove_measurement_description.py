@@ -6,12 +6,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('measure', '0011_measurement_error'),
+        ("measure", "0011_measurement_error"),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='measurement',
-            name='description',
-        ),
+        migrations.RemoveField(model_name="measurement", name="description",),
     ]
