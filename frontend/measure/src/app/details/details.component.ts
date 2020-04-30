@@ -86,6 +86,7 @@ export class DetailsComponent implements OnInit {
       .get_measurement(this.id)
       .subscribe((measurement: Measurement) => {
         this.measurement = measurement;
+        this.setChartData();
       });
   }
 
@@ -93,23 +94,27 @@ export class DetailsComponent implements OnInit {
     const request = this.backend.get_rh_values_for_measurement(this.id);
     request.subscribe((rhValue: PaginatedList<RhValue>) => {
       this.rhValue = rhValue;
-      this.chartLabels = this.rhValue.results.map(i => i.angle);
-      this.chartData = [
-        { data: this.rhValue.results.map(v => v.value), label: 'Rh' },
-        { data: this.getFittedCurve(), label: 'Fitted Curve' },
-      ];
+      this.setChartData();
     });
+  }
+  
+  setChartData(): void {
+    if (!this.rhValue) {
+      return;
+    }
+    this.chartLabels = this.rhValue.results.map(i => i.angle);
+    this.chartData = [
+      { data: this.rhValue.results.map(v => v.value), label: 'Rh' },
+      { data: this.getFittedCurve(), label: 'Fitted Curve' },
+    ];
   }
 
   getFittedCurve() {
-    const fit = [...Array(360).fill(0)];
-    for (let i = 0; i < 360; i++) {
-      fit[i] =
-        this.measurement.amplitude *
-          Math.sin(this.measurement.angle_freq * i + this.measurement.phase) +
-        this.measurement.offset;
-    }
-    return fit;
+    return this.rhValue.results.map(rh => {
+      return this.measurement.amplitude *
+          Math.sin(Math.PI / 180 * rh.angle + this.measurement.phase) +
+        this.measurement.offset
+    });
   }
 
   download_image() {
