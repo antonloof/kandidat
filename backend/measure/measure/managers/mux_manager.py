@@ -6,17 +6,23 @@ ENABLE_PIN = 12
 class MuxManager:
     def __init__(self, pi):
         self.pi = pi
-        self.spi = pi.spi_open(1, 50000, 0)
+        self.spi = pi.spi_open(1, 40000, 0)
         self.last_command = None
         self.pi.set_mode(ENABLE_PIN, pigpio.OUTPUT)
 
     def begin(self):
+        self.disable()
         self.last_command = MuxCommand(self)
         self.last_command.send()
-        self.pi.write(ENABLE_PIN, 1)
 
     def end(self):
+        self.disable()
+
+    def disable(self):
         self.pi.write(ENABLE_PIN, 0)
+
+    def enable(self):
+        self.pi.write(ENABLE_PIN, 1)
 
     def close(self):
         self.pi.spi_close(self.spi)
@@ -56,26 +62,24 @@ class MuxCommand:
         sel_mn = self.convert(self.vn)
         sel_gs = self.convert(self.cn)
         sel_mp = self.convert(self.vp)
-
         cs_pos = (0, 1, 2, 3, 4)
         mn_pos = (5, 6, 18, 19, 17)
-        gs_pos = (20, 21, 9, 23, 22)
+        gs_pos = (20, 21, 23, 9, 22)
         mp_pos = (10, 11, 12, 14, 13)
-
         data = self.position_bit(sel_cs, cs_pos)
         data |= self.position_bit(sel_mn, mn_pos)
         data |= self.position_bit(sel_gs, gs_pos)
         data |= self.position_bit(sel_mp, mp_pos)
-
         return data
 
     def convert(self, value):
-        return ((value % 8) << 3) + (~(value // 8))
+        return ((value & 0b111) << 2) | ((value // 8) ^ 0b11)
 
     def position_bit(self, value, poss):
         res = 0
         for i, pos in enumerate(poss):
-            res |= (value & (1 << i)) << pos
+            if value & (1 << i):
+                res |= 1 << pos
         return res
 
     def send(self):

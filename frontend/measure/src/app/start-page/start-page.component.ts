@@ -67,6 +67,7 @@ export class StartPageComponent implements OnInit {
     let query_params = {
       ...this.format_filters(),
       limit: this.page_size_options[0],
+      ordering: '-id',
     };
     if (page) {
       query_params = {
@@ -99,25 +100,6 @@ export class StartPageComponent implements OnInit {
           measurement => measurement.id === id
         );
         this.measurements.results[i] = res;
-        this.table.renderRows();
-      });
-  }
-
-  // remove after mux test :D
-  test_mux() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    const dialogRef = this.dialog.open(MeasureDialogComponent, dialogConfig);
-    dialogRef
-      .afterClosed()
-      .pipe(
-        filter(x => !!x),
-        map(x => this.backend.test_mux(x), this.backend),
-        mergeAll()
-      )
-      .subscribe(measurement => {
-        this.measurements.results.unshift(measurement);
         this.table.renderRows();
       });
   }
