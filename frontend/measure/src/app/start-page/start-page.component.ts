@@ -104,25 +104,6 @@ export class StartPageComponent implements OnInit {
       });
   }
 
-  // remove after mux test :D
-  test_mux() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = false;
-    dialogConfig.autoFocus = true;
-    const dialogRef = this.dialog.open(MeasureDialogComponent, dialogConfig);
-    dialogRef
-      .afterClosed()
-      .pipe(
-        filter(x => !!x),
-        map(x => this.backend.test_mux(x), this.backend),
-        mergeAll()
-      )
-      .subscribe(measurement => {
-        this.measurements.results.unshift(measurement);
-        this.table.renderRows();
-      });
-  }
-
   private format_filters(): any {
     const formatted_filters = {};
     Object.entries(this.filters).forEach(kvp => {
