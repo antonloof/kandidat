@@ -41,8 +41,10 @@
       </div>
       <h3>Carrier mobility</h3>
       <div>{{ measurement?.mobility | mobility }} cm^2/(Vs)</div>
-      <h3>Sheet Resistans</h3>
+      <h3>Sheet Resistance</h3>
       <div>{{ measurement?.sheet_resistance | sheetResistance }} &#8486;</div>
+      <h3>Fit curve error RMS</h3>
+      <div>{{ fitCurveErrorRms | toprecision }} &#8486;</div>
     </div>
   </mat-card-content>
   <mat-card-actions>
