@@ -10,6 +10,7 @@ import {
   NgForm,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { LocalStorageService } from '../local-storage.service';
 
 interface Speed {
   value: number;
@@ -73,26 +74,36 @@ export class MeasureDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group(
-      {
-        Speed: this.speedControl,
-        Current: this.currentControl,
-        Name: this.nameControl,
-        Description: this.descriptionControl,
-        Con1: this.connection1Control,
-        Con2: this.connection2Control,
-        Con3: this.connection3Control,
-        Con4: this.connection4Control,
-      },
-      {
-        validators: [this.connectionDuplicateValidator],
-      }
-    );
+    this.dialogRef.beforeClosed().subscribe(() => {
+      Object.keys(this.form.controls).forEach(key => {
+        this.localStorage.set(key, this.form.controls[key].value);
+      });
+    });
+    const controls = {
+      Speed: this.speedControl,
+      Current: this.currentControl,
+      Name: this.nameControl,
+      Description: this.descriptionControl,
+      Con1: this.connection1Control,
+      Con2: this.connection2Control,
+      Con3: this.connection3Control,
+      Con4: this.connection4Control,
+    };
+    this.form = this.fb.group(controls, {
+      validators: [this.connectionDuplicateValidator],
+    });
     this.form.controls['Speed'].setValue(10, { onlySelf: true });
+    Object.keys(this.form.controls).forEach(key => {
+      const value = this.localStorage.get(key);
+      if (value) {
+        this.form.controls[key].setValue(value);
+      }
+    });
   }
 
   connectionDuplicateValidator(form: FormGroup) {
@@ -129,9 +140,5 @@ export class MeasureDialogComponent implements OnInit {
     if (this.form.valid) {
       this.dialogRef.close(this.getMeasurement());
     }
-  }
-
-  cancel() {
-    this.dialogRef.close();
   }
 }
