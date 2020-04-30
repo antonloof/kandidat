@@ -8,12 +8,13 @@ export class SpeedPipe implements PipeTransform {
     if (value === null) {
       return '';
     }
-    if (value === 2) {
+    if (value === 3) {
       return 'Low Speed, High Resolution';
-    } else if (value === 10) {
+    } else if (value === 5) {
       return 'Medium Speed, Medium Resolution';
-    } else if (value === 20) {
+    } else if (value === 10) {
       return 'High Speed, Low Resolution';
     }
+    return String(value);
   }
 }

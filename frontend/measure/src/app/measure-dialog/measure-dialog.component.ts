@@ -66,9 +66,9 @@ export class MeasureDialogComponent implements OnInit {
   errorStateMatcher = new CrossFieldErrorMatcher();
 
   speeds: Speed[] = [
-    { value: 20, viewValue: 'High Speed : Low Resolution' },
-    { value: 10, viewValue: 'Medium Speed : Medium Resolution' },
-    { value: 2, viewValue: 'Low Speed : High Resolution' },
+    { value: 10, viewValue: 'High Speed : Low Resolution' },
+    { value: 5, viewValue: 'Medium Speed : Medium Resolution' },
+    { value: 3, viewValue: 'Low Speed : High Resolution' },
   ];
 
   constructor(
