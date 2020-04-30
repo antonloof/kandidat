@@ -93,7 +93,7 @@ export class MeasureDialogComponent implements OnInit {
   }
 
   connectionDuplicateValidator(form: FormGroup) {
-    const values = this.connections.map(c => c.control.value);
+    const values = [1,2,3,4].map(i => return form.get("Con" + i).value);
     const duplicatesIndexes = values
       .map((v, i) => [i, values.indexOf(v), values.lastIndexOf(v), v])
       .filter(t => t[0] != t[1] || t[0] != t[2])
