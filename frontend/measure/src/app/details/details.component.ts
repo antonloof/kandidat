@@ -97,9 +97,9 @@ export class DetailsComponent implements OnInit {
       this.setChartData();
     });
   }
-  
+
   setChartData(): void {
-    if (!this.rhValue) {
+    if (!this.rhValue || !this.measurement) {
       return;
     }
     this.chartLabels = this.rhValue.results.map(i => i.angle);
@@ -111,9 +111,11 @@ export class DetailsComponent implements OnInit {
 
   getFittedCurve() {
     return this.rhValue.results.map(rh => {
-      return this.measurement.amplitude *
-          Math.sin(Math.PI / 180 * rh.angle + this.measurement.phase) +
+      return (
+        this.measurement.amplitude *
+          Math.sin((Math.PI / 180) * rh.angle + this.measurement.phase) +
         this.measurement.offset
+      );
     });
   }
 
