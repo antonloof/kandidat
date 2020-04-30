@@ -22,7 +22,6 @@ class MeasurementSerializer(serializers.ModelSerializer):
             "connection_4",
             "current_limit",
             "name",
-            "description",
             "steps_per_measurement",
             "error",
         )

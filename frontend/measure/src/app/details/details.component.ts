@@ -132,7 +132,6 @@ export class DetailsComponent implements OnInit {
       { name: 'Name:', measurementName: this.measurement.name },
       { name: 'Measurement id:', measurement_id: this.measurement.id },
       { name: 'Created at:', created_at: this.measurement.created_at },
-      { name: 'Description:', description: this.measurement.description },
       {
         name: 'Speed:',
         speed: this.speed.transform(this.measurement.steps_per_measurement),

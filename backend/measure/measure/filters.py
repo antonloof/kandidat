@@ -16,7 +16,6 @@ class MeasurementFilter(django_filters.FilterSet):
         fields = {
             "open": ["exact"],
             "name": ["icontains"],
-            "description": ["icontains"],
             "created_at": ["gt", "lt"],
         }
 

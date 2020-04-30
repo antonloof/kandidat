@@ -62,7 +62,6 @@ export class MeasureDialogComponent implements OnInit {
     { no: 4, control: this.connection4Control },
   ];
   speedControl = new FormControl(10);
-  descriptionControl = new FormControl(null, [Validators.required]);
   errorStateMatcher = new CrossFieldErrorMatcher();
 
   speeds: Speed[] = [
@@ -82,7 +81,6 @@ export class MeasureDialogComponent implements OnInit {
         Speed: this.speedControl,
         Current: this.currentControl,
         Name: this.nameControl,
-        Description: this.descriptionControl,
         Con1: this.connection1Control,
         Con2: this.connection2Control,
         Con3: this.connection3Control,
@@ -121,7 +119,6 @@ export class MeasureDialogComponent implements OnInit {
       current_limit: this.currentControl.value,
       steps_per_measurement: this.speedControl.value,
       name: this.nameControl.value,
-      description: this.descriptionControl.value,
     };
   }
 

@@ -171,7 +171,6 @@ class TestMuxView(MeasurementView):
                 sleep(0.1)
                 log += self.test_one()
 
-            self.measurement_manager.measurement.description = log
             self.measurement_manager.end()
 
     def test_one(self):
