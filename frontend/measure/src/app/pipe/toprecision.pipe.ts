@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'toprecision'
+  name: 'toprecision',
 })
 export class ToprecisionPipe implements PipeTransform {
   transform(value: number, digits?: number): string {
@@ -11,8 +11,6 @@ export class ToprecisionPipe implements PipeTransform {
     if (!digits) {
       digits = 4;
     }
-    return `${parseFloat((value).toPrecision(digits))}`;
-
+    return `${parseFloat(value.toPrecision(digits))}`;
   }
-
 }
