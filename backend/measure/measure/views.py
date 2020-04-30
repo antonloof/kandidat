@@ -160,55 +160,6 @@ class MeasurementView(viewsets.ModelViewSet):
             self.measurement_manager.end()
 
 
-class TestMuxView(MeasurementView):
-    def measure_operation(self):
-        with self.measurement_manager:
-            self.measurement_manager.begin()
-            log = ""
-
-            self.measurement_manager.set_up_mobility_measurement()
-            self.measurement_manager.advance_motor(100)
-            print(self.measurement_manager.adc_manager.c)
-            return
-            self.measurement_manager.current_source_manager.set_current(1e-6)
-            index = 2 * 2
-            command = self.measurement_manager.mux_manager.command()
-            command.vp = index + 1
-            command.cp = index + 1
-            command.vn = index
-            command.cn = index
-            command.send()
-            sleep(0.1)
-            log += self.tmp()
-            command = self.measurement_manager.mux_manager.command()
-            command.vp = index
-            command.cp = index
-            command.vn = index + 1
-            command.cn = index + 1
-            command.send()
-            sleep(0.1)
-            log += self.tmp()
-            print(log)
-            self.measurement_manager.measurement.description = log
-            self.measurement_manager.end()
-
-    def tmp(self):
-        log = ""
-        v, i = self.measurement_manager.measure_current_and_voltage()
-        r = v / i
-        log += f"v = {v}, r = {r}\n"
-        failed = False
-        if abs(r - 1e3) > 100:
-            log += f"Test failed for {self.measurement_manager.mux_manager.last_command} (resistance)\n"
-            failed = True
-        if self.measurement_manager.current_source_manager.is_saturated():
-            log += f"Test failed for {self.measurement_manager.mux_manager.last_command} (saturation)\n"
-            failed = True
-        if not failed:
-            log += f"Test SUCCESS for {self.measurement_manager.mux_manager.last_command}\n"
-        return log
-
-
 class RhValueView(viewsets.ModelViewSet):
     queryset = RhValue.objects.all()
     serializer_class = RhValueSerializer

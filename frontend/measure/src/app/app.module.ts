@@ -24,11 +24,16 @@ import { MobilityPipe } from './pipe/mobility.pipe';
 import { SheetResistancePipe } from './pipe/sheet-resistance.pipe';
 import { AboutComponent } from './about/about.component';
 import { MeasureDialogComponent } from './measure-dialog/measure-dialog.component';
+import { DetailsComponent } from './details/details.component';
+import { SpeedPipe } from './pipe/speed.pipe';
+import { ChartsModule } from 'ng2-charts';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { CloseDialogComponent } from './close-dialog/close-dialog.component';
 
 const routes: Routes = [
   { path: '', component: StartPageComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'details/:id', component: DetailsComponent },
 ];
 
 @NgModule({
@@ -39,6 +44,8 @@ const routes: Routes = [
     SheetResistancePipe,
     AboutComponent,
     MeasureDialogComponent,
+    DetailsComponent,
+    SpeedPipe,
     CloseDialogComponent,
   ],
   imports: [
@@ -60,8 +67,10 @@ const routes: Routes = [
     MatIconModule,
     MatTooltipModule,
     ReactiveFormsModule,
+    ChartsModule,
+    FlexLayoutModule,
   ],
-  providers: [],
+  providers: [SpeedPipe, MobilityPipe, SheetResistancePipe],
   bootstrap: [AppComponent],
   entryComponents: [MeasureDialogComponent, CloseDialogComponent],
 })

@@ -1,0 +1,66 @@
+<mat-card class="mat-elevation-z4">
+  <mat-card-header>
+    <mat-card-title>
+      Details for measurement: {{ measurement?.name | titlecase }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="grid">
+      <div class="canvas-wrapper">
+        <canvas
+          baseChart
+          chartType="line"
+          [datasets]="chartData"
+          [labels]="chartLabels"
+          [options]="chartOptions"
+          [colors]="lineChartColors"
+          [legend]="true"
+        >
+        </canvas>
+      </div>
+      <h3>Name</h3>
+      <div>{{ measurement?.name }}</div>
+      <h3>Date</h3>
+      <div>{{ measurement?.created_at | date }}</div>
+      <h3>Description</h3>
+      <div>{{ measurement?.description }}</div>
+      <h3>Speed</h3>
+      <div>{{ measurement?.steps_per_measurement | speed }}</div>
+      <h3>Connections</h3>
+      <div>
+        <div class="connections-wrapper">
+          <div>{{ measurement?.connection_1 }}</div>
+          <div class="right">{{ measurement?.connection_4 }}</div>
+          <div class="bottom">
+            <span>{{ measurement?.connection_2 }}</span>
+          </div>
+          <div class="bottom right">
+            <span>{{ measurement?.connection_3 }}</span>
+          </div>
+        </div>
+      </div>
+      <h3>Carrier mobility</h3>
+      <div>{{ measurement?.mobility | mobility }} cm^2/(Vs)</div>
+      <h3>Sheet Resistans</h3>
+      <div>{{ measurement?.sheet_resistance | sheetResistance }} &#8486;</div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      class="btn btn-success"
+      (click)="downloadCsv()"
+    >
+      Export data to csv
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="btn btn-success"
+      (click)="download_image()"
+    >
+      Export graph as PNG
+    </button>
+  </mat-card-actions>
+</mat-card>
