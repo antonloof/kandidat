@@ -1,11 +1,11 @@
 import pigpio
 from time import sleep
 
-A1_PIN = 19
-A2_PIN = 13
-B1_PIN = 5
-B2_PIN = 26
-ENABLE_PIN = 6
+A1_PIN = 26
+A2_PIN = 19
+B1_PIN = 6
+B2_PIN = 5
+ENABLE_PIN = 13
 
 STEP_SEQUENCE = (
     (1, 0, 0, 1),
