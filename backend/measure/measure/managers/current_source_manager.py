@@ -58,7 +58,8 @@ class CurrentSourceManager:
         self.write_dac(OpCode.NORMAL, Power.OFF100K, 0)
         for re in RES:
             self.pi.write(re.pin, 0)
-
+    
+            
     def close(self):
         self.pi.i2c_close(self.i2c)
 

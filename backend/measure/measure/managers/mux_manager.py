@@ -17,7 +17,6 @@ class MuxManager:
 
     def end(self):
         self.disable()
-        pass
 
     def disable(self):
         self.pi.write(ENABLE_PIN, 0)
@@ -43,10 +42,6 @@ class MuxManager:
         command.vn = self.last_command.vp
         command.send()
 
-    def reset(self):
-        self.pi.write(ENABLE_PIN, 0)
-        self.pi.write(ENABLE_PIN, 1)
-
 
 class MuxCommand:
     def __init__(self, mux_manager, command=None):
@@ -63,7 +58,6 @@ class MuxCommand:
 
     @property
     def data(self):
-        print(self.vp, self.vn, self.cp, self.cn, "mux")
         sel_cs = self.convert(self.cp)
         sel_mn = self.convert(self.vn)
         sel_gs = self.convert(self.cn)

@@ -144,7 +144,6 @@ class AdcManager:
 
     def end(self):
         self.zero_adc_input()
-        pass
 
     def zero_adc_input(self):
         self.pi.write(ZERO_ADC_INPUT_PIN, 0)
@@ -171,7 +170,7 @@ class AdcManager:
         c, d = self.pi.spi_read(self.spi, count)
         if c != count:
             raise AdcRuntimeException(
-                f"Got error from SPI read: tried to read {count} ReferenceModeread: {c}. Data: {d}"
+                f"Got error from SPI read: tried to read {count} read: {c}. Data: {d}"
             )
         return d
 
@@ -196,12 +195,10 @@ class AdcManager:
         self.zero_adc_input()
         offset = 0
         for i in range(avg_count):
-            v = self._read_value(timeout_s)
-            offset += v
+            offset += self._read_value(timeout_s)
         offset /= avg_count
         self.enable_adc_input()
-        sig = self._read_value(timeout_s)
-        return sig - offset
+        return self._read_value(timeout_s) - offset
 
     def read_value(self, timeout_s=1):
         # software chop mode :D
@@ -237,10 +234,6 @@ class AdcManager:
     def set_gain_data_rate(self, gain=Gain.G1, data_rate=DataRate.SPS20, bypass=False):
         bypass_bit = 0b10000000 if bypass else 0
         self.write_reg(Address.MODE2, bypass_bit | (gain << 4) | data_rate)
-
-    def enable_chop(self):
-        mode0 = self.read_reg(Address.MODE0)
-        self.write_reg(Address.MODE0, mode0 | Mode0Bbit.INPUT_CHOP)
 
     def set_reference_mode(self, positive, negative):
         self.write_reg(Address.REFMUX, (positive << 3) | negative)

@@ -56,7 +56,6 @@ class MeasurementManager:
 
     def set_up_mobility_measurement(self):
         self.adc_manager.reset()
-        # self.adc_manager.enable_chop()
         self.adc_manager.set_reference_mode(ReferenceMode.EXT0, ReferenceMode.EXT0)
         self.adc_manager.set_gain_data_rate(bypass=True)
         self.adc_manager.start()
@@ -92,12 +91,11 @@ class MeasurementManager:
         self.mux_manager.enable()
         self.setup_voltage_measurement()
         v = self.measure_voltage_calibration()
-        i = self.current_source_manager.current
         self.mux_manager.disable()
-        return v, i
+        return v, self.current_source_manager.current
 
     def advance_motor(self, steps, micro_step=True):
-        steps_per_second = 20  # min(20, abs(steps))
+        steps_per_second = 20
 
         micro_multiplier = 2 if micro_step else 1
         for _ in range(abs(steps) * micro_multiplier):

@@ -48,7 +48,6 @@ class MotorManager:
         pass
 
     def step(self, micro_step=False, direction=1):
-        self.pi.write(ENABLE_PIN, 1)
         for i, value in enumerate(STEP_SEQUENCE[self.current_step]):
             self.pi.write(self.pins[i], value)
         self.current_step += direction * (1 if micro_step else 2)

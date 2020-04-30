@@ -55,7 +55,6 @@ def measure_r_for_rs(measurement_manager, connections):
             abs(index - ((index - 1) % 4)) != 1 or abs(((index - 2) % 4) - ((index - 3) % 4)) != 1
         )
         place_resistance_in_bucket(ra, rb, is_rb, -v / i)
-    print(ra, rb)
     return sum(ra) / len(ra), sum(rb) / len(rb)
 
 
@@ -100,7 +99,6 @@ class MeasurementView(viewsets.ModelViewSet):
             )
             t = np.linspace(0, STEPS_PER_TURN, len(r_mu_s))
             r_mu_s = np.array(r_mu_s)
-            print("y = ", list(r_mu_s), ";")
             # make some educated guesses before letting the math loose :)
             guess_amp = (max(r_mu_s) - min(r_mu_s)) / 2
             guess_phase = asin(r_mu_s[0] / max(abs(r_mu_s)))
@@ -110,11 +108,6 @@ class MeasurementView(viewsets.ModelViewSet):
             # let the math loose
             optimize_func = lambda x: x[0] * np.sin(guess_angle_freq * t + x[1]) + x[2] - r_mu_s
             amp, phase, offset = leastsq(optimize_func, [guess_amp, guess_phase, guess_offset])[0]
-            print("a=", amp, ";")
-            print("b=", guess_angle_freq, ";")
-            print("c=", phase, ";")
-            print("d=", offset, ";")
-            print("how good it is:", sum(optimize_func([amp, phase, offset]) ** 2))
             measurement.amplitude = amp
             measurement.angle_freq = guess_angle_freq
             measurement.phase = phase
@@ -127,8 +120,6 @@ class MeasurementView(viewsets.ModelViewSet):
             if phase_in_steps > STEPS_PER_TURN / 2:
                 phase_in_steps = -(STEPS_PER_TURN - phase_in_steps)
 
-            print("dr_db:", dr_db)
-            print("phase in steps:", phase_in_steps)
             # now the motor is at a minimum of the magnetic flux density
             self.measurement_manager.advance_motor(-int(round(phase_in_steps)))
             connections = [
@@ -142,7 +133,6 @@ class MeasurementView(viewsets.ModelViewSet):
             ra2, rb2 = measure_r_for_rs(self.measurement_manager, connections)
             ra = (ra1 + ra2) / 2
             rb = (rb1 + rb2) / 2
-            print("the r's needed for rs:", ra, rb)
 
             f = lambda rs: np.exp(-pi * ra / rs) + np.exp(-pi * rb / rs) - 1
             df_drs = lambda rs: -(pi / rs ** 2) * (
@@ -151,9 +141,7 @@ class MeasurementView(viewsets.ModelViewSet):
 
             reasonable_rs_guess = (ra + rb) / 2
             rs = fsolve(f, reasonable_rs_guess, fprime=df_drs)[0]
-            print("rs:", rs)
             mu = dr_db / rs
-            print("mu:", mu)
 
             measurement.mobility = mu
             measurement.sheet_resistance = rs
