@@ -125,10 +125,10 @@ export class MeasureDialogComponent implements OnInit {
 
   getMeasurement() {
     return {
-      connection_1: this.connection1Control.value,
-      connection_2: this.connection2Control.value,
-      connection_3: this.connection3Control.value,
-      connection_4: this.connection4Control.value,
+      connection_1: this.connection1Control.value - 1,
+      connection_2: this.connection2Control.value - 1,
+      connection_3: this.connection3Control.value - 1,
+      connection_4: this.connection4Control.value - 1,
       current_limit: this.currentControl.value,
       steps_per_measurement: this.speedControl.value,
       name: this.nameControl.value,
