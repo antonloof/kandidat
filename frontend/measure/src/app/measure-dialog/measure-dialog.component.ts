@@ -10,6 +10,7 @@ import {
   NgForm,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { RandomNameService } from '../random-name.service';
 
 interface Speed {
   value: number;
@@ -73,7 +74,8 @@ export class MeasureDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private randomName: RandomNameService
   ) {}
 
   ngOnInit(): void {
@@ -92,7 +94,8 @@ export class MeasureDialogComponent implements OnInit {
         validators: [this.connectionDuplicateValidator],
       }
     );
-    this.form.controls['Speed'].setValue(10, { onlySelf: true });
+    this.speedControl.setValue(10, { onlySelf: true });
+    this.nameControl.setValue(this.randomName.get(), { onlySelf: true });
   }
 
   connectionDuplicateValidator(form: FormGroup) {
