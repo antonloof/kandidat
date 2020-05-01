@@ -112,7 +112,7 @@ class MeasurementView(viewsets.ModelViewSet):
             measurement.angle_freq = guess_angle_freq
             measurement.phase = phase
             measurement.offset = offset
-            dr_db = amp / B_MAX
+            dr_db = abs(amp) / B_MAX
             phase = phase % (2 * pi)
             phase_in_steps = phase * STEPS_PER_TURN / (2 * pi)
 
@@ -141,7 +141,7 @@ class MeasurementView(viewsets.ModelViewSet):
 
             reasonable_rs_guess = (ra + rb) / 2
             rs = fsolve(f, reasonable_rs_guess, fprime=df_drs)[0]
-            mu = dr_db / rs
+            mu = abs(dr_db / rs)
 
             measurement.mobility = mu
             measurement.sheet_resistance = rs
