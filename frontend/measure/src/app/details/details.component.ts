@@ -21,6 +21,7 @@ export class DetailsComponent implements OnInit {
   measurement: Measurement;
   rhValue: PaginatedList<RhValue>;
   id: number;
+  fitCurveErrorRms: number;
 
   chartOptions = {
     responsive: true,
@@ -29,7 +30,7 @@ export class DetailsComponent implements OnInit {
         {
           scaleLabel: {
             display: true,
-            labelString: 'Rh [Ohm]',
+            labelString: 'Rh [Ω]',
           },
         },
       ],
@@ -103,10 +104,17 @@ export class DetailsComponent implements OnInit {
       return;
     }
     this.chartLabels = this.rhValue.results.map(i => i.angle);
+    const fitCurve = this.getFittedCurve();
     this.chartData = [
       { data: this.rhValue.results.map(v => v.value), label: 'Rh' },
-      { data: this.getFittedCurve(), label: 'Fitted Curve' },
+      { data: fitCurve, label: 'Fitted Curve' },
     ];
+    this.fitCurveErrorRms = Math.sqrt(
+      (1 / fitCurve.length) *
+        this.rhValue.results
+          .map((rhValue, i) => Math.pow(rhValue.value - fitCurve[i], 2))
+          .reduce((a, b) => a + b, 0)
+    );
   }
 
   getFittedCurve() {
