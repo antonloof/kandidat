@@ -10,6 +10,7 @@ import {
   NgForm,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { RandomNameService } from '../random-name.service';
 import { LocalStorageService } from '../local-storage.service';
 
 interface Speed {
@@ -74,13 +75,16 @@ export class MeasureDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
     private fb: FormBuilder,
+    private randomName: RandomNameService,
     private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
     this.dialogRef.beforeClosed().subscribe(() => {
       Object.keys(this.form.controls).forEach(key => {
-        this.localStorage.set(key, this.form.controls[key].value);
+        if (this.form.controls[key].dirty) {
+          this.localStorage.set(key, this.form.controls[key].value);
+        }
       });
     });
     const controls = {
@@ -95,7 +99,8 @@ export class MeasureDialogComponent implements OnInit {
     this.form = this.fb.group(controls, {
       validators: [this.connectionDuplicateValidator],
     });
-    this.form.controls['Speed'].setValue(10, { onlySelf: true });
+    this.speedControl.setValue(10, { onlySelf: true });
+    this.nameControl.setValue(this.randomName.get(), { onlySelf: true });
     Object.keys(this.form.controls).forEach(key => {
       const value = this.localStorage.get(key);
       if (value) {

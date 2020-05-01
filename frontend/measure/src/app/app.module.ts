@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TitleCasePipe } from '@angular/common';
 
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -72,7 +73,7 @@ const routes: Routes = [
     ChartsModule,
     FlexLayoutModule,
   ],
-  providers: [SpeedPipe, MobilityPipe, SheetResistancePipe],
+  providers: [SpeedPipe, MobilityPipe, SheetResistancePipe, TitleCasePipe],
   bootstrap: [AppComponent],
   entryComponents: [MeasureDialogComponent, CloseDialogComponent],
 })
