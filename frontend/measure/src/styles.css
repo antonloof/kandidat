@@ -18,8 +18,7 @@ mat-card {
   font-style: normal;
   font-weight: 400;
   src: url(/icon/MaterialIcons-Regular.eot); /* For IE6-8 */
-  src: local('Material Icons'),
-    local('MaterialIcons-Regular'),
+  src: local('Material Icons'), local('MaterialIcons-Regular'),
     url(/icon/MaterialIcons-Regular.woff2) format('woff2'),
     url(/icon/MaterialIcons-Regular.woff) format('woff'),
     url(/icon/MaterialIcons-Regular.ttf) format('truetype');
@@ -29,7 +28,7 @@ mat-card {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 24px; /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
