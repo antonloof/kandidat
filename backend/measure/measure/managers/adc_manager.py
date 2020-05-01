@@ -134,12 +134,12 @@ class AdcTimeoutException(AdcRuntimeException):
 class AdcManager:
     def __init__(self, pi):
         self.pi = pi
-        self.spi = pi.spi_open(0, 50000, 1)
+        self.spi = pi.spi_open(0, 40000, 1)
         self.pi.set_mode(ZERO_ADC_INPUT_PIN, pigpio.OUTPUT)
+        self.c = 0
 
     def begin(self):
         self.zero_adc_input()  # disable adc input at startup
-        self.reset_serial()
         self.reset()
 
     def end(self):
@@ -147,19 +147,19 @@ class AdcManager:
 
     def zero_adc_input(self):
         self.pi.write(ZERO_ADC_INPUT_PIN, 0)
+        sleep(0.1)
 
     def enable_adc_input(self):
         self.pi.write(ZERO_ADC_INPUT_PIN, 1)
+        sleep(0.1)
 
     def close(self):
         self.pi.spi_close(self.spi)
 
     def reset(self):
         self.write(OpCode.RESET)
-
-    def reset_serial(self):
-        self.pi.write(CS_PIN, 1)
-        self.pi.write(CS_PIN, 0)
+        sleep(0.01)
+        self.write_reg(Address.POWER, self.read_reg(Address.POWER) & 0b11101111)
 
     def write(self, bytes):
         if not isinstance(bytes, list):
@@ -189,7 +189,6 @@ class AdcManager:
         self.write(OpCode.STOP1)
 
     def start(self):
-        self.enable_adc_input()
         self.write(OpCode.START1)
 
     def read_with_calibration(self, timeout_s=1, avg_count=4):
@@ -207,14 +206,12 @@ class AdcManager:
         v1 = self._read_value(timeout_s)
         self.toggle_input_mode()
         v2 = self._read_value(timeout_s)
-        return (v2 + v1) / 2
+        return v1 - (v2 + v1) / 2
 
     def _read_value(self, timeout_s=1):
-        return 0.5
         status = 0
         value_bytes = None
         start_time = time()
-
         while not status & StatusBit.ADC1:
             self.write(OpCode.RDATA1)
             data = self.read(6)
@@ -225,6 +222,8 @@ class AdcManager:
 
         value_bytes = data[1:5]
         if not validate_checksum(value_bytes, data[5]):
+            self.c += 1
+            return self._read_value(timeout_s)
             raise AdcRuntimeException(f"checksum does not match.", list(map(int, data)))
 
         return two_complement_to_float(value_bytes)
@@ -235,10 +234,6 @@ class AdcManager:
     def set_gain_data_rate(self, gain=Gain.G1, data_rate=DataRate.SPS20, bypass=False):
         bypass_bit = 0b10000000 if bypass else 0
         self.write_reg(Address.MODE2, bypass_bit | (gain << 4) | data_rate)
-
-    def enable_chop(self):
-        mode0 = self.read_reg(Address.MODE0)
-        self.write_reg(Address.MODE0, mode0 | Mode0Bbit.INPUT_CHOP)
 
     def set_reference_mode(self, positive, negative):
         self.write_reg(Address.REFMUX, (positive << 3) | negative)
