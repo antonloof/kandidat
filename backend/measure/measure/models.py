@@ -17,7 +17,6 @@ def validate_steps_per_measurement(value):
 
 class Measurement(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(default="")
     error = models.TextField(default="")
 
     open = models.BooleanField(default=True)

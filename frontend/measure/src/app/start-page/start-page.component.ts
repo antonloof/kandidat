@@ -24,7 +24,6 @@ export class StartPageComponent implements OnInit {
   columns_to_display: string[] = [
     'id',
     'name',
-    'description',
     'created_at',
     'mobility',
     'sheet_resistance',

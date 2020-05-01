@@ -6,7 +6,6 @@ export interface CreateMeasurement {
   current_limit: number;
   steps_per_measurement: number;
   name: string;
-  description?: string;
 }
 
 export interface Measurement extends CreateMeasurement {

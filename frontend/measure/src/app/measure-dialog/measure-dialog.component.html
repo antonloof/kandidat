@@ -43,20 +43,6 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Description</mat-label>
-      <textarea
-        cdkTextareaAutosize
-        matInput
-        placeholder="This is a measurement."
-        formControlName="Description"
-        [formControl]="descriptionControl"
-        required
-      ></textarea>
-      <mat-error *ngIf="descriptionControl.hasError('required')">
-        Description is required
-      </mat-error>
-    </mat-form-field>
     <p>Connections</p>
     <mat-form-field *ngFor="let connection of connections">
       <mat-label>Connection {{ connection.no }}</mat-label>
