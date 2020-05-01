@@ -77,7 +77,7 @@ export class MeasureDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
     private fb: FormBuilder,
     private randomName: RandomNameService,
-    private localStorage: LocalStorageService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
