@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { RandomNameService } from '../random-name.service';
+import { LocalStorageService } from '../local-storage.service';
 
 interface Speed {
   value: number;
@@ -75,27 +76,39 @@ export class MeasureDialogComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<MeasureDialogComponent>,
     private fb: FormBuilder,
-    private randomName: RandomNameService
+    private randomName: RandomNameService,
+    private localStorage: LocalStorageService,
   ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group(
-      {
-        Speed: this.speedControl,
-        Current: this.currentControl,
-        Name: this.nameControl,
-        Description: this.descriptionControl,
-        Con1: this.connection1Control,
-        Con2: this.connection2Control,
-        Con3: this.connection3Control,
-        Con4: this.connection4Control,
-      },
-      {
-        validators: [this.connectionDuplicateValidator],
-      }
-    );
+    this.dialogRef.beforeClosed().subscribe(() => {
+      Object.keys(this.form.controls).forEach(key => {
+        if (this.form.controls[key].dirty) {
+          this.localStorage.set(key, this.form.controls[key].value);
+        }
+      });
+    });
+    const controls = {
+      Speed: this.speedControl,
+      Current: this.currentControl,
+      Name: this.nameControl,
+      Description: this.descriptionControl,
+      Con1: this.connection1Control,
+      Con2: this.connection2Control,
+      Con3: this.connection3Control,
+      Con4: this.connection4Control,
+    };
+    this.form = this.fb.group(controls, {
+      validators: [this.connectionDuplicateValidator],
+    });
     this.speedControl.setValue(10, { onlySelf: true });
     this.nameControl.setValue(this.randomName.get(), { onlySelf: true });
+    Object.keys(this.form.controls).forEach(key => {
+      const value = this.localStorage.get(key);
+      if (value) {
+        this.form.controls[key].setValue(value);
+      }
+    });
   }
 
   connectionDuplicateValidator(form: FormGroup) {
@@ -117,10 +130,10 @@ export class MeasureDialogComponent implements OnInit {
 
   getMeasurement() {
     return {
-      connection_1: this.connection1Control.value,
-      connection_2: this.connection2Control.value,
-      connection_3: this.connection3Control.value,
-      connection_4: this.connection4Control.value,
+      connection_1: this.connection1Control.value - 1,
+      connection_2: this.connection2Control.value - 1,
+      connection_3: this.connection3Control.value - 1,
+      connection_4: this.connection4Control.value - 1,
       current_limit: this.currentControl.value,
       steps_per_measurement: this.speedControl.value,
       name: this.nameControl.value,
@@ -132,9 +145,5 @@ export class MeasureDialogComponent implements OnInit {
     if (this.form.valid) {
       this.dialogRef.close(this.getMeasurement());
     }
-  }
-
-  cancel() {
-    this.dialogRef.close();
   }
 }

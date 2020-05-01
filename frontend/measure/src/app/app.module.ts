@@ -30,6 +30,7 @@ import { SpeedPipe } from './pipe/speed.pipe';
 import { ChartsModule } from 'ng2-charts';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CloseDialogComponent } from './close-dialog/close-dialog.component';
+import { ToprecisionPipe } from './pipe/toprecision.pipe';
 
 const routes: Routes = [
   { path: '', component: StartPageComponent },
@@ -48,6 +49,7 @@ const routes: Routes = [
     DetailsComponent,
     SpeedPipe,
     CloseDialogComponent,
+    ToprecisionPipe,
   ],
   imports: [
     FormsModule,
