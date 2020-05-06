@@ -145,6 +145,8 @@ class MeasurementView(viewsets.ModelViewSet):
 
             measurement.mobility = mu
             measurement.sheet_resistance = rs
+            measurement.warning = self.measurement_manager.get_warnings()
+
             self.measurement_manager.end()
 
 

@@ -24,6 +24,7 @@ class MeasurementSerializer(serializers.ModelSerializer):
             "name",
             "steps_per_measurement",
             "error",
+            "warning",
         )
 
     def validate(self, data):

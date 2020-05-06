@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 class Measurement(models.Model):
     name = models.CharField(max_length=100)
     error = models.TextField(default="")
+    warning = models.TextField(default="")
 
     open = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)

@@ -15,6 +15,7 @@ class MeasurementManager:
         self.motor_manager = None
         self.current_source_manager = None
         self.mux_manager = None
+        self.current_saturated = False
 
         open_measurements = Measurement.objects.select_for_update().filter(open=True)
         with transaction.atomic():
@@ -91,8 +92,18 @@ class MeasurementManager:
         self.mux_manager.enable()
         self.setup_voltage_measurement()
         v = self.measure_voltage_calibration()
+        if self.current_source_manager.is_saturated():
+            self.current_saturated = True
         self.mux_manager.disable()
         return v, self.current_source_manager.current
+
+    def get_warnings(self):
+        warnings = ""
+        if self.current_saturated:
+            warnings += "Current source saturated\n"
+        if self.adc_manager.saturated:
+            warnings += "ADC saturated\n"
+        return warnings
 
     def advance_motor(self, steps, micro_step=True):
         steps_per_second = 20
