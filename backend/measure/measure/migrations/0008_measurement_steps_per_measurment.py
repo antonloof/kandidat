@@ -14,9 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="measurement",
             name="steps_per_measurment",
-            field=models.IntegerField(
-                default=10, validators=[measure.models.validate_steps_per_measurement]
-            ),
+            field=models.IntegerField(default=10),
             preserve_default=False,
         ),
     ]
