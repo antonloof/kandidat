@@ -65,6 +65,7 @@ export class MeasureDialogComponent implements OnInit {
   ];
   speedControl = new FormControl(10);
   errorStateMatcher = new CrossFieldErrorMatcher();
+  dontStoreKeys = ["Name"];
 
   speeds: Speed[] = [
     { value: 10, viewValue: 'High Speed : Low Resolution' },
@@ -82,7 +83,7 @@ export class MeasureDialogComponent implements OnInit {
   ngOnInit(): void {
     this.dialogRef.beforeClosed().subscribe(() => {
       Object.keys(this.form.controls).forEach(key => {
-        if (this.form.controls[key].dirty) {
+        if (this.form.controls[key].dirty && !this.dontStoreKeys.includes(key)) {
           this.localStorage.set(key, this.form.controls[key].value);
         }
       });
@@ -103,7 +104,7 @@ export class MeasureDialogComponent implements OnInit {
     this.nameControl.setValue(this.randomName.get(), { onlySelf: true });
     Object.keys(this.form.controls).forEach(key => {
       const value = this.localStorage.get(key);
-      if (value) {
+      if (value && !this.dontStoreKeys.includes(key)) {
         this.form.controls[key].setValue(value);
       }
     });
