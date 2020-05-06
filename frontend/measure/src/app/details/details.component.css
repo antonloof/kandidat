@@ -10,9 +10,9 @@
 
 .connections-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100px;
-  height: 100px;
+  grid-template-columns: 1fr 2fr 1fr;
+  width: 150px;
+  height: 150px;
   border: 2px solid black;
   padding: 10px;
 }
@@ -33,4 +33,14 @@
 
 mat-icon {
   vertical-align: middle;
+}
+
+.center {
+  text-align: center;
+}
+
+.middle {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
