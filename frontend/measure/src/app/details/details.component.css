@@ -26,3 +26,11 @@
 .right {
   text-align: right;
 }
+
+.with-icon {
+  display: inline-block;
+}
+
+mat-icon {
+  vertical-align: middle;
+}

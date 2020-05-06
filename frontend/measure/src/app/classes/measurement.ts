@@ -19,4 +19,5 @@ export interface Measurement extends CreateMeasurement {
   phase: number;
   offset: number;
   error: string;
+  warning: string;
 }

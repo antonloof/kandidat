@@ -12,6 +12,12 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MeasureDialogComponent } from '../measure-dialog/measure-dialog.component';
 import { CloseDialogComponent } from '../close-dialog/close-dialog.component';
 
+interface Icon {
+  icon: string;
+  tooltip: string;
+  color: string;
+}
+
 @Component({
   selector: 'app-start-page',
   templateUrl: './start-page.component.html',
@@ -115,5 +121,18 @@ export class StartPageComponent implements OnInit {
       }
     });
     return formatted_filters;
+  }
+
+  getIcon(measurement: Measurement): Icon {
+    if (measurement.open) {
+      return { icon: 'sync', tooltip: 'In progress...', color: '' };
+    }
+    if (measurement.error) {
+      return { icon: 'error', tooltip: measurement.error, color: 'warn' };
+    }
+    if (measurement.warning) {
+      return { icon: 'warning', tooltip: measurement.warning, color: '' };
+    }
+    return { icon: 'done', tooltip: '', color: 'primary' };
   }
 }

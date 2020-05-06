@@ -137,6 +137,7 @@ class AdcManager:
         self.spi = pi.spi_open(0, 40000, 1)
         self.pi.set_mode(ZERO_ADC_INPUT_PIN, pigpio.OUTPUT)
         self.c = 0
+        self.saturated = False
 
     def begin(self):
         self.zero_adc_input()  # disable adc input at startup
@@ -226,7 +227,11 @@ class AdcManager:
             return self._read_value(timeout_s)
             raise AdcRuntimeException(f"checksum does not match.", list(map(int, data)))
 
-        return two_complement_to_float(value_bytes)
+        value = two_complement_to_float(value_bytes)
+        # arbitrary threshold for saturation
+        if value > 0.495 or value < 0.005:
+            self.saturated = True
+        return value
 
     def set_input_mode(self, positive, negative):
         self.write_reg(Address.INPMUX, (positive << 4) | negative)
