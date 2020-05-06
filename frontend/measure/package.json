@@ -28,6 +28,7 @@
     "ng2-charts": "^2.3.0",
     "ngx-csv": "^0.3.2",
     "prettier": "^2.0.2",
+    "roboto-fontface": "^0.10.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

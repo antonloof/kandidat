@@ -9,5 +9,7 @@ uwsgi --ini backend/measure.ini &
 mkdir -p /var/www/html/measure
 cp -r frontend/measure/dist/measure/* /var/www/html/measure
 
-/etc/init.d/nginx restart
+mkdir -p /var/www/html/icon
+cp MaterialIcons* /var/www/html/icon
 
+/etc/init.d/nginx restart
