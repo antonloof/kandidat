@@ -35,7 +35,7 @@
         Target current must less than 3.3mA
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field class="speed-field">
       <mat-label>Speed/Resolution</mat-label>
       <mat-select matInput formCotrolName="Speed" [formControl]="speedControl">
         <mat-option *ngFor="let speed of speeds" [value]="speed.value">
