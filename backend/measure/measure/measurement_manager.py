@@ -98,7 +98,10 @@ class MeasurementManager:
         steps_per_second = 20
 
         micro_multiplier = 2 if micro_step else 1
+        first_step = True
         for _ in range(abs(steps) * micro_multiplier):
             self.motor_manager.step(micro_step, sgn(steps))
-            # self.test_motor_current()
+            if first_step:
+                self.test_motor_current()
+                first_step = False
             sleep(1 / (steps_per_second * micro_multiplier))
