@@ -20,6 +20,18 @@
       </div>
       <h3>Name</h3>
       <div>{{ measurement?.name }}</div>
+      <div>
+        <h3 class="with-icon">Error</h3>
+        <mat-icon color="warn" *ngIf="measurement?.error">error</mat-icon>
+      </div>
+      <div>{{ measurement?.error ? measurement?.error : 'No error' }}</div>
+      <div>
+        <h3 class="with-icon">Warning</h3>
+        <mat-icon *ngIf="measurement?.warning">warning</mat-icon>
+      </div>
+      <div>
+        {{ measurement?.warning ? measurement?.warning : 'No warning' }}
+      </div>
       <h3>Date</h3>
       <div>{{ measurement?.created_at | date }}</div>
       <h3>Speed</h3>
