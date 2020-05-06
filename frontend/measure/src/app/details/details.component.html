@@ -36,17 +36,24 @@
       <div>{{ measurement?.created_at | date }}</div>
       <h3>Speed</h3>
       <div>{{ measurement?.steps_per_measurement | speed }}</div>
-      <h3>Connections</h3>
+      <h3>Connections and contact resistance</h3>
       <div>
         <div class="connections-wrapper">
           <div>{{ measurement?.connection_1 + 1 }}</div>
+          <div class="center">{{ measurement?.r41 | toprecision }} &#8486;</div>
           <div class="right">{{ measurement?.connection_4 + 1 }}</div>
-          <div class="bottom">
-            <span>{{ measurement?.connection_2 + 1 }}</span>
+
+          <div class="middle">{{ measurement?.r12 | toprecision }} &#8486;</div>
+          <div></div>
+          <div class="right middle">
+            {{ measurement?.r34 | toprecision }} &#8486;
           </div>
-          <div class="bottom right">
-            <span>{{ measurement?.connection_3 + 1 }}</span>
+
+          <div class="bottom">{{ measurement?.connection_2 + 1 }}</div>
+          <div class="center bottom">
+            {{ measurement?.r23 | toprecision }} &#8486;
           </div>
+          <div class="bottom right">{{ measurement?.connection_3 + 1 }}</div>
         </div>
       </div>
       <h3>Carrier mobility</h3>

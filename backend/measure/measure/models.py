@@ -24,6 +24,11 @@ class Measurement(models.Model):
     connection_4 = models.IntegerField()
     steps_per_measurement = models.IntegerField()
 
+    r12 = models.FloatField(null=True)
+    r23 = models.FloatField(null=True)
+    r34 = models.FloatField(null=True)
+    r41 = models.FloatField(null=True)
+
 
 class RhValue(models.Model):
     value = models.FloatField()

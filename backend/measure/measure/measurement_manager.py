@@ -66,7 +66,34 @@ class MeasurementManager:
         command.vp = self.measurement.connection_2
         command.vn = self.measurement.connection_4
         command.send()
-        self.current_source_manager.set_current(self.measurement.current_limit)
+
+    def measure_connection_resistance(self):
+        connections = [
+            self.measurement.connection_1,
+            self.measurement.connection_2,
+            self.measurement.connection_3,
+            self.measurement.connection_4,
+        ]
+        self.current_source_manager.set_current(1e-9)
+        for i in range(len(connections)):
+            command = self.mux_manager.command()
+            positive_index = i
+            negative_index = (i + 1) % len(connections)
+            command.cp = connections[positive_index]
+            command.cn = connections[negative_index]
+            command.vp = connections[positive_index]
+            command.vn = connections[negative_index]
+            command.send()
+            v, current = self.measure_current_and_voltage()
+            self.mux_manager.enable()
+            # the +1 on the connections is in order to present correct data to the user
+            # since the frontend uses 1-index for connections but the backend uses 0-index
+            assert (
+                not self.current_source_manager.is_saturated()
+            ), f"The current source saturated when trying to measure resistance between {connections[positive_index] + 1} and {connections[negative_index] + 1}"
+            self.mux_manager.disable()
+            setattr(self.measurement, f"r{positive_index + 1}{negative_index + 1}", v / current)
+        self.measurement.save()
 
     def setup_voltage_measurement(self):
         self.adc_manager.set_input_mode(InpmuxOptions.AIN8, InpmuxOptions.AIN9)

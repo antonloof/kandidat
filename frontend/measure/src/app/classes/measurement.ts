@@ -20,4 +20,8 @@ export interface Measurement extends CreateMeasurement {
   offset: number;
   error: string;
   warning: string;
+  r12: number;
+  r23: number;
+  r34: number;
+  r41: number;
 }

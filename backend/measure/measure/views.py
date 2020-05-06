@@ -81,7 +81,10 @@ class MeasurementView(viewsets.ModelViewSet):
         with self.measurement_manager:
             self.measurement_manager.begin()
             self.measurement_manager.set_up_mobility_measurement()
+            self.measurement_manager.measure_connection_resistance()
             measurement = self.measurement_manager.measurement
+
+            self.measurement_manager.current_source_manager.set_current(measurement.current_limit)
             r_mu_s = []
             measurement_count = STEPS_PER_TURN // measurement.steps_per_measurement
             for _ in range(measurement_count):
