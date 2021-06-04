@@ -1,7 +1,7 @@
 appdirs==1.4.3
 asgiref==3.2.3
 black==19.10b0
-Django==3.0.3
+Django==3.1.9
 django-filter==2.2.0
 djangorestframework==3.11.0
 numpy==1.18.2
