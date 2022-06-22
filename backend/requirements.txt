@@ -4,7 +4,7 @@ black==19.10b0
 Django==3.0.3
 django-filter==2.2.0
 djangorestframework==3.11.0
-numpy==1.18.2
+numpy==1.22.0
 pigpio==1.44
 pylint==2.2.2
 pytz==2019.3
